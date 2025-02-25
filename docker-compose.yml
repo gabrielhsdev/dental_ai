@@ -31,9 +31,9 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: animal_adoption
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: dental_ai
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
     ports:
       - "3306:3306"
     volumes:
