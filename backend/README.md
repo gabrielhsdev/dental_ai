@@ -3,8 +3,6 @@
 | Service               | Language     | Responsibility                                         |
 |-----------------------|--------------|--------------------------------------------------------|
 | **Auth Service**       | Go           | User login, registration, JWT authentication          |
-| **Database Service**   | Go           | CRUD for the db in general                            |
-| **Recommendation Service** | Go       | Calls ML for ranking                                  |
-| **ML Service**         | Python       | AI Stuff                                              |
-| **Frontend**           | React Native | Dentist interface                                     |
-| **NGINX**              | Config       | API Gateway, load balancing, redirects to proper server|
+| **Database Service**   | Go           | CRUD for the db in general |
+| **Diagnostics Service** | Go       | Responsible for analyzing and processing patient data using machine learning. |
+| **Inference Service**         | Python       | Python-based service that performs the actual ML predictions and model inference.|
