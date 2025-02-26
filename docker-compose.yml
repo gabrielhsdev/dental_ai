@@ -23,9 +23,15 @@ services:
     image: nginx:latest
     container_name: nginx_proxy
     ports:
-      - "${NGINX_PORT}:80"
+      - "${NGINX_PORT}:${NGINX_PORT}"
+    environment:
+      - AUTH_SERVICE_HOST=${AUTH_SERVICE_HOST}
+      - AUTH_SERVICE_PORT=${AUTH_SERVICE_PORT}
+      - DB_SERVICE_HOST=${DB_SERVICE_HOST}
+      - DB_SERVICE_PORT=${DB_SERVICE_PORT}
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf.template:ro
+    entrypoint: /bin/bash -c "envsubst < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
     depends_on:
       - auth-service
       - db-service

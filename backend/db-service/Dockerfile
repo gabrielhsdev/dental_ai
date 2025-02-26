@@ -10,6 +10,6 @@ RUN go mod tidy
 
 RUN go build -o db-service
 
-EXPOSE 8082
+EXPOSE ${DB_SERVICE_PORT}
 
 CMD ["./db-service"]

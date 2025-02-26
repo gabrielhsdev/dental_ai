@@ -10,6 +10,6 @@ RUN go mod tidy
 
 RUN go build -o auth-service
 
-EXPOSE 8081
+EXPOSE ${AUTH_SERVICE_PORT}
 
-CMD ["./auth-service"]
+CMD ["/bin/sh", "-c", "./auth-service -port $AUTH_SERVICE_PORT"]

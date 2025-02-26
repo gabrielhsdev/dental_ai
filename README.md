@@ -22,3 +22,7 @@ This app is perfect for dental practices looking to leverage technology for more
 # Running The Project
 
 TODO: Complete steps on how to run the project using docker
+
+# REMINDERS
+
+- Look into proto buffer to connect 2 microservices ( diagnostics ( go! ) and inference ( python) ) instead of using requests ( gRCP? )
