@@ -4,14 +4,18 @@ services:
   auth-service:
     build: ./backend/auth-service
     ports:
-      - "8081:8081"
+      - "${AUTH_SERVICE_PORT}:${AUTH_SERVICE_PORT}"
+    env_file:
+      - .env
     depends_on:
       - db-service
 
   db-service:
     build: ./backend/db-service
     ports:
-      - "8082:8082"
+      - "${DB_SERVICE_PORT}:${DB_SERVICE_PORT}"
+    env_file:
+      - .env
     depends_on:
       - mysql
 
@@ -19,7 +23,7 @@ services:
     image: nginx:latest
     container_name: nginx_proxy
     ports:
-      - "80:80"
+      - "${NGINX_PORT}:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
@@ -29,15 +33,13 @@ services:
   mysql:
     image: mysql:latest
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: dental_ai
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
+    env_file:
+      - .env
     ports:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./migrations:/docker-entrypoint-initdb.d
 
 volumes:
   mysql_data:

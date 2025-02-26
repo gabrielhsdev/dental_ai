@@ -1,0 +1,51 @@
+# Node.js dependencies (if applicable)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Go-related files
+*.exe
+*.log
+*.out
+*.test
+bin/
+build/
+vendor/
+cover.out
+
+# Go modules
+/go/pkg/mod/
+/go/bin/
+/go/src/
+
+# Compiled files
+*.o
+*.a
+*.so
+*.exe
+
+# Docker-related
+.dockerignore
+docker-compose.override.yml
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+.env.example
+/secrets/
+
+# MySQL & Database
+mysql_data/
+migrations/*.sql
+
+# IDE & OS-specific
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
