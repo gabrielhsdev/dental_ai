@@ -12,4 +12,4 @@ RUN go build -o db-service
 
 EXPOSE ${DB_SERVICE_PORT}
 
-CMD ["./db-service"]
+CMD ["/bin/sh", "-c", "./db-service -port $DB_SERVICE_PORT"]

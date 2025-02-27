@@ -10,7 +10,7 @@ import (
 
 func main() {
 	// Port comes from the command line arguments
-	portFlag := flag.String("port", "8081", "Port for the auth service")
+	portFlag := flag.String("port", "8083", "Port for the diagnostics service")
 	flag.Parse()
 	port := *portFlag
 
@@ -19,7 +19,7 @@ func main() {
 
 	// Health check route
 	router.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"message": "Auth Service Running!"})
+		c.JSON(http.StatusOK, gin.H{"message": "Diagnostics Service Running!"})
 	})
 
 	// Start server on the specified port
