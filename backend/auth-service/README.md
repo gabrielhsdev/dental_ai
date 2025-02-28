@@ -1,6 +1,6 @@
 ## Running the Auth Microservice Manually
 
-If you are currently working on the Auth Service microservice, follow these steps to run it manually:
+If you are currently working on the Auth Service microservice, follow these steps to run it manually
 
 0. Add the .env file to our config folder. Should be the same as the one found in the project root.
 
