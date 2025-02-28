@@ -36,15 +36,14 @@ docker-compose.override.yml
 .env.example
 /secrets/
 
-# MySQL & Database
-mysql_data/
-migrations/*.sql
-
 # IDE & OS-specific
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Postgres
+data/
 
 # Logs
 logs/

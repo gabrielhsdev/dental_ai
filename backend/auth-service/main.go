@@ -1,7 +1,6 @@
 package main
 
 import (
-	"flag"
 	"log"
 	"net/http"
 
@@ -10,16 +9,10 @@ import (
 )
 
 func main() {
-	// Port
-	port := extractPortFlag()
-
-	// Env
+	// Initialize the server
+	port := config.ExtractPortFlag()
 	config.LoadEnv()
-
-	// Database
 	config.LoadPostgres()
-
-	// Router
 	router := gin.Default()
 
 	// Initialize Routes
@@ -27,14 +20,7 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{"message": "Auth Service Running!"})
 	})
 
-	// Start server on the specified port
+	// Log the port
 	log.Printf("Starting server on port %s...\n", port)
 	router.Run(":" + port)
-}
-
-func extractPortFlag() string {
-	portFlag := flag.String("port", "8081", "Port for the auth service")
-	flag.Parse()
-	port := *portFlag
-	return port
 }
