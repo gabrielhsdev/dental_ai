@@ -1,30 +1,53 @@
 package config
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"os"
 
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
+	"github.com/joho/godotenv"
+	_ "github.com/lib/pq"
 )
 
-var DB *gorm.DB
+var DB *sql.DB
 
-func ConnectDB() {
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
-		os.Getenv("DB_USER"),
-		os.Getenv("DB_PASSWORD"),
-		os.Getenv("DB_HOST"),
-		os.Getenv("DB_PORT"),
-		os.Getenv("DB_NAME"),
-	)
-
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+func LoadPostgres() {
+	// Load environment variables
+	err := godotenv.Load()
 	if err != nil {
-		log.Fatalf("Could not connect to the database: %v", err)
+		log.Println("Warning: No .env file found, using system environment variables")
 	}
 
-	DB = db
-	fmt.Printf("Connected to the database\n")
+	// Get environment variables
+	host := os.Getenv("DB_HOST")
+	port := os.Getenv("DB_PORT")
+	user := os.Getenv("DB_USER")
+	password := os.Getenv("DB_PASSWORD")
+	dbname := os.Getenv("DB_NAME")
+
+	// Debugging: Print connection details (excluding password for security)
+	log.Printf("Connecting to PostgreSQL - Host: %s, Port: %s, User: %s, DB: %s", host, port, user, dbname)
+
+	// Check for missing values
+	if host == "" || port == "" || user == "" || password == "" || dbname == "" {
+		log.Fatalf("Error: One or more database environment variables are not set")
+	}
+
+	// Build connection string
+	connStr := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
+
+	// Open database connection
+	DB, err = sql.Open("postgres", connStr)
+	if err != nil {
+		log.Fatalf("Error opening PostgreSQL database: %v", err)
+	}
+
+	// Test the connection
+	err = DB.Ping()
+	if err != nil {
+		log.Fatalf("Error pinging PostgreSQL database: %v", err)
+	}
+
+	log.Println("PostgreSQL database connection established successfully")
 }

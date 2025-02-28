@@ -1,32 +1,58 @@
 version: '3.8'
 
 services:
+  postgres:
+    image: postgres:latest
+    container_name: ${DB_HOST}
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER} 
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 1s
+      retries: 10
+      timeout: 1s
+
   auth-service:
-    build: ./backend/auth-service
+    container_name: ${AUTH_SERVICE_HOST}
+    build: 
+      dockerfile: backend/auth-service/Dockerfile
+      context: .
     ports:
       - "${AUTH_SERVICE_PORT}:${AUTH_SERVICE_PORT}"
     env_file:
       - .env
     depends_on:
-      - db-service
+      postgres:
+        condition: service_healthy
 
   db-service:
+    container_name: ${DB_SERVICE_HOST}
     build: ./backend/db-service
     ports:
       - "${DB_SERVICE_PORT}:${DB_SERVICE_PORT}"
     env_file:
       - .env
     depends_on:
-      - mysql
+      postgres:
+        condition: service_healthy
 
   diagnostics-service:
+    container_name: ${DIAGNOSTICS_SERVICE_HOST}
     build: ./backend/diagnostics-service
     ports:
       - "${DIAGNOSTICS_SERVICE_PORT}:${DIAGNOSTICS_SERVICE_PORT}"
     env_file:
       - .env
     depends_on:
-      - db-service
+      postgres:
+        condition: service_healthy
 
   nginx:
     image: nginx:latest
@@ -44,19 +70,14 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf.template:ro
     entrypoint: /bin/bash -c "envsubst < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
     depends_on:
-      - auth-service
-      - db-service
-
-  mysql:
-    image: mysql:latest
-    restart: always
-    env_file:
-      - .env
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-      - ./migrations:/docker-entrypoint-initdb.d
+      postgres:
+        condition: service_healthy
+      auth-service:
+        condition: service_started
+      db-service:
+        condition: service_started
+      diagnostics-service:
+        condition: service_started
 
 volumes:
-  mysql_data:
+  sqlite_data:

@@ -22,7 +22,7 @@ func main() {
 		c.JSON(http.StatusOK, gin.H{"message": "DB Service Running!"})
 	})
 
-	// Start server on port 8082
+	// Start server on port 8081
 	log.Printf("Starting server on port %s...\n", port)
 	router.Run(":" + port)
 }

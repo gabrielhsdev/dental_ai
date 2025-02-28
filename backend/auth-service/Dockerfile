@@ -2,9 +2,10 @@ FROM golang:1.24-alpine
 
 WORKDIR /app
 
-RUN apk update && apk add --no-cache git curl
+RUN apk update && apk add --no-cache git curl && apk add postgresql-client
 
-COPY . .
+COPY backend/auth-service/. .
+COPY .env .
 
 RUN go mod tidy
 

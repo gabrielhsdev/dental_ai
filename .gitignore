@@ -46,6 +46,9 @@ migrations/*.sql
 .DS_Store
 Thumbs.db
 
+# Postgres
+data/
+
 # Logs
 logs/
 *.log
