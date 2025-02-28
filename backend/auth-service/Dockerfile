@@ -13,4 +13,4 @@ RUN go build -o auth-service
 
 EXPOSE ${AUTH_SERVICE_PORT}
 
-CMD ["/bin/sh", "-c", "./auth-service -port $AUTH_SERVICE_PORT"]
+CMD ["/bin/sh", "-c", "./auth-service"]

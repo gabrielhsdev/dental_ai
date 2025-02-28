@@ -3,17 +3,18 @@ package main
 import (
 	"log"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"main.go/config"
 )
 
 func main() {
-	// Initialize the server
-	port := config.ExtractPortFlag()
+	// Initialize Configurations
 	config.LoadEnv()
 	config.LoadPostgres()
 	router := gin.Default()
+	port := os.Getenv("AUTH_SERVICE_PORT")
 
 	// Initialize Routes
 	router.GET("/", func(c *gin.Context) {
