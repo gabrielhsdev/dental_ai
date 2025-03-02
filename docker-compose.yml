@@ -22,7 +22,7 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4
-    container_name: pgadmin
+    container_name: ${PGADMIN_HOST}
     restart: always
     ports:
       - "${PGADMIN_PORT}:80"
@@ -79,12 +79,16 @@ services:
       - DB_SERVICE_PORT=${DB_SERVICE_PORT}
       - DIAGNOSTICS_SERVICE_HOST=${DIAGNOSTICS_SERVICE_HOST}
       - DIAGNOSTICS_SERVICE_PORT=${DIAGNOSTICS_SERVICE_PORT}
+      - PGADMIN_HOST=${PGADMIN_HOST}
+      - PGADMIN_PORT=${PGADMIN_PORT}
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf.template:ro
     entrypoint: /bin/bash -c "envsubst < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
     depends_on:
       postgres:
         condition: service_healthy
+      pgadmin:
+        condition: service_started
       auth-service:
         condition: service_started
       db-service:

@@ -2,26 +2,38 @@ package main
 
 import (
 	"log"
-	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
 	"main.go/config"
+	"main.go/internal/handlers"
+	"main.go/internal/repository"
+	"main.go/internal/service"
+	"main.go/routes"
 )
 
 func main() {
 	// Initialize Configurations
 	config.LoadEnv()
 	config.LoadPostgres()
+
+	// Initialize Repositories
+	userRepository := repository.NewUserRepository(config.DB)
+
+	// Initialize Service
+	userService := service.NewUserService(userRepository)
+
+	// Initialize Handler
+	userHandler := handlers.NewUserHandler(userService)
+
+	// Initialize Router
 	router := gin.Default()
-	port := os.Getenv("AUTH_SERVICE_PORT")
 
 	// Initialize Routes
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{"message": "Auth Service Running!"})
-	})
+	routes.UserRoutes(router, userHandler)
 
-	// Log the port
+	// Run Server
+	port := os.Getenv("AUTH_SERVICE_PORT")
 	log.Printf("Starting server on port %s...\n", port)
 	router.Run(":" + port)
 }
