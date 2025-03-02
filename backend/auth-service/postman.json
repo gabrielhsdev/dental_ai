@@ -1,0 +1,71 @@
+{
+	"info": {
+		"_postman_id": "6c552741-b4b4-48ef-a938-f4e1e20ccfdd",
+		"name": "Dental AI",
+		"description": "Project for the university",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30959634"
+	},
+	"item": [
+		{
+			"name": "Auth Microservice",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userName\": \"john_doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"securepassword123\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/auth/users/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"users",
+								""
+							]
+						},
+						"description": "Creates new user, currently passwords are not hashed but that can be changed later on."
+					},
+					"response": []
+				},
+				{
+					"name": "Get User By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/auth/users/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"users",
+								"1"
+							]
+						},
+						"description": "Get specific user by id"
+					},
+					"response": []
+				}
+			],
+			"description": "Custom auth microservice, these endpoins will login & register users, validade & generate JWT. Nginx will use this as the middleware to approve protected requests too, or deny them."
+		}
+	]
+}
