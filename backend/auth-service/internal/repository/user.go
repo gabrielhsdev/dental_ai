@@ -10,6 +10,7 @@ import (
 type UserRepository interface {
 	GetUserById(id int) (*models.User, error)
 	CreateUser(user *models.User) (*models.User, error)
+	GetUserByEmail(email string) (*models.User, error)
 }
 
 type UserRepositoryImplementation struct {
@@ -37,6 +38,30 @@ func (repository *UserRepositoryImplementation) GetUserById(id int) (*models.Use
 			return nil, nil
 		}
 		log.Println("Error Getting User By Id:", err)
+		return nil, err
+	}
+
+	return &user, nil
+}
+
+func (repository *UserRepositoryImplementation) GetUserByEmail(email string) (*models.User, error) {
+	var user models.User
+	query := `SELECT id, userName, email, password, firstName, lastName, createdAt, updatedAt FROM users WHERE email = $1`
+	err := repository.DB.QueryRow(query, email).Scan(
+		&user.Id,
+		&user.Username,
+		&user.Email,
+		&user.Password,
+		&user.FirstName,
+		&user.LastName,
+		&user.CreatedAt,
+		&user.UpdatedAt)
+
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		log.Println("Error Getting User By Email:", err)
 		return nil, err
 	}
 

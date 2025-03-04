@@ -24,12 +24,14 @@ func main() {
 	userService := service.NewUserService(userRepository)
 
 	// Initialize Handler
+	authHandler := handlers.NewAuthHandler(userService)
 	userHandler := handlers.NewUserHandler(userService)
 
 	// Initialize Router
 	router := gin.Default()
 
 	// Initialize Routes
+	routes.AuthRoutes(router, authHandler)
 	routes.UserRoutes(router, userHandler)
 
 	// Run Server

@@ -28,7 +28,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost/auth/users/",
+							"raw": "http://localhost/auth/users/register",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -36,7 +36,7 @@
 							"path": [
 								"auth",
 								"users",
-								""
+								"register"
 							]
 						},
 						"description": "Creates new user, currently passwords are not hashed but that can be changed later on."
@@ -61,6 +61,39 @@
 							]
 						},
 						"description": "Get specific user by id"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"securepassword123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/auth/core/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"core",
+								"login"
+							]
+						},
+						"description": "Creates new user, currently passwords are not hashed but that can be changed later on."
 					},
 					"response": []
 				}

@@ -19,6 +19,10 @@ func (service *UserService) GetUserById(id int) (*models.User, error) {
 	return service.Repository.GetUserById(id)
 }
 
+func (service *UserService) GetUserByEmail(email string) (*models.User, error) {
+	return service.Repository.GetUserByEmail(email)
+}
+
 func (service *UserService) RegisterUser(user *models.User) (*models.User, error) {
 	user.CreatedAt = time.Now()
 	user.UpdatedAt = time.Now()
