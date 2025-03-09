@@ -10,5 +10,8 @@ func AuthRoutes(router *gin.Engine, handler *handlers.AuthHandler) {
 	authGroup := router.Group("/core")
 	{
 		authGroup.POST("/login", handler.Login)
+		authGroup.POST("/register", handler.Register)
+		authGroup.POST("/me", handler.Me)
+		authGroup.POST("/validate", handler.Validate)
 	}
 }
