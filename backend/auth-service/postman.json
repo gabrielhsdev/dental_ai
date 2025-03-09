@@ -111,56 +111,11 @@
 					"name": "Validate",
 					"request": {
 						"auth": {
-							"type": "oauth2",
-							"oauth2": [
+							"type": "bearer",
+							"bearer": [
 								{
-									"key": "tokenType",
-									"value": "",
-									"type": "string"
-								},
-								{
-									"key": "accessToken",
+									"key": "token",
 									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDE3MTA4OTUsImlhdCI6MTc0MTUzODA5NSwic3ViIjoyLCJ1c2VybmFtZSI6ImpvaG5fZG9lIn0.t3g77E2rsLxjFsBjbEVyWx8T-f3DI5dG1NvvppTB5hI",
-									"type": "string"
-								},
-								{
-									"key": "addTokenTo",
-									"value": "header",
-									"type": "string"
-								},
-								{
-									"key": "refreshRequestParams",
-									"value": [],
-									"type": "any"
-								},
-								{
-									"key": "tokenRequestParams",
-									"value": [],
-									"type": "any"
-								},
-								{
-									"key": "authRequestParams",
-									"value": [],
-									"type": "any"
-								},
-								{
-									"key": "challengeAlgorithm",
-									"value": "S256",
-									"type": "string"
-								},
-								{
-									"key": "grant_type",
-									"value": "authorization_code",
-									"type": "string"
-								},
-								{
-									"key": "client_authentication",
-									"value": "header",
-									"type": "string"
-								},
-								{
-									"key": "headerPrefix",
-									"value": "",
 									"type": "string"
 								}
 							]
