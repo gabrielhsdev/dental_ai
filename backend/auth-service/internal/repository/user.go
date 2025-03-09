@@ -23,11 +23,12 @@ func NewUserRepository(db *sql.DB) UserRepository {
 
 func (repository *UserRepositoryImplementation) GetUserById(id int) (*models.User, error) {
 	var user models.User
-	query := `SELECT id, userName, email, firstName, lastName, createdAt, updatedAt FROM users WHERE id = $1`
+	query := `SELECT id, userName, email, password, firstName, lastName, createdAt, updatedAt FROM users WHERE id = $1`
 	err := repository.DB.QueryRow(query, id).Scan(
 		&user.Id,
 		&user.Username,
 		&user.Email,
+		&user.Password,
 		&user.FirstName,
 		&user.LastName,
 		&user.CreatedAt,

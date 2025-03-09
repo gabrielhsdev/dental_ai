@@ -28,39 +28,18 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost/auth/users/register",
+							"raw": "http://localhost/auth/core/register",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"path": [
 								"auth",
-								"users",
+								"core",
 								"register"
 							]
 						},
 						"description": "Creates new user, currently passwords are not hashed but that can be changed later on."
-					},
-					"response": []
-				},
-				{
-					"name": "Get User By Id",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost/auth/users/1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"path": [
-								"auth",
-								"users",
-								"1"
-							]
-						},
-						"description": "Get specific user by id"
 					},
 					"response": []
 				},
@@ -94,6 +73,134 @@
 							]
 						},
 						"description": "Creates new user, currently passwords are not hashed but that can be changed later on."
+					},
+					"response": []
+				},
+				{
+					"name": "Me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDE3MTA4OTUsImlhdCI6MTc0MTUzODA5NSwic3ViIjoyLCJ1c2VybmFtZSI6ImpvaG5fZG9lIn0.t3g77E2rsLxjFsBjbEVyWx8T-f3DI5dG1NvvppTB5hI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/auth/core/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"core",
+								"me"
+							]
+						},
+						"description": "Creates new user, currently passwords are not hashed but that can be changed later on."
+					},
+					"response": []
+				},
+				{
+					"name": "Validate",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "tokenType",
+									"value": "",
+									"type": "string"
+								},
+								{
+									"key": "accessToken",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDE3MTA4OTUsImlhdCI6MTc0MTUzODA5NSwic3ViIjoyLCJ1c2VybmFtZSI6ImpvaG5fZG9lIn0.t3g77E2rsLxjFsBjbEVyWx8T-f3DI5dG1NvvppTB5hI",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "refreshRequestParams",
+									"value": [],
+									"type": "any"
+								},
+								{
+									"key": "tokenRequestParams",
+									"value": [],
+									"type": "any"
+								},
+								{
+									"key": "authRequestParams",
+									"value": [],
+									"type": "any"
+								},
+								{
+									"key": "challengeAlgorithm",
+									"value": "S256",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "authorization_code",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "headerPrefix",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/auth/core/validate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"core",
+								"validate"
+							]
+						},
+						"description": "Creates new user, currently passwords are not hashed but that can be changed later on."
+					},
+					"response": []
+				},
+				{
+					"name": "Get User By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/auth/users/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"users",
+								"1"
+							]
+						},
+						"description": "Get specific user by id"
 					},
 					"response": []
 				}

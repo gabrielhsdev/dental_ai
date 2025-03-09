@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
@@ -29,8 +30,11 @@ func GenerateJWT(userId int, userName string) (string, error) {
 }
 
 func ValidateJWT(tokenString string) (jwt.MapClaims, error) {
+	// Remove Bearer Prefix If It Exists
+	tokenString = strings.TrimPrefix(tokenString, "Bearer ")
+
+	// Parse Token
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		// Check the signing method to prevent manipulation
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
 		}
