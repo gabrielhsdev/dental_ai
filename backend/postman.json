@@ -11,6 +11,33 @@
 			"name": "Auth Microservice",
 			"item": [
 				{
+					"name": "Admin",
+					"item": [
+						{
+							"name": "Get User By Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost/auth/users/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"auth",
+										"users",
+										"1"
+									]
+								},
+								"description": "Get specific user by id"
+							},
+							"response": []
+						}
+					],
+					"description": "Routes for general admin usage, they may never be used on the app but can be\n\nused for maybe debug purposes on the development side"
+				},
+				{
 					"name": "Register",
 					"request": {
 						"auth": {
@@ -137,30 +164,43 @@
 						"description": "Creates new user, currently passwords are not hashed but that can be changed later on."
 					},
 					"response": []
-				},
+				}
+			],
+			"description": "Custom auth microservice, these endpoins will login & register users, validade & generate JWT. Nginx will use this as the middleware to approve protected requests too, or deny them."
+		},
+		{
+			"name": "Database Service ( Currently Testing )",
+			"item": [
 				{
-					"name": "Get User By Id",
+					"name": "Health",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDE3MTA4OTUsImlhdCI6MTc0MTUzODA5NSwic3ViIjoyLCJ1c2VybmFtZSI6ImpvaG5fZG9lIn0.t3g77E2rsLxjFsBjbEVyWx8T-f3DI5dG1NvvppTB5hI",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost/auth/users/1",
+							"raw": "http://localhost/db",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"path": [
-								"auth",
-								"users",
-								"1"
+								"db"
 							]
-						},
-						"description": "Get specific user by id"
+						}
 					},
 					"response": []
 				}
 			],
-			"description": "Custom auth microservice, these endpoins will login & register users, validade & generate JWT. Nginx will use this as the middleware to approve protected requests too, or deny them."
+			"description": "Used for default CRUD like operations"
 		}
 	]
 }
