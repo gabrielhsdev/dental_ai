@@ -17,10 +17,6 @@ The platform allows dentists to upload patient X-ray images, receive real-time A
 
 - Scalable Design: Built to scale with multiple dentists and patients, offering an intuitive dashboard for seamless navigation.
 
-This app is perfect for dental practices looking to leverage technology for more accurate diagnoses, improved patient care, and enhanced workflow management.
-
 # Running The Project
 
-# REMINDERS
-
-- Look into proto buffer to connect 2 microservices ( diagnostics ( go! ) and inference ( python) ) instead of using requests ( gRCP? )
+TODO: Add How To Run The Project Locally Later
