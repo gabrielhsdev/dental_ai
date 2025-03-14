@@ -14,9 +14,12 @@ app.get("/health", (_, res) => {
   res.send("OK");
 });
 
-const port = process.env.DB_SERVICE_PORT || 3000;
+const port = process.env.DB_SERVICE_PORT || null;
 
-// Example health route
+if (!port) {
+  throw new Error("DB_SERVICE_PORT is not defined");
+}
+
 app.get("/health", (_, res) => {
   res.send({ status: "Service Healthy" });
 });
