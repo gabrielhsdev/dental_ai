@@ -47,7 +47,9 @@ services:
 
   db-service:
     container_name: ${DB_SERVICE_HOST}
-    build: ./backend/db-service
+    build:
+      dockerfile: backend/db-service/Dockerfile
+      context: .
     ports:
       - "${DB_SERVICE_PORT}:${DB_SERVICE_PORT}"
     env_file:
