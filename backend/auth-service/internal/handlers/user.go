@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"main.go/config"
 	"main.go/internal/service"
 )
 
@@ -20,20 +21,20 @@ func NewUserHandler(service *service.UserService) *UserHandler {
 func (handler *UserHandler) GetUserById(context *gin.Context) {
 	id, err := strconv.Atoi(context.Param("id"))
 	if err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Id"})
+		config.SendResponse(context, http.StatusBadRequest, "Invalid Id", nil, err)
 		return
 	}
 
 	user, err := handler.Service.GetUserById(id)
 	if err != nil {
 		log.Println(err)
-		context.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get user"})
+		config.SendResponse(context, http.StatusInternalServerError, "Failed to get user", nil, err)
 		return
 	}
 	if user == nil {
-		context.JSON(http.StatusNotFound, gin.H{"message": "User not found"})
+		config.SendResponse(context, http.StatusNotFound, "User not found", nil, nil)
 		return
 	}
 
-	context.JSON(http.StatusOK, user)
+	config.SendResponse(context, http.StatusOK, "User found", user, nil)
 }

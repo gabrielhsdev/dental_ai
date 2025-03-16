@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"main.go/config"
 	"main.go/internal/models"
 	"main.go/internal/service"
 	"main.go/utils"
@@ -20,85 +21,85 @@ func NewAuthHandler(userService *service.UserService) *AuthHandler {
 func (handler *AuthHandler) Login(context *gin.Context) {
 	var user models.User
 	if err := context.ShouldBindJSON(&user); err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Input"})
+		config.SendResponse(context, http.StatusBadRequest, "Invalid Input", nil, err)
 	}
 
 	// Find User Via Email
 	storedUser, err := handler.Userservice.GetUserByEmail(user.Email)
 	if err != nil || storedUser == nil {
-		context.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid Username Or Password"})
+		config.SendResponse(context, http.StatusUnauthorized, "Invalid Username Or Password", nil, err)
 		return
 	}
 
 	// Check Password
 	if storedUser.Password != user.Password {
-		context.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid Username Or Password"})
+		config.SendResponse(context, http.StatusUnauthorized, "Invalid Username Or Password", nil, nil)
 		return
 	}
 
 	// Generate JWT
 	token, err := utils.GenerateJWT(storedUser.Id, storedUser.Username)
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
+		config.SendResponse(context, http.StatusInternalServerError, "Failed to generate token", nil, err)
 		return
 	}
 
 	// Returns JWT
-	context.JSON(http.StatusOK, gin.H{"token": token})
+	config.SendResponse(context, http.StatusOK, "Login Success", gin.H{"token": token}, nil)
 }
 
 func (handler *AuthHandler) Register(context *gin.Context) {
 	var user models.User
 
 	if err := context.ShouldBindJSON(&user); err != nil {
-		context.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Input"})
+		config.SendResponse(context, http.StatusBadRequest, "Invalid Input", nil, err)
 		return
 	}
 
 	registeredUser, err := handler.Userservice.RegisterUser(&user)
 	if err != nil {
-		context.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to register user"})
+		config.SendResponse(context, http.StatusInternalServerError, "Failed to register user", nil, err)
 		return
 	}
 
-	context.JSON(http.StatusOK, registeredUser)
+	config.SendResponse(context, http.StatusOK, "User Registered", registeredUser, nil)
 }
 
 func (handler *AuthHandler) Me(context *gin.Context) {
 	token := context.Request.Header.Get("Authorization")
 	if token == "" {
-		context.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized, Token Not Found"})
+		config.SendResponse(context, http.StatusUnauthorized, "Unauthorized, Token Not Found", nil, nil)
 		return
 	}
 
 	claims, err := utils.ValidateJWT(token)
 	if err != nil {
-		context.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized", "message": err.Error()})
+		config.SendResponse(context, http.StatusUnauthorized, "Unauthorized", nil, err)
 		return
 	}
 
 	userId := int(claims["sub"].(float64))
 	user, err := handler.Userservice.GetUserById(userId)
 	if err != nil {
-		context.JSON(http.StatusNotFound, gin.H{"error": "User not found"})
+		config.SendResponse(context, http.StatusNotFound, "User not found", nil, err)
 		return
 	}
 
-	context.JSON(http.StatusOK, user)
+	config.SendResponse(context, http.StatusOK, "User Found", user, nil)
 }
 
 func (handler *AuthHandler) Validate(context *gin.Context) {
 	token := context.Request.Header.Get("Authorization")
 	if token == "" {
-		context.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		config.SendResponse(context, http.StatusUnauthorized, "Unauthorized, Token Not Found", nil, nil)
 		return
 	}
 
 	claims, err := utils.ValidateJWT(token)
 	if err != nil {
-		context.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
+		config.SendResponse(context, http.StatusUnauthorized, "Unauthorized", nil, err)
 		return
 	}
 
-	context.JSON(http.StatusOK, claims)
+	config.SendResponse(context, http.StatusOK, "Token Valid", claims, nil)
 }
