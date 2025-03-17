@@ -3,8 +3,8 @@ package service
 import (
 	"time"
 
-	"main.go/internal/models"
-	"main.go/internal/repository"
+	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/models"
+	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/repository"
 )
 
 type UserService struct {

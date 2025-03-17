@@ -6,8 +6,8 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"main.go/config"
-	"main.go/internal/service"
+	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/config"
+	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/service"
 )
 
 type UserHandler struct {

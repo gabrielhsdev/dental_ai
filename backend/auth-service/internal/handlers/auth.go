@@ -4,10 +4,10 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"main.go/config"
-	"main.go/internal/models"
-	"main.go/internal/service"
-	"main.go/utils"
+	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/config"
+	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/models"
+	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/service"
+	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/utils"
 )
 
 type AuthHandler struct {

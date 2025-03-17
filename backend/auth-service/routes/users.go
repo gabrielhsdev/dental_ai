@@ -2,7 +2,7 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
-	"main.go/internal/handlers"
+	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/handlers"
 )
 
 func UserRoutes(router *gin.Engine, handler *handlers.UserHandler) {

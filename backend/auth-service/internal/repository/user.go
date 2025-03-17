@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"log"
 
-	"main.go/internal/models"
+	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/models"
 )
 
 type UserRepository interface {

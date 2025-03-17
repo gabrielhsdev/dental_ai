@@ -4,12 +4,12 @@ import (
 	"log"
 	"os"
 
+	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/config"
+	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/handlers"
+	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/repository"
+	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/service"
+	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/routes"
 	"github.com/gin-gonic/gin"
-	"main.go/config"
-	"main.go/internal/handlers"
-	"main.go/internal/repository"
-	"main.go/internal/service"
-	"main.go/routes"
 )
 
 func main() {

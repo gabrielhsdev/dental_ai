@@ -1,0 +1,27 @@
+# I got this gitignore file using lots of online examples, so 
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.coverprofile
+
+# Configuration file for LiteIDE
+liteide.prj
+
+# IDE directories
+.idea/
+.vscode/
+
+# Vendor directory
+vendor/
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
