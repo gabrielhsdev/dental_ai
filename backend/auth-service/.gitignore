@@ -7,18 +7,14 @@
 *.test
 *.out
 
-# Output of the go coverage tool, specifically when used with LiteIDE
-*.coverprofile
-
-# Configuration file for LiteIDE
-liteide.prj
+# Go specific
+*.exe
+go.mod
+go.sum
 
 # IDE directories
 .idea/
 .vscode/
-
-# Vendor directory
-vendor/
 
 # Logs
 *.log

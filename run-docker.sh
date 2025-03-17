@@ -15,8 +15,9 @@ load_env() {
 # Check required environment variables
 check_env_vars() {
     local missing_vars=()
-    for var in AUTH_SERVICE_HOST DB_SERVICE_HOST DIAGNOSTICS_SERVICE_HOST AUTH_SERVICE_REPO_URL DB_SERVICE_REPO_URL; do
-        if [[ -z "${!var:-}" ]]; then
+    local required_vars=(AUTH_SERVICE_HOST DB_SERVICE_HOST DIAGNOSTICS_SERVICE_HOST AUTH_SERVICE_REPO_URL DB_SERVICE_REPO_URL)
+    for var in "${required_vars[@]}"; do
+        if [ -z "${!var}" ]; then
             missing_vars+=("$var")
         fi
     done
