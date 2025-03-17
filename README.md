@@ -23,6 +23,6 @@ The platform enables dentists to upload patient X-ray images, receive real-time 
 
 #### *Only edit the root .env file otherwise changes will be lost*
 
-## Running specific services
+## Running Specific Micro-Services
 For detailed instructions on running each microservice and understanding their limitations, please refer to the README.md file located within each microservice directory.
 
