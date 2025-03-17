@@ -54,4 +54,4 @@ logs/
 *.exe
 go.sum
 go.mod
-auth-service*
+backend/auth-service/auth-service
