@@ -19,3 +19,6 @@ The platform enables dentists to upload patient X-ray images, receive real-time 
 3. Execute the `run-docker.sh` file.
 4. Open the Postman file located in the `backend/postman.json` directory within the Postman app and test out some routes.
 
+### Running specific services
+For detailed instructions on running each microservice and understanding their limitations, please refer to the README.md file located within each microservice directory.
+
