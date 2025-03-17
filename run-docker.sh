@@ -45,23 +45,6 @@ copy_env_files() {
     done
 }
 
-# Run Docker commands
-run_docker() {
-    printf "Running docker compose down -v, deleting volumes\n"
-    docker compose down -v
-    if [ $? -ne 0 ]; then
-        printf "Error: Failed to run 'docker compose down -v'\n"
-        exit 1
-    fi
-
-    printf "Running docker compose up --build\n"
-    docker compose up --build
-    if [ $? -ne 0 ]; then
-        printf "Error: Failed to run 'docker compose up --build'\n"
-        exit 1
-    fi
-}
-
 # Execute go commands inside AUTH_SERVICE_HOST container
 prepare_auth_service() {
     local auth_service_dir="backend/${AUTH_SERVICE_HOST}"
@@ -82,6 +65,23 @@ prepare_auth_service() {
     fi
 
     printf "Go setup commands executed successfully for %s\n" "$AUTH_SERVICE_HOST"
+}
+
+# Run Docker commands
+run_docker() {
+    printf "Running docker compose down -v, deleting volumes\n"
+    docker compose down -v
+    if [ $? -ne 0 ]; then
+        printf "Error: Failed to run 'docker compose down -v'\n"
+        exit 1
+    fi
+
+    printf "Running docker compose up --build\n"
+    docker compose up --build
+    if [ $? -ne 0 ]; then
+        printf "Error: Failed to run 'docker compose up --build'\n"
+        exit 1
+    fi
 }
 
 # Main script execution

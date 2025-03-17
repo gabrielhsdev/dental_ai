@@ -3,7 +3,7 @@ Our application is designed for dental professionals to efficiently manage patie
 
 The platform enables dentists to upload patient X-ray images, receive real-time AI-powered diagnostic insights, and maintain detailed patient logs.
 
-### Key Features:
+## Key Features:
 
 - **User Authentication**: Secure login and user management for dentists and staff.
 - **Patient Management**: Easily add, update, and view patient profiles with a comprehensive log of medical history.
@@ -12,13 +12,17 @@ The platform enables dentists to upload patient X-ray images, receive real-time 
 - **Patient History & Logs**: View a detailed log of all patient images, analyses, and insights, providing a complete record of their dental care.
 - **Scalable Design**: Built to scale with multiple dentists and patients, offering an intuitive dashboard for seamless navigation.
 
-### Running The Project
+## Running The Project
 
 1. Copy and paste the current `.env-example` file and rename it to `.env`.
 2. Grant the necessary execution permissions to the `run-docker.sh` file w/ the command `chmod +x run-docker.sh`
 3. Execute the `run-docker.sh` file.
 4. Open the Postman file located in the `backend/postman.json` directory within the Postman app and test out some routes.
 
-### Running specific services
+#### *As a good role of thumb, after every pull or before every push, run the .sh file again.*
+
+#### *Only edit the root .env file otherwise changes will be lost*
+
+## Running specific services
 For detailed instructions on running each microservice and understanding their limitations, please refer to the README.md file located within each microservice directory.
 
