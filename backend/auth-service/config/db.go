@@ -19,6 +19,9 @@ func LoadPostgres() {
 	}
 
 	host := os.Getenv("DB_HOST")
+	if len(os.Args) > 1 && os.Args[1] == "debug" {
+		host = os.Getenv("DB_HOST_DEBUG")
+	}
 	port := os.Getenv("DB_PORT")
 	user := os.Getenv("DB_USER")
 	password := os.Getenv("DB_PASSWORD")

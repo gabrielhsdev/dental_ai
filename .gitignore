@@ -48,3 +48,11 @@ data/
 # Logs
 logs/
 *.log
+
+# Auth Service
+# This was already on the gitignore file inside backend/auth-service & working.
+# It is here only so VS Code does not show files as being tracked. 
+backend/auth-service/.env
+backend/auth-service/*.exe
+backend/auth-service/go.sum
+backend/auth-service/go.mod
