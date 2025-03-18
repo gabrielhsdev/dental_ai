@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/config"
+	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/database"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/handlers"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/repository"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/service"
@@ -15,10 +16,13 @@ import (
 func main() {
 	// Initialize Configurations
 	config.LoadEnv()
-	config.LoadPostgres()
+	database, err := database.LoadDatabase("postgres")
+	if err != nil {
+		log.Fatalf("Error loading database: %v", err)
+	}
 
 	// Initialize Repositories
-	userRepository := repository.NewUserRepository(config.DB)
+	userRepository := repository.NewUserRepository(database)
 
 	// Initialize Service
 	userService := service.NewUserService(userRepository)
