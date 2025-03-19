@@ -28,6 +28,23 @@ check_env_vars() {
     fi
 }
 
+# Check if directories exist
+check_directories() {
+    local backend_dir="backend"
+    if [ ! -d "$backend_dir" ]; then
+        printf "Error: Directory %s does not exist\n" "$backend_dir"
+        exit 1
+    fi
+
+    for service in AUTH_SERVICE_HOST DB_SERVICE_HOST DIAGNOSTICS_SERVICE_HOST; do
+        local dir="$backend_dir/${!service}"
+        if [ ! -d "$dir" ]; then
+            printf "Error: Directory %s does not exist\n" "$dir"
+            exit 1
+        fi
+    done
+}
+
 # Copy .env file to each service directory
 copy_env_files() {
     for service in AUTH_SERVICE_HOST DB_SERVICE_HOST DIAGNOSTICS_SERVICE_HOST; do
@@ -86,6 +103,12 @@ run_docker() {
 
 # Main script execution
 main() {
+    check_directories
+    if [ $? -ne 0 ]; then
+        printf "Error: Directory check failed\n"
+        exit 1
+    fi
+
     load_env
     if [ $? -ne 0 ]; then
         printf "Error: Failed to load environment variables\n"

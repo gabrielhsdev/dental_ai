@@ -40,6 +40,7 @@ func main() {
 
 	// Run Server
 	port := os.Getenv("AUTH_SERVICE_PORT")
-	log.Printf("Starting server on port %s...\n", port)
+	serviceName := os.Getenv("AUTH_SERVICE_HOST")
+	log.Printf("Starting %s on port %s", serviceName, port)
 	router.Run(":" + port)
 }

@@ -4,11 +4,15 @@ WORKDIR /app
 
 RUN apk update && apk add --no-cache git curl && apk add postgresql-client
 
-COPY backend/db-service/package*.json ./
+ARG DB_SERVICE_HOST
+
+ENV DB_SERVICE_HOST=${DB_SERVICE_HOST}
+
+COPY backend/${DB_SERVICE_HOST}/package*.json ./
 
 RUN npm install --only=production
 
-COPY backend/db-service/. .
+COPY backend/${DB_SERVICE_HOST}/. .
 COPY .env .
 
 RUN npm run build
