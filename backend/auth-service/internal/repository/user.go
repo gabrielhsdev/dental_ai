@@ -25,7 +25,7 @@ func NewUserRepository(db database.Database) UserRepository {
 func (repository *UserRepositoryImplementation) GetUserById(id int) (*models.User, error) {
 	var user models.User
 	query := `SELECT id, userName, email, password, firstName, lastName, createdAt, updatedAt FROM users WHERE id = $1`
-	err := repository.DB.GetDB().QueryRow(query, id).Scan(
+	err := repository.DB.QueryRow(query, id).Scan(
 		&user.Id,
 		&user.Username,
 		&user.Email,
@@ -50,7 +50,7 @@ func (repository *UserRepositoryImplementation) GetUserByEmail(email string) (*m
 	var user models.User
 	query := `SELECT id, userName, email, password, firstName, lastName, createdAt, updatedAt FROM users WHERE email = $1`
 	// err := repository.DB.QueryRow(query, email).Scan(
-	err := repository.DB.GetDB().QueryRow(query, email).Scan(
+	err := repository.DB.QueryRow(query, email).Scan(
 		&user.Id,
 		&user.Username,
 		&user.Email,
@@ -74,7 +74,7 @@ func (repository *UserRepositoryImplementation) GetUserByEmail(email string) (*m
 func (repository *UserRepositoryImplementation) CreateUser(user *models.User) (*models.User, error) {
 	query := `INSERT INTO users (userName, email, password, firstName, lastName, createdAt, updatedAt) 
               VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`
-	err := repository.DB.GetDB().QueryRow(
+	err := repository.DB.QueryRow(
 		query,
 		user.Username,
 		user.Email,

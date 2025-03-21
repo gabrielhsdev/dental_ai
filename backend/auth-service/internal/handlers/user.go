@@ -19,7 +19,13 @@ func NewUserHandler(service *service.UserService) *UserHandler {
 }
 
 func (handler *UserHandler) GetUserById(context *gin.Context) {
-	id, err := strconv.Atoi(context.Param("id"))
+	idString := context.Param("id")
+	if idString == "" {
+		utils.SendResponse(context, http.StatusBadRequest, "Id is required", nil, nil)
+		return
+	}
+
+	id, err := strconv.Atoi(idString)
 	if err != nil {
 		utils.SendResponse(context, http.StatusBadRequest, "Invalid Id", nil, err)
 		return

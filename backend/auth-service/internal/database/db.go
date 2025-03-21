@@ -13,6 +13,7 @@ import (
 type Database interface {
 	GetDB() *sql.DB
 	CloseDB() error
+	QueryRow(query string, args ...interface{}) *sql.Row
 }
 
 type SQLDatabase struct {
@@ -25,6 +26,15 @@ func (database *SQLDatabase) GetDB() *sql.DB {
 
 func (database *SQLDatabase) CloseDB() error {
 	return database.DB.Close()
+}
+
+func (database *SQLDatabase) QueryRow(query string, args ...interface{}) *sql.Row {
+	/*
+	* We can do some formatting of the query row here if we change from postgres to another database
+	* For Example: MySQL uses ? instead of $1 for query parameters
+	* We can also log the query here for debugging purposes
+	 */
+	return database.DB.QueryRow(query, args...)
 }
 
 func LoadDatabase(dbType string) (Database, error) {
@@ -55,17 +65,17 @@ func LoadDatabase(dbType string) (Database, error) {
 		driverName = "postgres"
 		connStr = fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
 	default:
-		return nil, fmt.Errorf("Error: Unsupported database type")
+		return nil, fmt.Errorf("error: Unsupported database type")
 	}
 
 	db, err := sql.Open(driverName, connStr)
 	if err != nil {
-		return nil, fmt.Errorf("Error opening database: %v", err)
+		return nil, fmt.Errorf("error opening database: %v", err)
 	}
 
 	err = db.Ping()
 	if err != nil {
-		return nil, fmt.Errorf("Error pinging database: %v", err)
+		return nil, fmt.Errorf("error pinging database: %v", err)
 	}
 
 	log.Println("Database connection established successfully")
