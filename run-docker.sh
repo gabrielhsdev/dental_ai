@@ -103,15 +103,17 @@ run_docker() {
 
 # Main script execution
 main() {
-    check_directories
-    if [ $? -ne 0 ]; then
-        printf "Error: Directory check failed\n"
-        exit 1
-    fi
-
     load_env
     if [ $? -ne 0 ]; then
         printf "Error: Failed to load environment variables\n"
+        exit 1
+    fi
+
+    export $(grep -v '^#' .env | xargs)
+
+    check_directories
+    if [ $? -ne 0 ]; then
+        printf "Error: Directory check failed\n"
         exit 1
     fi
 

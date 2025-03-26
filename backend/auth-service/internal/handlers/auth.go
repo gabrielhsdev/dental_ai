@@ -11,6 +11,7 @@ import (
 
 type AuthHandler struct {
 	Userservice *service.UserService
+	// Logger      logger.Logger // !IMPORTANT! Pass by value since it is a interface, should pass by reference if it is a struct
 }
 
 func NewAuthHandler(userService *service.UserService) *AuthHandler {

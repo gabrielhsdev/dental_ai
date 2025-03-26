@@ -5,17 +5,26 @@ import (
 	"os"
 
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/config"
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/database"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/handlers"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/repository"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/service"
+	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/database"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/routes"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	// Initialize Configurations
+	// Initialize Env
 	config.LoadEnv()
+
+	/*	INITIALIZE LOGGER
+		logger, err := logger.LoadLogger()
+		if err != nil {
+			log.Fatalf("Error loading logger: %v", err)
+		}
+	*/
+
+	// Initialize Database
 	database, err := database.LoadDatabase("postgres")
 	if err != nil {
 		log.Fatalf("Error loading database: %v", err)

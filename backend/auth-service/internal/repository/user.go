@@ -2,10 +2,9 @@ package repository
 
 import (
 	"database/sql"
-	"log"
 
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/database"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/models"
+	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/database"
 )
 
 type UserRepository interface {
@@ -39,7 +38,6 @@ func (repository *UserRepositoryImplementation) GetUserById(id int) (*models.Use
 		if err == sql.ErrNoRows {
 			return nil, nil
 		}
-		log.Println("Error Getting User By Id:", err)
 		return nil, err
 	}
 
@@ -49,7 +47,6 @@ func (repository *UserRepositoryImplementation) GetUserById(id int) (*models.Use
 func (repository *UserRepositoryImplementation) GetUserByEmail(email string) (*models.User, error) {
 	var user models.User
 	query := `SELECT id, userName, email, password, firstName, lastName, createdAt, updatedAt FROM users WHERE email = $1`
-	// err := repository.DB.QueryRow(query, email).Scan(
 	err := repository.DB.QueryRow(query, email).Scan(
 		&user.Id,
 		&user.Username,
@@ -64,7 +61,6 @@ func (repository *UserRepositoryImplementation) GetUserByEmail(email string) (*m
 		if err == sql.ErrNoRows {
 			return nil, nil
 		}
-		log.Println("Error Getting User By Email:", err)
 		return nil, err
 	}
 
@@ -85,7 +81,6 @@ func (repository *UserRepositoryImplementation) CreateUser(user *models.User) (*
 		user.UpdatedAt).Scan(&user.Id)
 
 	if err != nil {
-		log.Println("Error Creating User", err)
 		return nil, err
 	}
 

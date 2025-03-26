@@ -11,17 +11,12 @@ import (
 )
 
 type Database interface {
-	GetDB() *sql.DB
 	CloseDB() error
 	QueryRow(query string, args ...interface{}) *sql.Row
 }
 
 type SQLDatabase struct {
 	DB *sql.DB
-}
-
-func (database *SQLDatabase) GetDB() *sql.DB {
-	return database.DB
 }
 
 func (database *SQLDatabase) CloseDB() error {
