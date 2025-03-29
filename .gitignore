@@ -30,6 +30,7 @@ cover.out
 docker-compose.override.yml
 .env
 .env.local
+.env.docker
 .env.development
 .env.production
 .env.test
