@@ -1,35 +1,22 @@
-# this file is used so we can double check if the environment variables are set
-# and if the file was created with the variables replaced, we cannot use envsubst because
-# it kept replacing nginx variables, so we had to do it manually
+# Create a list of our current environment variables
+REQUIRED_ENV_VARS=($(env | awk -F= '{print $1}'))
 
-REQUIRED_ENV_VARS=(
-    "AUTH_SERVICE_HOST"
-    "AUTH_SERVICE_PORT"
-    "DB_SERVICE_HOST"
-    "DB_SERVICE_PORT"
-    "DIAGNOSTICS_SERVICE_HOST"
-    "DIAGNOSTICS_SERVICE_PORT"
-    "PGADMIN_HOST"
-    "PGADMIN_PORT"
-)
+# Get all variables from the template, they are int the form ${VAR}
+TEMPLATE_VARS=($(grep -oP '\$\{\K[^}]+(?=\})' /etc/nginx/nginx.conf.template))
 
-for var in ${REQUIRED_ENV_VARS[@]}; do
-    if [ -z "${!var}" ]; then
-        echo "Error: $var is not set"
+# Check if all required environment variables are set
+for var in ${TEMPLATE_VARS[@]}; do
+    if [[ ! " ${REQUIRED_ENV_VARS[@]} " =~ " ${var} " ]]; then
+        echo "Error: Required environment variable $var is not set"
         exit 1
     fi
 done
 
-# Manually replace all the variables that have the ${VAR} format
-sed -e "s|\${AUTH_SERVICE_HOST}|$AUTH_SERVICE_HOST|g" \
-    -e "s|\${AUTH_SERVICE_PORT}|$AUTH_SERVICE_PORT|g" \
-    -e "s|\${DB_SERVICE_HOST}|$DB_SERVICE_HOST|g" \
-    -e "s|\${DB_SERVICE_PORT}|$DB_SERVICE_PORT|g" \
-    -e "s|\${DIAGNOSTICS_SERVICE_HOST}|$DIAGNOSTICS_SERVICE_HOST|g" \
-    -e "s|\${DIAGNOSTICS_SERVICE_PORT}|$DIAGNOSTICS_SERVICE_PORT|g" \
-    -e "s|\${PGADMIN_HOST}|$PGADMIN_HOST|g" \
-    -e "s|\${PGADMIN_PORT}|$PGADMIN_PORT|g" \
-    /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
+# Loop through REQUIRED_ENV_VARS and replace variables in the template
+cp /etc/nginx/nginx.conf.template /etc/nginx/nginx.conf
+for var in ${REQUIRED_ENV_VARS[@]}; do
+    sed -i "s|\${$var}|${!var}|g" /etc/nginx/nginx.conf
+done
 
 # Check if the file was created
 if [ ! -f /etc/nginx/nginx.conf ]; then

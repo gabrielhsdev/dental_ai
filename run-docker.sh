@@ -15,7 +15,7 @@ load_env() {
 # Check required environment variables
 check_env_vars() {
     local missing_vars=()
-    local required_vars=(AUTH_SERVICE_HOST DB_SERVICE_HOST DIAGNOSTICS_SERVICE_HOST AUTH_SERVICE_REPO_URL DB_SERVICE_REPO_URL)
+    local required_vars=(AUTH_SERVICE_FOLDER DB_SERVICE_FOLDER DIAGNOSTICS_SERVICE_FOLDER AUTH_SERVICE_REPO_URL)
     for var in "${required_vars[@]}"; do
         if [ -z "${!var}" ]; then
             missing_vars+=("$var")
@@ -28,26 +28,9 @@ check_env_vars() {
     fi
 }
 
-# Check if directories exist
-check_directories() {
-    local backend_dir="backend"
-    if [ ! -d "$backend_dir" ]; then
-        printf "Error: Directory %s does not exist\n" "$backend_dir"
-        exit 1
-    fi
-
-    for service in AUTH_SERVICE_HOST DB_SERVICE_HOST DIAGNOSTICS_SERVICE_HOST; do
-        local dir="$backend_dir/${!service}"
-        if [ ! -d "$dir" ]; then
-            printf "Error: Directory %s does not exist\n" "$dir"
-            exit 1
-        fi
-    done
-}
-
 # Copy .env file to each service directory
 copy_env_files() {
-    for service in AUTH_SERVICE_HOST DB_SERVICE_HOST DIAGNOSTICS_SERVICE_HOST; do
+    for service in AUTH_SERVICE_FOLDER DB_SERVICE_FOLDER DIAGNOSTICS_SERVICE_FOLDER; do
         local dir="backend/${!service}"
         if [ ! -d "$dir" ]; then
             printf "Error: Directory %s does not exist\n" "$dir"
@@ -62,26 +45,30 @@ copy_env_files() {
     done
 }
 
-# Execute go commands inside AUTH_SERVICE_HOST container
+# Prepare auth service
 prepare_auth_service() {
-    local auth_service_dir="backend/${AUTH_SERVICE_HOST}"
+    local auth_service_dir="backend/${AUTH_SERVICE_FOLDER}"
     printf "Running Go setup commands inside %s folder\n" "$auth_service_dir"
     
     cd "$auth_service_dir" || { echo "Failed to enter $auth_service_dir directory"; exit 1; }
 
     if [ ! -f "go.mod" ]; then
-        REPO_URL="${GIT_REPO_URL}/tree/main/backend/${AUTH_SERVICE_HOST}"
-        go mod init "$REPO_URL"
+        go mod init "${AUTH_SERVICE_REPO_URL}"
     fi
 
     go mod tidy
+    if [ $? -ne 0 ]; then
+        printf "Error: Failed to run 'go mod tidy' command\n"
+        exit 1
+    fi 
+
     go build
     if [ $? -ne 0 ]; then
         printf "Error: Failed to run 'go build' command\n"
         exit 1
     fi
 
-    printf "Go setup commands executed successfully for %s\n" "$AUTH_SERVICE_HOST"
+    printf "Go setup commands executed successfully in %s folder\n" "$auth_service_dir"
 }
 
 # Run Docker commands
@@ -110,14 +97,10 @@ main() {
     fi
 
     export $(grep -v '^#' .env | xargs)
-
-    check_directories
     if [ $? -ne 0 ]; then
-        printf "Error: Directory check failed\n"
+        printf "Error: Failed to export environment variables\n"
         exit 1
     fi
-
-    export $(grep -v '^#' .env | xargs)
 
     check_env_vars
     if [ $? -ne 0 ]; then
@@ -133,7 +116,7 @@ main() {
 
     prepare_auth_service
     if [ $? -ne 0 ]; then
-        printf "Error: Failed to prepare %s service\n" "$AUTH_SERVICE_HOST"
+        printf "Error: Failed to complete function prepare_auth_service\n"
         exit 1
     fi
 
