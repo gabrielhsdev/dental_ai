@@ -5,7 +5,6 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
-// TODO: Restructure our logging w/ the proxy_set_header in the nginx.conf, we can have a pattern for saving logs w/ the request id for example ( and other info )
 func LoadLogger() (Logger, error) {
 	// Set up the Zap production configuration with context-specific formats.
 	config := zap.NewProductionConfig()
