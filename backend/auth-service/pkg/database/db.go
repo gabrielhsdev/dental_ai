@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/mode"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
@@ -32,16 +33,17 @@ func (database *SQLDatabase) QueryRow(query string, args ...interface{}) *sql.Ro
 	return database.DB.QueryRow(query, args...)
 }
 
-func LoadDatabase(dbType string) (Database, error) {
+func LoadDatabase(dbType string, modeManager mode.ModeManagerInterface) (Database, error) {
 	err := godotenv.Load()
 	if err != nil {
 		log.Println("Warning: No .env file found, using system environment variables")
 	}
 
 	host := os.Getenv("DB_HOST")
-	if len(os.Args) > 1 && os.Args[1] == "debug" {
+	if modeManager.IsDebug() {
 		host = os.Getenv("DB_HOST_DEBUG")
 	}
+
 	port := os.Getenv("DB_PORT")
 	user := os.Getenv("DB_USER")
 	password := os.Getenv("DB_PASSWORD")
