@@ -4,11 +4,11 @@ import (
 	"log"
 	"os"
 
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/config"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/handlers"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/repository"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/service"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/database"
+	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/environment"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/mode"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/routes"
 	"github.com/gin-gonic/gin"
@@ -16,7 +16,7 @@ import (
 
 func main() {
 	// Initialize Env
-	config.LoadEnv()
+	// config.LoadEnv()
 
 	/*	INITIALIZE LOGGER
 		logger, err := logger.LoadLogger()
@@ -25,12 +25,11 @@ func main() {
 		}
 	*/
 
-	// Initialize Mode ( For developmet/debug/production argument in CLI )
-	modeManager := mode.NewManager()
-	log.Print("Mode: ", modeManager.GetMode())
+	modeManager := mode.NewModeManager()
+	envManager := environment.NewEnvManager()
 
 	// Initialize Database
-	database, err := database.LoadDatabase("postgres", modeManager)
+	database, err := database.LoadDatabase("postgres", modeManager, envManager)
 	if err != nil {
 		log.Fatalf("Error loading database: %v", err)
 	}

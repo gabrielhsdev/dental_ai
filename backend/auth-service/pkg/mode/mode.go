@@ -2,7 +2,6 @@ package mode
 
 import "os"
 
-// mode is a private type to enforce usage through ModeManager.
 type mode string
 
 const (
@@ -22,7 +21,7 @@ type ModeManager struct {
 	mode mode
 }
 
-func NewManager() *ModeManager {
+func NewModeManager() ModeManagerInterface {
 	return &ModeManager{
 		mode: detectMode(),
 	}
@@ -40,6 +39,7 @@ func detectMode() mode {
 	return production
 }
 
+// Use this only for debugging or logging purposes
 func (m *ModeManager) GetMode() string {
 	return string(m.mode)
 }

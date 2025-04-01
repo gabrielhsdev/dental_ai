@@ -4,10 +4,9 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-	"os"
 
+	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/environment"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/mode"
-	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
@@ -33,21 +32,15 @@ func (database *SQLDatabase) QueryRow(query string, args ...interface{}) *sql.Ro
 	return database.DB.QueryRow(query, args...)
 }
 
-func LoadDatabase(dbType string, modeManager mode.ModeManagerInterface) (Database, error) {
-	err := godotenv.Load()
-	if err != nil {
-		log.Println("Warning: No .env file found, using system environment variables")
-	}
-
-	host := os.Getenv("DB_HOST")
+func LoadDatabase(dbType string, modeManager mode.ModeManagerInterface, envManager environment.EnvManagerInterface) (Database, error) {
+	host := envManager.GetDBHost()
 	if modeManager.IsDebug() {
-		host = os.Getenv("DB_HOST_DEBUG")
+		host = envManager.GetDBHostDebug()
 	}
-
-	port := os.Getenv("DB_PORT")
-	user := os.Getenv("DB_USER")
-	password := os.Getenv("DB_PASSWORD")
-	dbname := os.Getenv("DB_NAME")
+	port := envManager.GetDBPort()
+	user := envManager.GetDBUser()
+	password := envManager.GetDBPassword()
+	dbname := envManager.GetDBName()
 
 	log.Printf("Connecting database - Host: %s, Port: %s, User: %s, DB: %s", host, port, user, dbname)
 	if host == "" || port == "" || user == "" || password == "" || dbname == "" {
