@@ -4,17 +4,15 @@ WORKDIR /app
 
 RUN apk update && apk add --no-cache git curl && apk add postgresql-client
 
-ARG AUTH_SERVICE_HOST
+ARG AUTH_SERVICE_FOLDER
 
-ENV AUTH_SERVICE_HOST=${AUTH_SERVICE_HOST}
-
-COPY backend/${AUTH_SERVICE_HOST}/. .
+COPY backend/${AUTH_SERVICE_FOLDER}/. .
 COPY .env .
 
 RUN go mod tidy
 
-RUN go build -o ${AUTH_SERVICE_HOST}
+RUN go build -o app
 
 EXPOSE ${AUTH_SERVICE_PORT}
 
-CMD ["/bin/sh", "-c", "./${AUTH_SERVICE_HOST}"]
+CMD ["/bin/sh", "-c", "./app"]

@@ -34,8 +34,8 @@ func (database *SQLDatabase) QueryRow(query string, args ...interface{}) *sql.Ro
 
 func LoadDatabase(dbType string, modeManager mode.ModeManagerInterface, envManager environment.EnvManagerInterface) (Database, error) {
 	host := envManager.GetDBHost()
-	if modeManager.IsDebug() {
-		host = envManager.GetDBHostDebug()
+	if modeManager.IsDevelopment() {
+		host = envManager.GetDBHostDevelopment()
 	}
 	port := envManager.GetDBPort()
 	user := envManager.GetDBUser()

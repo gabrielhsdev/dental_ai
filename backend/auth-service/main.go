@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"os"
 
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/handlers"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/repository"
@@ -26,7 +25,7 @@ func main() {
 	*/
 
 	modeManager := mode.NewModeManager()
-	envManager := environment.NewEnvManager()
+	envManager := environment.NewEnvManager(modeManager)
 
 	// Initialize Database
 	database, err := database.LoadDatabase("postgres", modeManager, envManager)
@@ -52,8 +51,6 @@ func main() {
 	routes.UserRoutes(router, userHandler)
 
 	// Run Server
-	port := os.Getenv("AUTH_SERVICE_PORT")
-	serviceName := os.Getenv("AUTH_SERVICE_HOST")
-	log.Printf("Starting %s on port %s", serviceName, port)
+	port := envManager.GetAuthServicePort()
 	router.Run(":" + port)
 }

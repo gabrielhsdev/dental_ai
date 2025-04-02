@@ -35,10 +35,11 @@ services:
   auth-service:
     container_name: ${AUTH_SERVICE_HOST}
     build:
-      dockerfile: backend/${AUTH_SERVICE_HOST}/Dockerfile
+      dockerfile: backend/${AUTH_SERVICE_FOLDER}/Dockerfile
       context: .
       args:
         AUTH_SERVICE_HOST: ${AUTH_SERVICE_HOST}
+        AUTH_SERVICE_FOLDER: ${AUTH_SERVICE_FOLDER}
     ports:
       - "${AUTH_SERVICE_PORT}:${AUTH_SERVICE_PORT}"
     env_file:
@@ -50,7 +51,7 @@ services:
   db-service:
     container_name: ${DB_SERVICE_HOST}
     build:
-      dockerfile: backend/${DB_SERVICE_HOST}/Dockerfile
+      dockerfile: backend/${DB_SERVICE_FOLDER}/Dockerfile
       context: .
       args:
         DB_SERVICE_HOST: ${DB_SERVICE_HOST}
@@ -64,7 +65,7 @@ services:
 
   diagnostics-service:
     container_name: ${DIAGNOSTICS_SERVICE_HOST}
-    build: ./backend/diagnostics-service
+    build: ./backend/${DIAGNOSTICS_SERVICE_FOLDER}
     ports:
       - "${DIAGNOSTICS_SERVICE_PORT}:${DIAGNOSTICS_SERVICE_PORT}"
     env_file:
