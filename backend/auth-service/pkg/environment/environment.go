@@ -17,7 +17,6 @@ type EnvManagerInterface interface {
 	GetDBName() string
 	GetAuthServicePort() string
 	GetAuthServiceHost() string
-	GetDBServiceUrl() string
 }
 
 // Use the exact names as the .env file for now
@@ -30,7 +29,6 @@ type EnvManager struct {
 	db_name             string
 	auth_service_port   string
 	auth_service_host   string
-	db_service_url      string
 }
 
 func NewEnvManager(modeManager mode.ModeManagerInterface) EnvManagerInterface {
@@ -44,11 +42,10 @@ func NewEnvManager(modeManager mode.ModeManagerInterface) EnvManagerInterface {
 		db_name:             getEnv("DB_NAME"),
 		auth_service_port:   getEnv("AUTH_SERVICE_PORT"),
 		auth_service_host:   getEnv("AUTH_SERVICE_HOST"),
-		db_service_url:      getEnv("DB_SERVICE_URL"),
 	}
 }
 
-// Load environment files, prioritizing `.env.local` if it exists
+// Load environment files, prioritizing `.env` if it exists
 func loadEnvFiles(modeManager mode.ModeManagerInterface) {
 	err := godotenv.Load(".env")
 	if err != nil {
@@ -58,13 +55,9 @@ func loadEnvFiles(modeManager mode.ModeManagerInterface) {
 	if modeManager.IsDevelopment() {
 		err = godotenv.Overload(".env.development")
 		if err != nil {
-			log.Println("No .env.development file found, skipping override")
+			log.Println("No .env.dev file found, skipping override")
 		}
 	}
-}
-
-func (envManager *EnvManager) GetDBServiceUrl() string {
-	return envManager.db_service_url
 }
 
 func (envManager *EnvManager) GetAuthServicePort() string {
