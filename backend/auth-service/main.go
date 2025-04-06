@@ -26,6 +26,7 @@ func main() {
 
 	modeManager := mode.NewModeManager()
 	envManager := environment.NewEnvManager(modeManager)
+	/* httpClient := request.NewHttpClient() //  */
 
 	// Initialize Database
 	database, err := database.LoadDatabase("postgres", modeManager, envManager)

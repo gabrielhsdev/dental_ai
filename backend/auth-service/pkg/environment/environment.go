@@ -17,31 +17,40 @@ type EnvManagerInterface interface {
 	GetDBName() string
 	GetAuthServicePort() string
 	GetAuthServiceHost() string
+	GetJWTSecretKey() string
+	GetAPIGatewayURLLocal() string
+	GetAPIGatewayURLDocker() string
 }
 
 // Use the exact names as the .env file for now
 type EnvManager struct {
-	db_host             string
-	db_host_development string
-	db_port             string
-	db_user             string
-	db_password         string
-	db_name             string
-	auth_service_port   string
-	auth_service_host   string
+	db_host                string
+	db_host_development    string
+	db_port                string
+	db_user                string
+	db_password            string
+	db_name                string
+	auth_service_port      string
+	auth_service_host      string
+	jwt_secret_key         string
+	api_gateway_url_local  string
+	api_gateway_url_docker string
 }
 
 func NewEnvManager(modeManager mode.ModeManagerInterface) EnvManagerInterface {
 	loadEnvFiles(modeManager)
 	return &EnvManager{
-		db_host:             getEnv("DB_HOST"),
-		db_host_development: getEnv("DB_HOST_DEVELOPMENT"),
-		db_port:             getEnv("DB_PORT"),
-		db_user:             getEnv("DB_USER"),
-		db_password:         getEnv("DB_PASSWORD"),
-		db_name:             getEnv("DB_NAME"),
-		auth_service_port:   getEnv("AUTH_SERVICE_PORT"),
-		auth_service_host:   getEnv("AUTH_SERVICE_HOST"),
+		db_host:                getEnv("DB_HOST"),
+		db_host_development:    getEnv("DB_HOST_DEVELOPMENT"),
+		db_port:                getEnv("DB_PORT"),
+		db_user:                getEnv("DB_USER"),
+		db_password:            getEnv("DB_PASSWORD"),
+		db_name:                getEnv("DB_NAME"),
+		auth_service_port:      getEnv("AUTH_SERVICE_PORT"),
+		auth_service_host:      getEnv("AUTH_SERVICE_HOST"),
+		jwt_secret_key:         getEnv("JWT_SECRET_KEY"),
+		api_gateway_url_local:  getEnv("API_GATEWAY_URL_LOCAL"),
+		api_gateway_url_docker: getEnv("API_GATEWAY_URL_DOCKER"),
 	}
 }
 
@@ -58,6 +67,18 @@ func loadEnvFiles(modeManager mode.ModeManagerInterface) {
 			log.Println("No .env.dev file found, skipping override")
 		}
 	}
+}
+
+func (envManager *EnvManager) GetAPIGatewayURLLocal() string {
+	return envManager.api_gateway_url_local
+}
+
+func (envManager *EnvManager) GetAPIGatewayURLDocker() string {
+	return envManager.api_gateway_url_docker
+}
+
+func (envManager *EnvManager) GetJWTSecretKey() string {
+	return envManager.jwt_secret_key
 }
 
 func (envManager *EnvManager) GetAuthServicePort() string {
