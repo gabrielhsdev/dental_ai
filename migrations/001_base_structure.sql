@@ -8,3 +8,18 @@ CREATE TABLE users (
     createdAt TIMESTAMPTZ,
     updatedAt TIMESTAMPTZ
 );
+
+CREATE TABLE auditlogs (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+
+    requestId TEXT NOT NULL,
+    requestIp INET,
+    requestTimestamp TIMESTAMP WITH TIME ZONE,
+
+    userId UUID,
+    action TEXT NOT NULL,
+    resource TEXT,
+    extra JSONB,
+
+    createdAt TIMESTAMPTZ NOT NULL DEFAULT now()
+);

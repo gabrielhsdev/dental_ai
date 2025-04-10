@@ -1,12 +1,12 @@
 package routes
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/handlers"
+	"github.com/gin-gonic/gin"
 )
 
 // AuthRoutes sets up the routes for authentication
-func AuthRoutes(router *gin.Engine, handler *handlers.AuthHandler) {
+func AuthRoutes(router *gin.Engine, handler handlers.AuthHandlerInterface) {
 	authGroup := router.Group("/core")
 	{
 		authGroup.POST("/login", handler.Login)

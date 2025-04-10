@@ -7,11 +7,17 @@ import (
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/repository"
 )
 
+type UserServiceInterface interface {
+	GetUserById(id int) (*models.User, error)
+	GetUserByEmail(email string) (*models.User, error)
+	RegisterUser(user *models.User) (*models.User, error)
+}
+
 type UserService struct {
 	Repository repository.UserRepository
 }
 
-func NewUserService(repository repository.UserRepository) *UserService {
+func NewUserService(repository repository.UserRepository) UserServiceInterface {
 	return &UserService{Repository: repository}
 }
 

@@ -10,12 +10,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-type UserHandler struct {
-	Service *service.UserService
+type UserHandlerInterface interface {
+	GetUserById(context *gin.Context)
 }
 
-func NewUserHandler(service *service.UserService) *UserHandler {
-	return &UserHandler{Service: service}
+type UserHandler struct {
+	UserService *service.UserService
+}
+
+func NewUserHandler(userService service.UserServiceInterface) UserHandlerInterface {
+	return &UserHandler{
+		UserService: userService.(*service.UserService),
+	}
 }
 
 func (handler *UserHandler) GetUserById(context *gin.Context) {
@@ -31,7 +37,7 @@ func (handler *UserHandler) GetUserById(context *gin.Context) {
 		return
 	}
 
-	user, err := handler.Service.GetUserById(id)
+	user, err := handler.UserService.GetUserById(id)
 	if err != nil {
 		log.Println(err)
 		utils.SendResponse(context, http.StatusInternalServerError, "Failed to get user", nil, err)
