@@ -60,7 +60,7 @@ func (handler *AuthHandler) Login(context *gin.Context) {
 	}
 
 	// Returns JWT
-	handler.Logger.Info(context.Request.Context(), "Login", "Login successful", map[string]interface{}{"user": storedUser.Email})
+	handler.Logger.Info(context, "Login", "Login successful", map[string]interface{}{"user": storedUser.Email})
 	utils.SendResponse(context, http.StatusOK, "Login Success", gin.H{"token": token}, nil)
 }
 

@@ -8,11 +8,12 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
+	"github.com/google/uuid"
 )
 
 var JWTSecret = []byte(os.Getenv("JWT_SECRET_KEY"))
 
-func GenerateJWT(userId int, userName string) (string, error) {
+func GenerateJWT(userId uuid.UUID, userName string) (string, error) {
 	claims := jwt.MapClaims{
 		"sub":      userId,
 		"username": userName,

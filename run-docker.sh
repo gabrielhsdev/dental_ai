@@ -88,8 +88,29 @@ run_docker() {
     fi
 }
 
+# Delete our /data folder on our current directory
+delete_data_folder() {
+    if [ -d "./data" ]; then
+        printf "Deleting ./data folder\n"
+        rm -rf ./data
+        if [ $? -ne 0 ]; then
+            printf "Error: Failed to delete ./data folder\n"
+            exit 1
+        fi
+    else
+        printf "./data folder does not exist, skipping deletion\n"
+    fi
+}
+
 # Main script execution
 main() {
+    printf "Starting script execution...\n"
+    delete_data_folder
+    if [ $? -ne 0 ]; then
+        printf "Error: Failed to delete data folder\n"
+        exit 1
+    fi
+
     load_env
     if [ $? -ne 0 ]; then
         printf "Error: Failed to load environment variables\n"

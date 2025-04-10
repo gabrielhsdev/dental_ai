@@ -1,20 +1,30 @@
 package logger
 
 import (
-	"context"
 	"encoding/json"
-	"net/http"
+	"net"
 	"time"
 
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/models"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/service"
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"go.uber.org/zap"
 )
 
+type HeadersInterface struct {
+	XRequestId        string    `json:"X-Request-Id"`
+	XRealIp           string    `json:"X-Real-IP"`
+	XCurrentTimestamp time.Time `json:"X-Current-Timestamp"`
+	Authorization     string    `json:"Authorization"`
+	UserId            uuid.UUID `json:"User-Id"`
+}
+
 type LoggerInterface interface {
-	Error(ctx context.Context, action string, err error, resource string, extra map[string]interface{})
-	Info(ctx context.Context, action string, resource string, extra map[string]interface{})
-	buildAuditLog(ctx context.Context, action string, resource string, message string, extra map[string]interface{}) models.AuditLogs
+	Error(ctx *gin.Context, action string, err error, resource string, extra map[string]interface{})
+	Info(ctx *gin.Context, action string, resource string, extra map[string]interface{})
+	buildAuditLog(ctx *gin.Context, action string, resource string, message string, extra map[string]interface{}) models.AuditLogs
+	extractHeaders(c *gin.Context) HeadersInterface
 }
 
 type Logger struct {
@@ -29,9 +39,8 @@ func NewLogger(zapLogger *zap.Logger, auditLogsService service.AuditLogsServiceI
 	}
 }
 
-func (logger *Logger) Error(ctx context.Context, action string, err error, resource string, extra map[string]interface{}) {
+func (logger *Logger) Error(ctx *gin.Context, action string, err error, resource string, extra map[string]interface{}) {
 	logger.zap.Error(action, zap.Error(err))
-
 	auditLog := logger.buildAuditLog(ctx, action, resource, err.Error(), extra)
 	res, err := logger.auditLogsService.CreateAuditLogs(&auditLog)
 	if err != nil {
@@ -41,7 +50,7 @@ func (logger *Logger) Error(ctx context.Context, action string, err error, resou
 	logger.zap.Info("Audit log created", zap.String("id", res.Id), zap.String("action", action), zap.String("resource", resource))
 }
 
-func (logger *Logger) Info(ctx context.Context, action string, resource string, extra map[string]interface{}) {
+func (logger *Logger) Info(ctx *gin.Context, action string, resource string, extra map[string]interface{}) {
 	logger.zap.Info(action)
 	auditLog := logger.buildAuditLog(ctx, action, resource, "", extra)
 	res, err := logger.auditLogsService.CreateAuditLogs(&auditLog)
@@ -52,19 +61,20 @@ func (logger *Logger) Info(ctx context.Context, action string, resource string, 
 	logger.zap.Info("Audit log created", zap.String("id", res.Id), zap.String("action", action), zap.String("resource", resource))
 }
 
-func (logger *Logger) buildAuditLog(ctx context.Context, action string, resource string, message string, extra map[string]interface{}) models.AuditLogs {
-	headers := extractHeaders(ctx)
+func (logger *Logger) buildAuditLog(ctx *gin.Context, action string, resource string, message string, extra map[string]any) models.AuditLogs {
+	headers := logger.extractHeaders(ctx)
+
 	now := time.Now().UTC().Format(time.RFC3339)
-	extraBytes, _ := json.Marshal(map[string]interface{}{
+	extraBytes, _ := json.Marshal(map[string]any{
 		"message": message,
 		"extra":   extra,
 	})
 
 	return models.AuditLogs{
-		RequestId:        headers["X-Request-Id"],
-		RequestIp:        headers["X-Real-Ip"],
-		RequestTimestamp: headers["X-Current-Timestamp"],
-		UserId:           headers["User-Id"], // optional: add a custom middleware to set this
+		RequestId:        headers.XRequestId,
+		RequestIp:        net.ParseIP(headers.XRealIp),
+		RequestTimestamp: headers.XCurrentTimestamp,
+		UserId:           headers.UserId,
 		Action:           action,
 		Resource:         resource,
 		Extra:            json.RawMessage(extraBytes),
@@ -72,16 +82,31 @@ func (logger *Logger) buildAuditLog(ctx context.Context, action string, resource
 	}
 }
 
-func extractHeaders(ctx context.Context) map[string]string {
-	req, ok := ctx.Value("httpRequest").(*http.Request)
-	if !ok {
-		return map[string]string{}
+func (logger *Logger) extractHeaders(c *gin.Context) HeadersInterface {
+	parsedTime := time.Now()
+	if timestamp := c.GetHeader("X-Current-Timestamp"); timestamp != "" {
+		if t, err := time.Parse(time.RFC3339, timestamp); err == nil {
+			parsedTime = t
+		} else {
+			parsedTime = time.Now()
+		}
 	}
 
-	return map[string]string{
-		"X-Request-Id":        req.Header.Get("X-Request-Id"),
-		"X-Real-Ip":           req.Header.Get("X-Real-IP"),
-		"X-Current-Timestamp": req.Header.Get("X-Current-Timestamp"),
-		"User-Id":             req.Header.Get("X-User-Id"), // optional if you're adding that later
+	// TODO: Stopped here, split the logic into more functions, maybe a helper file for the headers stuff
+	headers := HeadersInterface{
+		XRequestId:        c.GetHeader("X-Request-Id"),
+		XRealIp:           c.GetHeader("X-Real-IP"),
+		XCurrentTimestamp: parsedTime,
+		Authorization:     c.GetHeader("Authorization"),
+		UserId:            uuid.Nil,
 	}
+
+	// Set UserId to be a valid UUID
+	if userId := c.GetHeader("User-Id"); userId != "" {
+		if id, err := uuid.Parse(userId); err == nil {
+			headers.UserId = id
+		}
+	}
+
+	return headers
 }
