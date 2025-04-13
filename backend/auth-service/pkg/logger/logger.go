@@ -2,23 +2,12 @@ package logger
 
 import (
 	"encoding/json"
-	"net"
-	"time"
 
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/models"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/service"
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"go.uber.org/zap"
 )
-
-type HeadersInterface struct {
-	XRequestId        string    `json:"X-Request-Id"`
-	XRealIp           string    `json:"X-Real-IP"`
-	XCurrentTimestamp time.Time `json:"X-Current-Timestamp"`
-	Authorization     string    `json:"Authorization"`
-	UserId            uuid.UUID `json:"User-Id"`
-}
 
 type LoggerInterface interface {
 	Error(ctx *gin.Context, action string, err error, resource string, extra map[string]interface{})
@@ -64,7 +53,6 @@ func (logger *Logger) Info(ctx *gin.Context, action string, resource string, ext
 func (logger *Logger) buildAuditLog(ctx *gin.Context, action string, resource string, message string, extra map[string]any) models.AuditLogs {
 	headers := logger.extractHeaders(ctx)
 
-	now := time.Now().UTC().Format(time.RFC3339)
 	extraBytes, _ := json.Marshal(map[string]any{
 		"message": message,
 		"extra":   extra,
@@ -72,41 +60,11 @@ func (logger *Logger) buildAuditLog(ctx *gin.Context, action string, resource st
 
 	return models.AuditLogs{
 		RequestId:        headers.XRequestId,
-		RequestIp:        net.ParseIP(headers.XRealIp),
+		RequestIp:        headers.XRealIp,
 		RequestTimestamp: headers.XCurrentTimestamp,
 		UserId:           headers.UserId,
 		Action:           action,
 		Resource:         resource,
 		Extra:            json.RawMessage(extraBytes),
-		CreatedAt:        now,
 	}
-}
-
-func (logger *Logger) extractHeaders(c *gin.Context) HeadersInterface {
-	parsedTime := time.Now()
-	if timestamp := c.GetHeader("X-Current-Timestamp"); timestamp != "" {
-		if t, err := time.Parse(time.RFC3339, timestamp); err == nil {
-			parsedTime = t
-		} else {
-			parsedTime = time.Now()
-		}
-	}
-
-	// TODO: Stopped here, split the logic into more functions, maybe a helper file for the headers stuff
-	headers := HeadersInterface{
-		XRequestId:        c.GetHeader("X-Request-Id"),
-		XRealIp:           c.GetHeader("X-Real-IP"),
-		XCurrentTimestamp: parsedTime,
-		Authorization:     c.GetHeader("Authorization"),
-		UserId:            uuid.Nil,
-	}
-
-	// Set UserId to be a valid UUID
-	if userId := c.GetHeader("User-Id"); userId != "" {
-		if id, err := uuid.Parse(userId); err == nil {
-			headers.UserId = id
-		}
-	}
-
-	return headers
 }

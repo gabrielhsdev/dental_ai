@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/models"
@@ -46,6 +47,7 @@ func (handler *AuthHandler) Login(context *gin.Context) {
 
 	// Check Password
 	if storedUser.Password != user.Password {
+		err := errors.New("invalid credentials")
 		handler.Logger.Error(context, "Login", err, "user", nil)
 		utils.SendResponse(context, http.StatusUnauthorized, "Invalid Username Or Password", nil, nil)
 		return

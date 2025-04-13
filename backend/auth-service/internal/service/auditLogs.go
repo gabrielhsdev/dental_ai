@@ -25,3 +25,8 @@ func (service *AuditLogsService) GetAuditLogsById(id int) (*models.AuditLogs, er
 func (service *AuditLogsService) CreateAuditLogs(auditLog *models.AuditLogs) (*models.AuditLogs, error) {
 	return service.Repository.CreateAuditLog(auditLog)
 }
+
+/*
+func (service *AuditLogsService) NewAuditLogFromRequest(, action string, resource string, message string, extra map[string]any) models.AuditLogs {
+}
+*/

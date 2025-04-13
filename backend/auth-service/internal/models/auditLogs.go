@@ -2,7 +2,6 @@ package models
 
 import (
 	"encoding/json"
-	"net"
 	"time"
 
 	"github.com/google/uuid"
@@ -11,7 +10,7 @@ import (
 type AuditLogs struct {
 	Id               string          `json:"id"`
 	RequestId        string          `json:"requestId"`
-	RequestIp        net.IP          `json:"requestIp"`
+	RequestIp        string          `json:"requestIp"`
 	RequestTimestamp time.Time       `json:"requestTimestamp"`
 	UserId           uuid.UUID       `json:"userId,omitempty"`
 	Action           string          `json:"action"`
