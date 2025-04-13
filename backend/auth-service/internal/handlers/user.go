@@ -3,11 +3,11 @@ package handlers
 import (
 	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/service"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/utils"
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 type UserHandlerInterface interface {
@@ -31,7 +31,7 @@ func (handler *UserHandler) GetUserById(context *gin.Context) {
 		return
 	}
 
-	id, err := strconv.Atoi(idString)
+	id, err := uuid.Parse(idString)
 	if err != nil {
 		utils.SendResponse(context, http.StatusBadRequest, "Invalid Id", nil, err)
 		return

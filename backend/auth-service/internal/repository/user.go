@@ -5,10 +5,11 @@ import (
 
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/models"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/database"
+	"github.com/google/uuid"
 )
 
 type UserRepository interface {
-	GetUserById(id int) (*models.User, error)
+	GetUserById(id uuid.UUID) (*models.User, error)
 	CreateUser(user *models.User) (*models.User, error)
 	GetUserByEmail(email string) (*models.User, error)
 }
@@ -21,7 +22,7 @@ func NewUserRepository(db database.Database) UserRepository {
 	return &UserRepositoryImplementation{DB: db}
 }
 
-func (repository *UserRepositoryImplementation) GetUserById(id int) (*models.User, error) {
+func (repository *UserRepositoryImplementation) GetUserById(id uuid.UUID) (*models.User, error) {
 	var user models.User
 	query := `SELECT id, userName, email, password, firstName, lastName, createdAt, updatedAt FROM users WHERE id = $1`
 	err := repository.DB.QueryRow(query, id).Scan(

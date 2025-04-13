@@ -6,6 +6,7 @@ import (
 
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/models"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/service"
+	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/jwt"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/logger"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/utils"
 	"github.com/gin-gonic/gin"
@@ -21,12 +22,14 @@ type AuthHandlerInterface interface {
 type AuthHandler struct {
 	UserService service.UserServiceInterface
 	Logger      logger.LoggerInterface
+	JWTManager  jwt.JWTManagerInterface
 }
 
-func NewAuthHandler(userService service.UserServiceInterface, logger logger.LoggerInterface) AuthHandlerInterface {
+func NewAuthHandler(userService service.UserServiceInterface, logger logger.LoggerInterface, jwtManager jwt.JWTManagerInterface) AuthHandlerInterface {
 	return &AuthHandler{
 		UserService: userService.(*service.UserService),
 		Logger:      logger,
+		JWTManager:  jwtManager,
 	}
 }
 
@@ -54,7 +57,7 @@ func (handler *AuthHandler) Login(context *gin.Context) {
 	}
 
 	// Generate JWT
-	token, err := utils.GenerateJWT(storedUser.Id, storedUser.Username)
+	token, err := handler.JWTManager.Generate(storedUser.Id, storedUser.Password)
 	if err != nil {
 		handler.Logger.Error(context, "Login", err, "user", nil)
 		utils.SendResponse(context, http.StatusInternalServerError, "Failed to generate token", nil, err)
@@ -90,13 +93,13 @@ func (handler *AuthHandler) Me(context *gin.Context) {
 		return
 	}
 
-	claims, err := utils.ValidateJWT(token)
+	claims, err := handler.JWTManager.Validate(token)
 	if err != nil {
 		utils.SendResponse(context, http.StatusUnauthorized, "Unauthorized", nil, err)
 		return
 	}
 
-	userId := int(claims["sub"].(float64))
+	userId := claims.Sub
 	user, err := handler.UserService.GetUserById(userId)
 	if err != nil {
 		utils.SendResponse(context, http.StatusNotFound, "User not found", nil, err)
@@ -113,7 +116,7 @@ func (handler *AuthHandler) Validate(context *gin.Context) {
 		return
 	}
 
-	claims, err := utils.ValidateJWT(token)
+	claims, err := handler.JWTManager.Validate(token)
 	if err != nil {
 		utils.SendResponse(context, http.StatusUnauthorized, "Unauthorized", nil, err)
 		return

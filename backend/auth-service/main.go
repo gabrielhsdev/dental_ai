@@ -8,6 +8,8 @@ import (
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/service"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/database"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/environment"
+	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/headers"
+	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/jwt"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/logger"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/mode"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/routes"
@@ -17,19 +19,10 @@ import (
 )
 
 func main() {
-	/*
-		TODO: - Finish up the logger and understand how to use it better
-		So, now I have my logger under pkg/logger, and my auditLogs
-		table w/ repository handler  model and service, I need to tie both together right ?
-		So when I call my log from pkg I actually save in the
-		db the proxy_set_headers from nginx.
-		In order to do that, we need to inject our logger manager into our responseManager since we will have context over there
-		loggerManager := logger.LoadLogger()
-	*/
-
 	modeManager := mode.NewModeManager()
 	envManager := environment.NewEnvManager(modeManager)
-	/* httpClient := request.NewHttpClient() This is the httpManager so we can make request between our services */
+	headersHandler := headers.NewHeadersManager()
+	jwtManager := jwt.NewJWTManager(envManager.GetJWTSecretKey())
 
 	// Initialize Database
 	database, err := database.LoadDatabase("postgres", modeManager, envManager)
@@ -53,10 +46,10 @@ func main() {
 	if err != nil {
 		panic("Failed to initialize logger")
 	}
-	logger := logger.NewLogger(zapLogger, auditLogsService)
+	loggerManager := logger.NewLogger(zapLogger, auditLogsService, headersHandler)
 
 	// Initialize Handler
-	authHandler := handlers.NewAuthHandler(userService, logger)
+	authHandler := handlers.NewAuthHandler(userService, loggerManager, jwtManager)
 	userHandler := handlers.NewUserHandler(userService)
 
 	// Initialize Router
@@ -67,6 +60,5 @@ func main() {
 	routes.UserRoutes(router, userHandler)
 
 	// Run Server
-	port := envManager.GetAuthServicePort()
-	router.Run(":" + port)
+	router.Run(":" + envManager.GetAuthServicePort())
 }

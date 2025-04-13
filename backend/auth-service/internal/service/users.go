@@ -5,10 +5,11 @@ import (
 
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/models"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/repository"
+	"github.com/google/uuid"
 )
 
 type UserServiceInterface interface {
-	GetUserById(id int) (*models.User, error)
+	GetUserById(id uuid.UUID) (*models.User, error)
 	GetUserByEmail(email string) (*models.User, error)
 	RegisterUser(user *models.User) (*models.User, error)
 }
@@ -21,7 +22,7 @@ func NewUserService(repository repository.UserRepository) UserServiceInterface {
 	return &UserService{Repository: repository}
 }
 
-func (service *UserService) GetUserById(id int) (*models.User, error) {
+func (service *UserService) GetUserById(id uuid.UUID) (*models.User, error) {
 	return service.Repository.GetUserById(id)
 }
 
