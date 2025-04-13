@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/service"
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/utils"
+	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/response"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
@@ -15,38 +15,40 @@ type UserHandlerInterface interface {
 }
 
 type UserHandler struct {
-	UserService *service.UserService
+	UserService     *service.UserService
+	ResponseManager response.ResponseManagerInterface
 }
 
-func NewUserHandler(userService service.UserServiceInterface) UserHandlerInterface {
+func NewUserHandler(userService service.UserServiceInterface, responseManager response.ResponseManagerInterface) UserHandlerInterface {
 	return &UserHandler{
-		UserService: userService.(*service.UserService),
+		UserService:     userService.(*service.UserService),
+		ResponseManager: responseManager,
 	}
 }
 
 func (handler *UserHandler) GetUserById(context *gin.Context) {
 	idString := context.Param("id")
 	if idString == "" {
-		utils.SendResponse(context, http.StatusBadRequest, "Id is required", nil, nil)
+		handler.ResponseManager.Send(context, http.StatusBadRequest, "Id is required", nil, nil)
 		return
 	}
 
 	id, err := uuid.Parse(idString)
 	if err != nil {
-		utils.SendResponse(context, http.StatusBadRequest, "Invalid Id", nil, err)
+		handler.ResponseManager.Send(context, http.StatusBadRequest, "Invalid Id", nil, err)
 		return
 	}
 
 	user, err := handler.UserService.GetUserById(id)
 	if err != nil {
 		log.Println(err)
-		utils.SendResponse(context, http.StatusInternalServerError, "Failed to get user", nil, err)
+		handler.ResponseManager.Send(context, http.StatusInternalServerError, "Failed to get user", nil, err)
 		return
 	}
 	if user == nil {
-		utils.SendResponse(context, http.StatusNotFound, "User not found", nil, nil)
+		handler.ResponseManager.Send(context, http.StatusNotFound, "User not found", nil, nil)
 		return
 	}
 
-	utils.SendResponse(context, http.StatusOK, "User found", user, nil)
+	handler.ResponseManager.Send(context, http.StatusOK, "User found", user, nil)
 }

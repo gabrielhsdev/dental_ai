@@ -12,6 +12,7 @@ import (
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/jwt"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/logger"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/mode"
+	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/response"
 	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/routes"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
@@ -23,6 +24,7 @@ func main() {
 	envManager := environment.NewEnvManager(modeManager)
 	headersHandler := headers.NewHeadersManager()
 	jwtManager := jwt.NewJWTManager(envManager.GetJWTSecretKey())
+	responseManager := response.NewResponseManager()
 
 	// Initialize Database
 	database, err := database.LoadDatabase("postgres", modeManager, envManager)
@@ -49,8 +51,8 @@ func main() {
 	loggerManager := logger.NewLogger(zapLogger, auditLogsService, headersHandler)
 
 	// Initialize Handler
-	authHandler := handlers.NewAuthHandler(userService, loggerManager, jwtManager)
-	userHandler := handlers.NewUserHandler(userService)
+	authHandler := handlers.NewAuthHandler(userService, loggerManager, jwtManager, responseManager)
+	userHandler := handlers.NewUserHandler(userService, responseManager)
 
 	// Initialize Router
 	router := gin.Default()
