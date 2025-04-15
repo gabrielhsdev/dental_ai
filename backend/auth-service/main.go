@@ -19,6 +19,7 @@ import (
 	"go.uber.org/zap/zapcore"
 )
 
+// TODO: Add go to be update while code changes
 func main() {
 	modeManager := mode.NewModeManager()
 	envManager := environment.NewEnvManager(modeManager)
