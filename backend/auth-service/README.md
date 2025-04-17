@@ -1,14 +1,80 @@
-## Running the Auth Microservice Manually
+## 🛠 Running the Auth Microservice Locally (Manual Dev Mode)
 
-If you are currently working on the Auth Service microservice, follow these steps to run it manually:
+If you're actively working on the `auth-service` and want to run it outside Docker for live development, follow these steps:
 
-1. Execute the `run-docker.sh` script located on the root of the project to run the full API at least once. This will take care of the application requirements.
+### 1. Bootstrap the Environment
 
-2. Stop the `auth-service` container inside docker.
+Run the `run-docker.sh` script from **the project root** to spin up the entire application. This ensures all required services (like the database) are provisioned correctly:
 
-3. Run the following command with the specific argument `debug` inside this directory ( from this README.md file )
-    ```sh
-    go run main.go debug
-    ```
+```sh
+./run-docker.sh
+```
 
-4. Develop the feature. Keep in mind that `auth-service` and `nginx` are highly coupled in Docker, so our middleware won't work. Therefore, no requests for the `db-service` or `diagnostics-service` will be able to be executed. Develop the full feature, then test the other API routes as needed (most likely won't be an issue).
+### 2. Stop the Dockerized Auth Service
+
+Once the containers are up, stop only the `auth-service` container. This frees the port for local development:
+
+```sh
+docker stop auth-service
+```
+
+### 3. Run the Auth Service Manually
+
+You have two options:
+
+- **Hot reload (recommended for development):**
+
+  ```sh
+  air
+  ```
+
+- **Manual run (use this first to check for compile errors):**
+
+  ```sh
+  go run main.go development
+  ```
+
+> ℹ️ `development` is a required argument. It triggers dev-mode configurations.
+
+## ⚡️ Enabling Live Reload with Air
+
+For a smooth development workflow, we use [**Air**](https://github.com/air-verse/air) — a hot reloader for Go projects.
+
+### 1. Install Air
+
+Use the following command to install Air globally:
+
+```sh
+go install github.com/air-verse/air@latest
+```
+
+This will place the binary in your Go bin path (usually `~/go/bin`).
+
+### 2. Add Go Binaries to PATH (if needed)
+
+Make sure your shell can find the Air binary:
+
+#### For `zsh`:
+
+```sh
+echo 'export PATH="$PATH:$(go env GOPATH)/bin"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+#### For `bash`:
+
+```sh
+echo 'export PATH="$PATH:$(go env GOPATH)/bin"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+Verify installation with:
+
+```sh
+which air
+```
+
+Then, run the project with `air`
+```sh
+air
+```
