@@ -55,6 +55,7 @@ services:
       context: .
       args:
         DB_SERVICE_HOST: ${DB_SERVICE_HOST}
+        DB_SERVICE_FOLDER: ${DB_SERVICE_FOLDER} 
     ports:
       - "${DB_SERVICE_PORT}:${DB_SERVICE_PORT}"
     env_file:

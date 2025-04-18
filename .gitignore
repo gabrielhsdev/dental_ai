@@ -28,13 +28,14 @@ cover.out
 # Docker-related
 .dockerignore
 docker-compose.override.yml
+
 .env
 .env.local
 .env.docker
 .env.development
 .env.production
 .env.test
-.env.example
+# .env.example
 /secrets/
 
 # IDE & OS-specific
