@@ -3,9 +3,9 @@ package service
 import (
 	"encoding/json"
 
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/models"
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/repository"
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/headers"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/internal/models"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/internal/repository"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/headers"
 )
 
 type AuditLogsServiceInterface interface {

@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/service"
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/response"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/internal/service"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/response"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )

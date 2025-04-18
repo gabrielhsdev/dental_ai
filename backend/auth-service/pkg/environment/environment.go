@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/mode"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/mode"
 	"github.com/joho/godotenv"
 )
 

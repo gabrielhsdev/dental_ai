@@ -53,7 +53,7 @@ prepare_auth_service() {
     cd "$auth_service_dir" || { echo "Failed to enter $auth_service_dir directory"; exit 1; }
 
     if [ ! -f "go.mod" ]; then
-        go mod init "${AUTH_SERVICE_REPO_URL}"
+        go mod init "${GIT_REPO_URL}/backend/${AUTH_SERVICE_HOST}"
     fi
 
     go mod tidy

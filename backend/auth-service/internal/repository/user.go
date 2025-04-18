@@ -3,8 +3,8 @@ package repository
 import (
 	"database/sql"
 
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/models"
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/database"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/internal/models"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/database"
 	"github.com/google/uuid"
 )
 

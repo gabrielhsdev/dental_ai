@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/environment"
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/mode"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/environment"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/mode"
 	_ "github.com/lib/pq"
 )
 

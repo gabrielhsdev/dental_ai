@@ -3,23 +3,22 @@ package main
 import (
 	"log"
 
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/handlers"
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/repository"
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/service"
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/database"
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/environment"
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/headers"
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/jwt"
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/logger"
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/mode"
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/response"
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/routes"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/internal/handlers"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/internal/repository"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/internal/service"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/database"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/environment"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/headers"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/jwt"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/logger"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/mode"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/response"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/routes"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
-// TODO: Add go to be update while code changes
 func main() {
 	modeManager := mode.NewModeManager()
 	envManager := environment.NewEnvManager(modeManager)

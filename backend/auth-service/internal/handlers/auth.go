@@ -4,11 +4,11 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/models"
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/service"
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/jwt"
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/logger"
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/response"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/internal/models"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/internal/service"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/jwt"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/logger"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/response"
 	"github.com/gin-gonic/gin"
 )
 

@@ -1,8 +1,8 @@
 package logger
 
 import (
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/service"
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/pkg/headers"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/internal/service"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/headers"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 )

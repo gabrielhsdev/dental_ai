@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"github.com/gabrielhsdev/dental_ai/tree/main/backend/auth-service/internal/handlers"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/internal/handlers"
 	"github.com/gin-gonic/gin"
 )
 
