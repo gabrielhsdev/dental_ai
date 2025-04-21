@@ -1,6 +1,8 @@
 package mode
 
-import "os"
+import (
+	"os"
+)
 
 type mode string
 
