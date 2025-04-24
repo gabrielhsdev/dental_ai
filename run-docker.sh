@@ -15,9 +15,9 @@ load_env() {
 # Check required environment variables
 check_env_vars() {
     local missing_vars=()
-    local required_vars=(AUTH_SERVICE_FOLDER DB_SERVICE_FOLDER DIAGNOSTICS_SERVICE_FOLDER AUTH_SERVICE_REPO_URL)
+    local required_vars=(AUTH_SERVICE_FOLDER DB_SERVICE_FOLDER DIAGNOSTICS_SERVICE_FOLDER GIT_REPO_URL)
     for var in "${required_vars[@]}"; do
-        if [ -z "${!var}" ]; then
+        if [ -z "${!var:-}" ]; then
             missing_vars+=("$var")
         fi
     done
@@ -68,7 +68,37 @@ prepare_auth_service() {
         exit 1
     fi
 
+    cd ../..
+
     printf "Go setup commands executed successfully in %s folder\n" "$auth_service_dir"
+}
+
+# Prepare db service
+prepare_db_service() {
+    local db_service_dir="backend/${DB_SERVICE_FOLDER}"
+    printf "Running Go setup commands inside %s folder\n" "$db_service_dir"
+
+    cd "$db_service_dir" || { echo "Failed to enter $db_service_dir directory"; exit 1; }
+
+    if [ ! -f "go.mod" ]; then
+        go mod init "${GIT_REPO_URL}/backend/${DB_SERVICE_HOST}"
+    fi
+
+    go mod tidy
+    if [ $? -ne 0 ]; then
+        printf "Error: Failed to run 'go mod tidy' command\n"
+        exit 1
+    fi 
+
+    go build
+    if [ $? -ne 0 ]; then
+        printf "Error: Failed to run 'go build' command\n"
+        exit 1
+    fi
+
+    cd ../..
+
+    printf "Go setup commands executed successfully in %s folder\n" "$db_service_dir" 
 }
 
 # Run Docker commands
@@ -138,6 +168,12 @@ main() {
     prepare_auth_service
     if [ $? -ne 0 ]; then
         printf "Error: Failed to complete function prepare_auth_service\n"
+        exit 1
+    fi
+
+    prepare_db_service
+    if [ $? -ne 0 ]; then
+        printf "Error: Failed to complete function prepare_db_service\n"
         exit 1
     fi
 
