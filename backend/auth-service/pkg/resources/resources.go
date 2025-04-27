@@ -9,17 +9,20 @@ const (
 
 type ResourceManagerInterface interface {
 	GetAuthenticationResource() ResourceType
+	GetUserResource() ResourceType
 	ValidateResource(resource ResourceType) bool
 }
 
 type ResourceManager struct {
 	// Add other resources here if needed
 	Authentication ResourceType
+	User           ResourceType
 }
 
 func NewResourceManager() ResourceManagerInterface {
 	return &ResourceManager{
 		Authentication: Authentication,
+		User:           User,
 	}
 }
 
@@ -34,4 +37,8 @@ func (rm *ResourceManager) ValidateResource(resource ResourceType) bool {
 
 func (rm *ResourceManager) GetAuthenticationResource() ResourceType {
 	return rm.Authentication
+}
+
+func (rm *ResourceManager) GetUserResource() ResourceType {
+	return rm.User
 }

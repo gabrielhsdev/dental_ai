@@ -80,30 +80,37 @@ func (handler *AuthHandler) Login(context *gin.Context) {
 
 func (handler *AuthHandler) Register(context *gin.Context) {
 	var user models.User
+	var action string = "Register"
 
 	if err := context.ShouldBindJSON(&user); err != nil {
+		handler.Logger.Error(context, action, err, handler.ResourceManager.GetAuthenticationResource(), nil)
 		handler.ResponseManager.Send(context, http.StatusBadRequest, "Invalid Input", nil, err)
 		return
 	}
 
 	registeredUser, err := handler.UserService.RegisterUser(&user)
 	if err != nil {
+		handler.Logger.Error(context, action, err, handler.ResourceManager.GetAuthenticationResource(), nil)
 		handler.ResponseManager.Send(context, http.StatusInternalServerError, "Failed to register user", nil, err)
 		return
 	}
 
+	handler.Logger.Info(context, action, handler.ResourceManager.GetAuthenticationResource(), map[string]interface{}{"user": registeredUser.Email})
 	handler.ResponseManager.Send(context, http.StatusOK, "User Registered", registeredUser, nil)
 }
 
 func (handler *AuthHandler) Me(context *gin.Context) {
 	token := context.Request.Header.Get("Authorization")
 	if token == "" {
+		err := errors.New("unauthorized, token not found")
+		handler.Logger.Error(context, "Me", err, handler.ResourceManager.GetAuthenticationResource(), nil)
 		handler.ResponseManager.Send(context, http.StatusUnauthorized, "Unauthorized, Token Not Found", nil, nil)
 		return
 	}
 
 	claims, err := handler.JWTManager.Validate(token)
 	if err != nil {
+		handler.Logger.Error(context, "Me", err, handler.ResourceManager.GetAuthenticationResource(), nil)
 		handler.ResponseManager.Send(context, http.StatusUnauthorized, "Unauthorized", nil, err)
 		return
 	}
@@ -111,25 +118,31 @@ func (handler *AuthHandler) Me(context *gin.Context) {
 	userId := claims.Sub
 	user, err := handler.UserService.GetUserById(userId)
 	if err != nil {
+		handler.Logger.Error(context, "Me", err, handler.ResourceManager.GetAuthenticationResource(), nil)
 		handler.ResponseManager.Send(context, http.StatusNotFound, "User not found", nil, err)
 		return
 	}
 
+	handler.Logger.Info(context, "Me", handler.ResourceManager.GetAuthenticationResource(), map[string]interface{}{"user": user.Email})
 	handler.ResponseManager.Send(context, http.StatusOK, "User Found", user, nil)
 }
 
 func (handler *AuthHandler) Validate(context *gin.Context) {
 	token := context.Request.Header.Get("Authorization")
 	if token == "" {
+		err := errors.New("unauthorized, token not found")
+		handler.Logger.Error(context, "Validate", err, handler.ResourceManager.GetAuthenticationResource(), nil)
 		handler.ResponseManager.Send(context, http.StatusUnauthorized, "Unauthorized, Token Not Found", nil, nil)
 		return
 	}
 
 	claims, err := handler.JWTManager.Validate(token)
 	if err != nil {
+		handler.Logger.Error(context, "Validate", err, handler.ResourceManager.GetAuthenticationResource(), nil)
 		handler.ResponseManager.Send(context, http.StatusUnauthorized, "Unauthorized", nil, err)
 		return
 	}
 
+	handler.Logger.Info(context, "Validate", handler.ResourceManager.GetAuthenticationResource(), map[string]interface{}{"claims": claims})
 	handler.ResponseManager.Send(context, http.StatusOK, "Token Valid", claims, nil)
 }
