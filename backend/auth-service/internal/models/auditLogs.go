@@ -16,5 +16,5 @@ type AuditLogs struct {
 	Action           string          `json:"action"`
 	Resource         string          `json:"resource"`
 	Extra            json.RawMessage `json:"extra"`
-	CreatedAt        string          `json:"createdAt"`
+	CreatedAt        time.Time       `json:"createdAt,omitempty"`
 }

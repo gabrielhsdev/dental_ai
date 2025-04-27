@@ -12,6 +12,7 @@ import (
 	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/jwt"
 	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/logger"
 	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/mode"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/resources"
 	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/response"
 	"github.com/gabrielhsdev/dental_ai/backend/auth-service/routes"
 	"github.com/gin-gonic/gin"
@@ -25,6 +26,7 @@ func main() {
 	headersHandler := headers.NewHeadersManager()
 	jwtManager := jwt.NewJWTManager(envManager.GetJWTSecretKey())
 	responseManager := response.NewResponseManager()
+	resourceManager := resources.NewResourceManager()
 
 	// Initialize Database
 	database, err := database.LoadDatabase("postgres", modeManager, envManager)
@@ -48,18 +50,16 @@ func main() {
 	if err != nil {
 		panic("Failed to initialize logger")
 	}
-	loggerManager := logger.NewLogger(zapLogger, auditLogsService, headersHandler)
+	loggerManager := logger.NewLogger(zapLogger, auditLogsService, headersHandler, resourceManager)
 
 	// Initialize Handler
-	authHandler := handlers.NewAuthHandler(userService, loggerManager, jwtManager, responseManager)
-	userHandler := handlers.NewUserHandler(userService, responseManager)
+	authHandler := handlers.NewAuthHandler(userService, loggerManager, jwtManager, responseManager, resourceManager)
 
 	// Initialize Router
 	router := gin.Default()
 
 	// Initialize Routes
 	routes.AuthRoutes(router, authHandler)
-	routes.UserRoutes(router, userHandler)
 
 	// Run Server
 	router.Run(":" + envManager.GetAuthServicePort())

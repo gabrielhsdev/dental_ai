@@ -30,7 +30,13 @@ func (service *AuditLogsService) CreateAuditLogs(auditLog *models.AuditLogs) (*m
 	return service.Repository.CreateAuditLog(auditLog)
 }
 
-func (service *AuditLogsService) NewAuditLogFromRequest(headers headers.HeadersInterface, action string, resource string, message string, extra map[string]any) models.AuditLogs {
+func (service *AuditLogsService) NewAuditLogFromRequest(
+	headers headers.HeadersInterface,
+	action string,
+	resource string,
+	message string,
+	extra map[string]any,
+) models.AuditLogs {
 	extraBytes, _ := json.Marshal(map[string]any{
 		"message": message,
 		"extra":   extra,

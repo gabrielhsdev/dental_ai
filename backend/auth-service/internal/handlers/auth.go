@@ -8,6 +8,7 @@ import (
 	"github.com/gabrielhsdev/dental_ai/backend/auth-service/internal/service"
 	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/jwt"
 	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/logger"
+	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/resources"
 	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/response"
 	"github.com/gin-gonic/gin"
 )
@@ -24,6 +25,7 @@ type AuthHandler struct {
 	Logger          logger.LoggerInterface
 	JWTManager      jwt.JWTManagerInterface
 	ResponseManager response.ResponseManagerInterface
+	ResourceManager resources.ResourceManagerInterface
 }
 
 func NewAuthHandler(
@@ -31,48 +33,48 @@ func NewAuthHandler(
 	logger logger.LoggerInterface,
 	jwtManager jwt.JWTManagerInterface,
 	responseManager response.ResponseManagerInterface,
+	resourceManager resources.ResourceManagerInterface,
 ) AuthHandlerInterface {
 	return &AuthHandler{
 		UserService:     userService.(*service.UserService),
 		Logger:          logger,
 		JWTManager:      jwtManager,
 		ResponseManager: responseManager,
+		ResourceManager: resourceManager,
 	}
 }
 
 func (handler *AuthHandler) Login(context *gin.Context) {
 	var user models.User
+	var action string = "Login"
+
 	if err := context.ShouldBindJSON(&user); err != nil {
-		handler.Logger.Error(context, "Login", err, "user", nil)
+		handler.Logger.Error(context, action, err, handler.ResourceManager.GetAuthenticationResource(), nil)
 		handler.ResponseManager.Send(context, http.StatusBadRequest, "Invalid Input", nil, err)
 	}
 
-	// Find User Via Email
 	storedUser, err := handler.UserService.GetUserByEmail(user.Email)
 	if err != nil || storedUser == nil {
-		handler.Logger.Error(context, "Login", err, "user", nil)
+		handler.Logger.Error(context, action, err, handler.ResourceManager.GetAuthenticationResource(), nil)
 		handler.ResponseManager.Send(context, http.StatusUnauthorized, "Invalid Username Or Password", nil, err)
 		return
 	}
 
-	// Check Password
 	if storedUser.Password != user.Password {
 		err := errors.New("invalid credentials")
-		handler.Logger.Error(context, "Login", err, "user", nil)
+		handler.Logger.Error(context, action, err, handler.ResourceManager.GetAuthenticationResource(), nil)
 		handler.ResponseManager.Send(context, http.StatusUnauthorized, "Invalid Username Or Password", nil, nil)
 		return
 	}
 
-	// Generate JWT
 	token, err := handler.JWTManager.Generate(storedUser.Id, storedUser.Password)
 	if err != nil {
-		handler.Logger.Error(context, "Login", err, "user", nil)
+		handler.Logger.Error(context, action, err, handler.ResourceManager.GetAuthenticationResource(), nil)
 		handler.ResponseManager.Send(context, http.StatusInternalServerError, "Failed to generate token", nil, err)
 		return
 	}
 
-	// Returns JWT
-	handler.Logger.Info(context, "Login", "Login successful", map[string]interface{}{"user": storedUser.Email})
+	handler.Logger.Info(context, action, handler.ResourceManager.GetAuthenticationResource(), map[string]interface{}{"user": storedUser.Email})
 	handler.ResponseManager.Send(context, http.StatusOK, "Login Success", gin.H{"token": token}, nil)
 }
 
