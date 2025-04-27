@@ -62,5 +62,5 @@ func main() {
 	routes.UserRoutes(router, userHandler)
 
 	// Run Server
-	router.Run(":" + envManager.GetAuthServicePort())
+	router.Run(":" + envManager.GetDBServicePort())
 }

@@ -5,9 +5,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// AuthRoutes sets up the routes for authentication
 func AuthRoutes(router *gin.Engine, handler handlers.AuthHandlerInterface) {
-	authGroup := router.Group("/core")
+	authGroup := router.Group("/")
 	{
 		authGroup.POST("/login", handler.Login)
 		authGroup.POST("/register", handler.Register)
