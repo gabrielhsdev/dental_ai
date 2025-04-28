@@ -11,33 +11,6 @@
 			"name": "Auth Microservice",
 			"item": [
 				{
-					"name": "Admin",
-					"item": [
-						{
-							"name": "Get User By Id",
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "http://localhost/auth/users/1",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"path": [
-										"auth",
-										"users",
-										"1"
-									]
-								},
-								"description": "Get specific user by id"
-							},
-							"response": []
-						}
-					],
-					"description": "Routes for general admin usage, they may never be used on the app but can be\n\nused for maybe debug purposes on the development side"
-				},
-				{
 					"name": "Register",
 					"request": {
 						"auth": {
@@ -47,7 +20,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"userName\": \"john_doe\",\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"securepassword123\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\"\n}",
+							"raw": "{\n  \"userName\": \"test\",\n  \"email\": \"test@example.com\",\n  \"password\": \"test\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -55,14 +28,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost/auth/core/register",
+							"raw": "http://localhost/auth/register",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"path": [
 								"auth",
-								"core",
 								"register"
 							]
 						},
@@ -80,7 +52,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"email\": \"john.doe@example.com\",\n  \"password\": \"securepassword123\"\n}",
+							"raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"admin\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -88,14 +60,13 @@
 							}
 						},
 						"url": {
-							"raw": "http://localhost/auth/core/login",
+							"raw": "http://localhost/auth/login",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"path": [
 								"auth",
-								"core",
 								"login"
 							]
 						},
@@ -111,7 +82,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDE3MTA4OTUsImlhdCI6MTc0MTUzODA5NSwic3ViIjoyLCJ1c2VybmFtZSI6ImpvaG5fZG9lIn0.t3g77E2rsLxjFsBjbEVyWx8T-f3DI5dG1NvvppTB5hI",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4ODA5MTcyNC0yM2QwLTRkY2EtYWI0My04ODZhZGQyZjZkNmMiLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ1OTYzMTEyLCJpYXQiOjE3NDU3OTAzMTJ9.wplSLG5fNkpr_8N86lmxby2qnaVyFxVE5dE_KPJCrpw",
 									"type": "string"
 								}
 							]
@@ -119,18 +90,17 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost/auth/core/me",
+							"raw": "http://localhost/auth/me",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"path": [
 								"auth",
-								"core",
 								"me"
 							]
 						},
-						"description": "Creates new user, currently passwords are not hashed but that can be changed later on."
+						"description": "Returns who is the owner of the token"
 					},
 					"response": []
 				},
@@ -142,7 +112,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDE3MTA4OTUsImlhdCI6MTc0MTUzODA5NSwic3ViIjoyLCJ1c2VybmFtZSI6ImpvaG5fZG9lIn0.t3g77E2rsLxjFsBjbEVyWx8T-f3DI5dG1NvvppTB5hI",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhNWQzNmYzYi03NjFjLTQxZmQtYmNiMy0xNDdhNDI2YmIwZjMiLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ1OTYwNDA4LCJpYXQiOjE3NDU3ODc2MDh9.znffOegP_FQUlcblEaa2eQ9D02wMkuUcovW3q69L26A",
 									"type": "string"
 								}
 							]
@@ -150,18 +120,17 @@
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost/auth/core/validate",
+							"raw": "http://localhost/auth/validate",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"path": [
 								"auth",
-								"core",
 								"validate"
 							]
 						},
-						"description": "Creates new user, currently passwords are not hashed but that can be changed later on."
+						"description": "Mostly used on our middleware, checks if the token is valid, the nginx.conf file has usage for this route"
 					},
 					"response": []
 				}
@@ -169,17 +138,17 @@
 			"description": "Custom auth microservice, these endpoins will login & register users, validade & generate JWT. Nginx will use this as the middleware to approve protected requests too, or deny them."
 		},
 		{
-			"name": "Database Service ( Currently Testing )",
+			"name": "Database Service",
 			"item": [
 				{
-					"name": "Health",
+					"name": "Get User By Id",
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDE3MTA4OTUsImlhdCI6MTc0MTUzODA5NSwic3ViIjoyLCJ1c2VybmFtZSI6ImpvaG5fZG9lIn0.t3g77E2rsLxjFsBjbEVyWx8T-f3DI5dG1NvvppTB5hI",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZDcxMjAzMy0yZDg1LTQxMGYtYWNiMi1hOTVkNTk1YzYxOGYiLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ1OTYzODI5LCJpYXQiOjE3NDU3OTEwMjl9.u3xM_u5o1z5BNA_VpuSqdiznvDt79quWzgjWeGzeNYk",
 									"type": "string"
 								}
 							]
@@ -187,20 +156,64 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost/db",
+							"raw": "http://localhost/db/users/e3cac880-c73c-4410-8549-4ebf7d9df0b7",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"path": [
-								"db"
+								"db",
+								"users",
+								"e3cac880-c73c-4410-8549-4ebf7d9df0b7"
 							]
-						}
+						},
+						"description": "Get user by passing its UUID on the url"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User By Email",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhNWQzNmYzYi03NjFjLTQxZmQtYmNiMy0xNDdhNDI2YmIwZjMiLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ1OTYwNDA4LCJpYXQiOjE3NDU3ODc2MDh9.znffOegP_FQUlcblEaa2eQ9D02wMkuUcovW3q69L26A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/db/users/email?email=admin@example.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"db",
+								"users",
+								"email"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "admin@example.com"
+								}
+							]
+						},
+						"description": "Get user by passing its email on the parameter"
 					},
 					"response": []
 				}
 			],
-			"description": "Used for default CRUD like operations"
+			"description": "Used for CRUD like operations, maybe accessing a patients data or submitting a new request"
+		},
+		{
+			"name": "Diagnostics Service",
+			"item": []
 		}
 	]
 }
