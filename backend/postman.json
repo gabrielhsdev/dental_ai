@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "6c552741-b4b4-48ef-a938-f4e1e20ccfdd",
 		"name": "Dental AI",
-		"description": "Project for the university",
+		"description": "See complete documentation for routes settings",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "30959634"
 	},
@@ -209,11 +209,12 @@
 					"response": []
 				}
 			],
-			"description": "Used for CRUD like operations, maybe accessing a patients data or submitting a new request"
+			"description": "Used for CRUD operations not related to the AUTH"
 		},
 		{
 			"name": "Diagnostics Service",
-			"item": []
+			"item": [],
+			"description": "No routes are set for now, this is the python inference service"
 		}
 	]
 }
