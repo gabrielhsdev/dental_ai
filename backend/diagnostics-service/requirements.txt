@@ -5,5 +5,6 @@ opencv-python
 huggingface-hub
 Pillow
 flask
-# numpy
-werkzeug
+mypy
+types-Pillow  # Add type stubs for Pillow
+types-Flask   # Add type stubs for Flask

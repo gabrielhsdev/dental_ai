@@ -14,6 +14,7 @@ import io
 import uuid
 from abc import ABC, abstractmethod
 from typing import Dict, List, Any, Optional, Tuple
+from typing import Set, Dict
 
 # ============================================================
 # Configuration
@@ -21,20 +22,20 @@ from typing import Dict, List, Any, Optional, Tuple
 
 class Config:
     """Application configuration"""
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    ASSETS_DIR = os.path.join(BASE_DIR, 'assets')
-    MODELS_DIR = os.path.join(ASSETS_DIR, 'models')
-    FONT_DIR = os.path.join(ASSETS_DIR, 'arial.ttf')
-    REQUEST_FOLDER = os.path.join(ASSETS_DIR, 'results')
-    UPLOAD_FOLDER = os.path.join(REQUEST_FOLDER, 'uploads')
-    RESULTS_FOLDER = os.path.join(REQUEST_FOLDER, 'results')
-    ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+    BASE_DIR: str = os.path.dirname(os.path.abspath(__file__))
+    ASSETS_DIR: str = os.path.join(BASE_DIR, 'assets')
+    MODELS_DIR: str = os.path.join(ASSETS_DIR, 'models')
+    FONT_DIR: str = os.path.join(ASSETS_DIR, 'arial.ttf')
+    REQUEST_FOLDER: str = os.path.join(ASSETS_DIR, 'results')
+    UPLOAD_FOLDER: str = os.path.join(REQUEST_FOLDER, 'uploads')
+    RESULTS_FOLDER: str = os.path.join(REQUEST_FOLDER, 'results')
+    ALLOWED_EXTENSIONS: Set[str] = {'png', 'jpg', 'jpeg'}
     
     # Create necessary directories
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
     os.makedirs(RESULTS_FOLDER, exist_ok=True)
     
-    MODEL_CONFIG = {
+    MODEL_CONFIG: Dict[str, Dict[str, str]] = {
         "classification": {
             "name": "Calculus and Caries Classification",
             "file": "classification.h5",
@@ -257,7 +258,7 @@ class DetectionService(ImageProcessorService):
         result = results[0]
         
         draw = ImageDraw.Draw(image)
-        font = ImageFont.truetype(self.config.FONT_DIR, 20)
+        font = ImageFont.truetype(self.config.FONT_DIR, 8)
 
         for box in result.boxes:
             x1, y1, x2, y2 = [round(x) for x in box.xyxy[0].tolist()]
