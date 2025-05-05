@@ -1,4 +1,3 @@
-gradio
 tensorflow-macos
 tensorflow-metal
 ultralytics
@@ -6,3 +5,5 @@ opencv-python
 huggingface-hub
 Pillow
 flask
+# numpy
+werkzeug
