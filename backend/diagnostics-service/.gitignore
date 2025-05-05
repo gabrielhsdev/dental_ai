@@ -1,0 +1,5 @@
+app_reference.py
+__pycache__/
+.venv/
+*.pyc
+assets/models/
