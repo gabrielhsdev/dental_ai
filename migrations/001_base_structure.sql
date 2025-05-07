@@ -3,6 +3,7 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
 -- Modify the users table (drop & recreate if early stage)
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS patients;
 
 CREATE TABLE users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -25,4 +26,18 @@ CREATE TABLE audit_logs (
     resource TEXT,
     extra JSONB,
     createdAt TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE patients (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    userId UUID REFERENCES users(id),
+    firstName VARCHAR(100) NOT NULL,
+    lastName VARCHAR(100) NOT NULL,
+    dateOfBirth DATE,
+    gender VARCHAR(20),
+    phoneNumber VARCHAR(20),
+    email VARCHAR(100),
+    notes TEXT,
+    createdAt TIMESTAMPTZ DEFAULT now(),
+    updatedAt TIMESTAMPTZ DEFAULT now()
 );

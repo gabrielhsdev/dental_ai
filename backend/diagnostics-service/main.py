@@ -10,10 +10,9 @@ from PIL import Image, ImageDraw, ImageFont
 from ultralytics import YOLO
 from huggingface_hub import from_pretrained_keras
 from werkzeug.utils import secure_filename
-import io
 import uuid
 from abc import ABC, abstractmethod
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Dict, List, Any, Literal, Optional, Tuple, Union
 from typing import Set, Dict
 
 # ============================================================
@@ -22,14 +21,14 @@ from typing import Set, Dict
 
 class Config:
     """Application configuration"""
-    BASE_DIR: str = os.path.dirname(os.path.abspath(__file__))
-    ASSETS_DIR: str = os.path.join(BASE_DIR, 'assets')
-    MODELS_DIR: str = os.path.join(ASSETS_DIR, 'models')
-    FONT_DIR: str = os.path.join(ASSETS_DIR, 'arial.ttf')
-    REQUEST_FOLDER: str = os.path.join(ASSETS_DIR, 'results')
-    UPLOAD_FOLDER: str = os.path.join(REQUEST_FOLDER, 'uploads')
-    RESULTS_FOLDER: str = os.path.join(REQUEST_FOLDER, 'results')
-    ALLOWED_EXTENSIONS: Set[str] = {'png', 'jpg', 'jpeg'}
+    BASE_DIR: str = str(os.path.dirname(os.path.abspath(__file__)))
+    ASSETS_DIR: str = str(os.path.join(BASE_DIR, 'assets'))
+    MODELS_DIR: str = str(os.path.join(ASSETS_DIR, 'models'))
+    FONT_DIR: str = str(os.path.join(ASSETS_DIR, 'arial.ttf'))
+    REQUEST_FOLDER: str = str(os.path.join(ASSETS_DIR, 'results'))
+    UPLOAD_FOLDER: str = str(os.path.join(REQUEST_FOLDER, 'uploads'))
+    RESULTS_FOLDER: str = str(os.path.join(REQUEST_FOLDER, 'results'))
+    ALLOWED_EXTENSIONS: Set[str] = set({'png', 'jpg', 'jpeg'})
     
     # Create necessary directories
     os.makedirs(UPLOAD_FOLDER, exist_ok=True)
@@ -37,20 +36,20 @@ class Config:
     
     MODEL_CONFIG: Dict[str, Dict[str, str]] = {
         "classification": {
-            "name": "Calculus and Caries Classification",
-            "file": "classification.h5",
-            "type": "keras"
+            "name": str("Calculus and Caries Classification"),
+            "file": str("classification.h5"),
+            "type": str("keras")
         },
         "detection": {
-            "name": "Caries Detection",
-            "file": "detection.pt",
-            "type": "yolo"
+            "name": str("Caries Detection"),
+            "file": str("detection.pt"),
+            "type": str("yolo")
         },
         "segmentation": {
-            "name": "Dental X-Ray Segmentation",
-            "file": "dental_xray_seg.h5",
-            "type": "keras",
-            "huggingface_id": "SerdarHelli/Segmentation-of-Teeth-in-Panoramic-X-ray-Image-Using-U-Net"
+            "name": str("Dental X-Ray Segmentation"),
+            "file": str("dental_xray_seg.h5"),
+            "type": str("keras"),
+            "huggingface_id": str("SerdarHelli/Segmentation-of-Teeth-in-Panoramic-X-ray-Image-Using-U-Net")
         }
     }
 
@@ -62,13 +61,13 @@ class Model(ABC):
     """Abstract base class for all models"""
     
     @abstractmethod
-    def load(self) -> Any:
+    def load(self) -> Union[tf.keras.Model, YOLO]:
         """Load the model"""
         pass
     
     @property
     @abstractmethod
-    def model_type(self) -> str:
+    def model_type(self) -> Literal["keras", "yolo"]:
         """Return the model type"""
         pass
 
@@ -85,15 +84,15 @@ class KerasModel(Model):
         if self._model is None:
             try:
                 if self.huggingface_id:
-                    self._model = from_pretrained_keras(self.huggingface_id)
+                    self._model = from_pretrained_keras(str(self.huggingface_id))
                 else:
-                    self._model = load_model(self.model_path)
+                    self._model = load_model(str(self.model_path))
             except Exception as e:
                 raise Exception(f"Failed to load Keras model: {str(e)}")
         return self._model
     
     @property
-    def model_type(self) -> str:
+    def model_type(self) -> Literal["keras"]:
         return "keras"
 
 class YoloModel(Model):
@@ -107,13 +106,13 @@ class YoloModel(Model):
         """Load a YOLO model from file"""
         if self._model is None:
             try:
-                self._model = YOLO(self.model_path)
+                self._model = YOLO(str(self.model_path))
             except Exception as e:
                 raise Exception(f"Failed to load YOLO model: {str(e)}")
         return self._model
     
     @property
-    def model_type(self) -> str:
+    def model_type(self) -> Literal["yolo"]:
         return "yolo"
 
 # ============================================================
