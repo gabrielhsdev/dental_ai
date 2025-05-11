@@ -1,7 +1,7 @@
 from app.config import Config
 from app.repositories.ImageRepository import ImageRepository
 from app.repositories.ModelRepository import ModelRepository
-from app.services import ProcessingServiceFactory
+from app.services.ProcessingServiceFactory import ProcessingServiceFactory
 
 class ApiHandler:
     """Base handler for API requests"""

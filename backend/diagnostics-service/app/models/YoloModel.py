@@ -1,6 +1,6 @@
 from typing import Literal
 from ultralytics import YOLO
-from Model import Model
+from app.models.Model import Model
 
 class YoloModel(Model):
     """Class for YOLO models"""

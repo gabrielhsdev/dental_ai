@@ -4,7 +4,7 @@ from typing import Dict
 
 from app.models import Model
 from app.config import Config
-from ImageProcessorService import ImageProcessorService
+from app.services.ImageProcessorService import ImageProcessorService
 
 class DetectionService(ImageProcessorService):
     """Service for object detection"""

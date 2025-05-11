@@ -7,7 +7,7 @@ import numpy as np
 
 from app.models import Model
 from app.config import Config
-from ImageProcessorService import ImageProcessorService
+from app.services.ImageProcessorService import ImageProcessorService
 
 class ClassificationService(ImageProcessorService):
     """Service for image classification"""

@@ -50,7 +50,6 @@ def create_app():
     
     # Set up routes
     route_setup = RouteSetupV1(app, config)
-    route_setup.setup_routes()
     
     return app
 

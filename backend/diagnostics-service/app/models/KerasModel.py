@@ -1,8 +1,8 @@
-from Model import Model
 import tensorflow as tf
 from typing import Optional, Literal
 from tensorflow.keras.models import load_model # type: ignore
 from huggingface_hub import from_pretrained_keras
+from app.models.Model import Model
 
 class KerasModel(Model):
     """Class for Keras models"""
