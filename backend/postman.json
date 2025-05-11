@@ -82,7 +82,7 @@
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI4ODA5MTcyNC0yM2QwLTRkY2EtYWI0My04ODZhZGQyZjZkNmMiLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ1OTYzMTEyLCJpYXQiOjE3NDU3OTAzMTJ9.wplSLG5fNkpr_8N86lmxby2qnaVyFxVE5dE_KPJCrpw",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxYmY4ZjQ4MS00MmIyLTQ5M2QtOTlhZS1mZWEwOTFhMzdhN2UiLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ3MTc3MDA2LCJpYXQiOjE3NDcwMDQyMDZ9.xSAWyEwwF79UjgN4CRjluth5yVmZd6FMWkJZ_8F_csQ",
 									"type": "string"
 								}
 							]
@@ -141,72 +141,187 @@
 			"name": "Database Service",
 			"item": [
 				{
-					"name": "Get User By Id",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZDcxMjAzMy0yZDg1LTQxMGYtYWNiMi1hOTVkNTk1YzYxOGYiLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ1OTYzODI5LCJpYXQiOjE3NDU3OTEwMjl9.u3xM_u5o1z5BNA_VpuSqdiznvDt79quWzgjWeGzeNYk",
-									"type": "string"
-								}
-							]
+					"name": "User",
+					"item": [
+						{
+							"name": "Get User By Id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjOTkxMzgwYy1lMjAwLTQxMDItYWMxZC1jMTRjN2FjNDBlOGEiLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ3MTc0ODM3LCJpYXQiOjE3NDcwMDIwMzd9.MFGx25H6oyCx2Dciqbrw4q6vbOBFFu8BiENt5zCeTxI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost/db/users/e3cac880-c73c-4410-8549-4ebf7d9df0b7",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"db",
+										"users",
+										"e3cac880-c73c-4410-8549-4ebf7d9df0b7"
+									]
+								},
+								"description": "Get user by passing its UUID on the url"
+							},
+							"response": []
 						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost/db/users/e3cac880-c73c-4410-8549-4ebf7d9df0b7",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"path": [
-								"db",
-								"users",
-								"e3cac880-c73c-4410-8549-4ebf7d9df0b7"
-							]
-						},
-						"description": "Get user by passing its UUID on the url"
-					},
-					"response": []
+						{
+							"name": "Get User By Email",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjOTkxMzgwYy1lMjAwLTQxMDItYWMxZC1jMTRjN2FjNDBlOGEiLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ3MTc0ODM3LCJpYXQiOjE3NDcwMDIwMzd9.MFGx25H6oyCx2Dciqbrw4q6vbOBFFu8BiENt5zCeTxI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost/db/users/email?email=admin@example.com",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"db",
+										"users",
+										"email"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "admin@example.com"
+										}
+									]
+								},
+								"description": "Get user by passing its email on the parameter"
+							},
+							"response": []
+						}
+					],
+					"description": "CRUD for our users table ( Dentists )"
 				},
 				{
-					"name": "Get User By Email",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhNWQzNmYzYi03NjFjLTQxZmQtYmNiMy0xNDdhNDI2YmIwZjMiLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ1OTYwNDA4LCJpYXQiOjE3NDU3ODc2MDh9.znffOegP_FQUlcblEaa2eQ9D02wMkuUcovW3q69L26A",
-									"type": "string"
-								}
-							]
+					"name": "Patients",
+					"item": [
+						{
+							"name": "Create Patient",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxYmY4ZjQ4MS00MmIyLTQ5M2QtOTlhZS1mZWEwOTFhMzdhN2UiLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ3MTc3MDA2LCJpYXQiOjE3NDcwMDQyMDZ9.xSAWyEwwF79UjgN4CRjluth5yVmZd6FMWkJZ_8F_csQ",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Doe\",\n  \"dateOfBirth\": \"1990-06-15T00:00:00Z\",\n  \"gender\": \"Female\",\n  \"phoneNumber\": \"+1-555-1234\",\n  \"email\": \"jane.doe@example.com\",\n  \"notes\": \"Allergic to penicillin\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost/db/patients/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"db",
+										"patients",
+										""
+									]
+								},
+								"description": "Get user by passing its UUID on the url"
+							},
+							"response": []
 						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost/db/users/email?email=admin@example.com",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"path": [
-								"db",
-								"users",
-								"email"
-							],
-							"query": [
-								{
-									"key": "email",
-									"value": "admin@example.com"
-								}
-							]
+						{
+							"name": "Get Patients By User Id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjOTkxMzgwYy1lMjAwLTQxMDItYWMxZC1jMTRjN2FjNDBlOGEiLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ3MTc0ODM3LCJpYXQiOjE3NDcwMDIwMzd9.MFGx25H6oyCx2Dciqbrw4q6vbOBFFu8BiENt5zCeTxI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost/db/patients/user/c991380c-e200-4102-ac1d-c14c7ac40e8a",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"db",
+										"patients",
+										"user",
+										"c991380c-e200-4102-ac1d-c14c7ac40e8a"
+									]
+								},
+								"description": "Get user by passing its UUID on the url"
+							},
+							"response": []
 						},
-						"description": "Get user by passing its email on the parameter"
-					},
-					"response": []
+						{
+							"name": "Get Patients By Id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjOTkxMzgwYy1lMjAwLTQxMDItYWMxZC1jMTRjN2FjNDBlOGEiLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ3MTc0ODM3LCJpYXQiOjE3NDcwMDIwMzd9.MFGx25H6oyCx2Dciqbrw4q6vbOBFFu8BiENt5zCeTxI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost/db/patients/00000000-0000-0000-0000-000000000000",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"db",
+										"patients",
+										"00000000-0000-0000-0000-000000000000"
+									]
+								},
+								"description": "Get user by passing its UUID on the url"
+							},
+							"response": []
+						}
+					],
+					"description": "CRUD for our patients"
 				}
 			],
 			"description": "Used for CRUD operations not related to the AUTH"

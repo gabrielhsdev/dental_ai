@@ -13,6 +13,7 @@ import (
 type Database interface {
 	CloseDB() error
 	QueryRow(query string, args ...interface{}) *sql.Row
+	Query(query string, args ...interface{}) (*sql.Rows, error)
 }
 
 type SQLDatabase struct {
@@ -30,6 +31,15 @@ func (database *SQLDatabase) QueryRow(query string, args ...interface{}) *sql.Ro
 	* We can also log the query here for debugging purposes
 	 */
 	return database.DB.QueryRow(query, args...)
+}
+
+func (database *SQLDatabase) Query(query string, args ...interface{}) (*sql.Rows, error) {
+	/*
+	* We can do some formatting of the query here if we change from postgres to another database
+	* For Example: MySQL uses ? instead of $1 for query parameters
+	* We can also log the query here for debugging purposes
+	 */
+	return database.DB.Query(query, args...)
 }
 
 func LoadDatabase(dbType string, modeManager mode.ModeManagerInterface, envManager environment.EnvManagerInterface) (Database, error) {
