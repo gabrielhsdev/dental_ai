@@ -1,0 +1,123 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f9f9f9;
+    color: #333;
+}
+
+.navbar {
+    background: #b2e7fe;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 30px;
+    height: 90px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-left img {
+    height: 120px;
+    padding: 5px 9px;
+    border-radius: 6px;
+}
+
+.navbar-links {
+    list-style: none;
+    display: flex;
+    gap: 18px;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-links li a {
+    text-decoration: none;
+    color: #25a3d8;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 6px 10px;
+    transition: background 0.3s, color 0.3s;
+    border-radius: 4px;
+
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-links li a:hover {
+    background: #e6f7ff;
+    color: #1e8bb5;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    min-height: 80vh;
+    gap: 30px;
+}
+
+.image img {
+    max-width: 100%;
+    height: auto;
+    max-height: 500px; 
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.form {
+    max-width: 400px;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form h1 {
+    font-size: 26px;
+    margin-bottom: 15px;
+    color: #25a3d8;
+}
+
+.form p {
+    margin-bottom: 20px;
+    color: #555;
+}
+
+.input-field {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.input-field:focus {
+    border-color: #25a3d8;
+    outline: none;
+}
+
+.btn {
+    width: 100%;
+    padding: 12px;
+    background: #25a3d8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn:hover {
+    background: #1e8bb5;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background: #f0f0f0;
+    color: #555;
+    font-size: 14px;
+}
