@@ -44,34 +44,6 @@ func NewPatientHandler(
 	}
 }
 
-func (handler *PatientHandler) GetPatientsByUserId(context *gin.Context) {
-	userIdString := context.Param("userId")
-	action := "Get Patients By User Id"
-
-	if userIdString == "" {
-		err := errors.New("invalid credentials")
-		handler.Logger.Error(context, action, err, handler.ResourceManager.GetPatientResource(), nil)
-		handler.ResponseManager.Send(context, http.StatusBadRequest, "Invalid User Id Parameter", nil, err)
-	}
-
-	userId, err := uuid.Parse(userIdString)
-	if err != nil {
-		handler.Logger.Error(context, action, err, handler.ResourceManager.GetPatientResource(), nil)
-		handler.ResponseManager.Send(context, http.StatusBadRequest, "Invalid User Id", nil, err)
-		return
-	}
-
-	patients, err := handler.PatientService.GetPatientsByUserId(userId)
-	if err != nil {
-		handler.Logger.Error(context, action, err, handler.ResourceManager.GetPatientResource(), nil)
-		handler.ResponseManager.Send(context, http.StatusInternalServerError, "Failed to get patients", nil, err)
-		return
-	}
-
-	handler.Logger.Info(context, action, handler.ResourceManager.GetPatientResource(), map[string]interface{}{"patients": patients})
-	handler.ResponseManager.Send(context, http.StatusOK, "Patients found", patients, nil)
-}
-
 func (handler *PatientHandler) GetPatientById(context *gin.Context) {
 	idString := context.Param("id")
 	action := "Get Patient By Id"
@@ -104,6 +76,34 @@ func (handler *PatientHandler) GetPatientById(context *gin.Context) {
 
 	handler.Logger.Info(context, action, handler.ResourceManager.GetPatientResource(), map[string]interface{}{"patient": patient})
 	handler.ResponseManager.Send(context, http.StatusOK, "Patient found", patient, nil)
+}
+
+func (handler *PatientHandler) GetPatientsByUserId(context *gin.Context) {
+	userIdString := context.Param("userId")
+	action := "Get Patients By User Id"
+
+	if userIdString == "" {
+		err := errors.New("invalid credentials")
+		handler.Logger.Error(context, action, err, handler.ResourceManager.GetPatientResource(), nil)
+		handler.ResponseManager.Send(context, http.StatusBadRequest, "Invalid User Id Parameter", nil, err)
+	}
+
+	userId, err := uuid.Parse(userIdString)
+	if err != nil {
+		handler.Logger.Error(context, action, err, handler.ResourceManager.GetPatientResource(), nil)
+		handler.ResponseManager.Send(context, http.StatusBadRequest, "Invalid User Id", nil, err)
+		return
+	}
+
+	patients, err := handler.PatientService.GetPatientsByUserId(userId)
+	if err != nil {
+		handler.Logger.Error(context, action, err, handler.ResourceManager.GetPatientResource(), nil)
+		handler.ResponseManager.Send(context, http.StatusInternalServerError, "Failed to get patients", nil, err)
+		return
+	}
+
+	handler.Logger.Info(context, action, handler.ResourceManager.GetPatientResource(), map[string]interface{}{"patients": patients})
+	handler.ResponseManager.Send(context, http.StatusOK, "Patients found", patients, nil)
 }
 
 func (handler *PatientHandler) CreatePatient(context *gin.Context) {

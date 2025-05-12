@@ -38,6 +38,7 @@ from app.handlers.ImageProcessingHandler import ImageProcessingHandler
 # Routes
 # ============================================================
 from app.routes.RouteSetupV1 import RouteSetupV1
+import argparse
 
 # ============================================================
 # Application
@@ -53,7 +54,10 @@ def create_app():
     
     return app
 
-# Run the application
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--port', type=int, default=8083, help='Port to run the server on')
+    args = parser.parse_args()
+    
     app = create_app()
-    app.run(debug=True, host='0.0.0.0', port=5123)
+    app.run(debug=True, host='0.0.0.0', port=args.port)

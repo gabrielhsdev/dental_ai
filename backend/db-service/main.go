@@ -38,11 +38,13 @@ func main() {
 	userRepository := repository.NewUserRepository(database)
 	auditLogsRepository := repository.NewAuditLogRepository(database)
 	patientRepository := repository.NewPatientRepository(database)
+	patientImagesRepository := repository.NewPatientImagesRepository(database)
 
 	// Initialize Service
 	userService := service.NewUserService(userRepository)
 	auditLogsService := service.NewAuditLogsService(auditLogsRepository)
 	patientService := service.NewPatientService(patientRepository)
+	patientImagesService := service.NewPatientImagesService(patientImagesRepository)
 
 	// Initialize logger
 	config := zap.NewProductionConfig()
@@ -57,6 +59,7 @@ func main() {
 	// Initialize Handler
 	userHandler := handlers.NewUserHandler(userService, loggerManager, jwtManager, responseManager, resourceManager)
 	patientHandler := handlers.NewPatientHandler(patientService, loggerManager, jwtManager, responseManager, resourceManager)
+	patientImagesHandler := handlers.NewPatientImagesHandler(patientImagesService, loggerManager, jwtManager, responseManager, resourceManager)
 
 	// Initialize Router
 	router := gin.Default()
@@ -64,6 +67,7 @@ func main() {
 	// Initialize Routes
 	routes.UserRoutes(router, userHandler)
 	routes.PatientRoutes(router, patientHandler)
+	routes.PatientImagesRoutes(router, patientImagesHandler)
 
 	// Run Server
 	router.Run(":" + envManager.GetDBServicePort())

@@ -66,7 +66,12 @@ services:
 
   diagnostics-service:
     container_name: ${DIAGNOSTICS_SERVICE_HOST}
-    build: ./backend/${DIAGNOSTICS_SERVICE_FOLDER}
+    build:
+      dockerfile: backend/${DIAGNOSTICS_SERVICE_FOLDER}/Dockerfile
+      context: .
+      args:
+        DIAGNOSTICS_SERVICE_HOST: ${DIAGNOSTICS_SERVICE_HOST}
+        DIAGNOSTICS_SERVICE_FOLDER: ${DIAGNOSTICS_SERVICE_FOLDER}
     ports:
       - "${DIAGNOSTICS_SERVICE_PORT}:${DIAGNOSTICS_SERVICE_PORT}"
     env_file:

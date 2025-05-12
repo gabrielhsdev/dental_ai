@@ -16,7 +16,7 @@ type PatientService struct {
 	Repository repository.PatientRepository
 }
 
-func NewPatientService(repository repository.PatientRepository) *PatientService {
+func NewPatientService(repository repository.PatientRepository) PatientsServiceInterface {
 	return &PatientService{Repository: repository}
 }
 
