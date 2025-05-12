@@ -5,3 +5,4 @@ __pycache__/
 assets/models/
 venv/
 .mypy_cache/
+app/config/models

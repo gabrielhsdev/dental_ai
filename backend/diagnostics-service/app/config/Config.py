@@ -5,7 +5,7 @@ import os
 class Config:
     BASE_DIR: str = str(os.path.dirname(os.path.abspath(__file__)))
     ASSETS_DIR: str = str(os.path.join(BASE_DIR, 'assets'))
-    MODELS_DIR: str = str(os.path.join(ASSETS_DIR, 'models'))
+    MODELS_DIR: str = str(os.path.join(BASE_DIR, 'models'))
     FONT_DIR: str = str(os.path.join(ASSETS_DIR, 'arial.ttf'))
     REQUEST_FOLDER: str = str(os.path.join(ASSETS_DIR, 'results'))
     UPLOAD_FOLDER: str = str(os.path.join(REQUEST_FOLDER, 'uploads'))

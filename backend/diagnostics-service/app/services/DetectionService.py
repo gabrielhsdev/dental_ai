@@ -19,6 +19,8 @@ class DetectionService(ImageProcessorService):
         results = model_instance.predict(image)
         result = results[0]
         
+        # Debug where the font is loaded
+        print(f"Font directory: {self.config.FONT_DIR}")
         draw = ImageDraw.Draw(image)
         font = ImageFont.truetype(self.config.FONT_DIR, 8)
 
