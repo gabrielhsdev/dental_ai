@@ -15,6 +15,7 @@ import (
 	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/resources"
 	"github.com/gabrielhsdev/dental_ai/backend/auth-service/pkg/response"
 	"github.com/gabrielhsdev/dental_ai/backend/auth-service/routes"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
@@ -57,6 +58,13 @@ func main() {
 
 	// Initialize Router
 	router := gin.Default()
+	router.Use(cors.New(cors.Config{
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+	}))
 
 	// Initialize Routes
 	routes.AuthRoutes(router, authHandler)
