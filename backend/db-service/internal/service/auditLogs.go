@@ -32,11 +32,14 @@ func (service *AuditLogsService) NewAuditLogFromRequest(
 	message string,
 	extra map[string]any,
 ) models.AuditLogs {
-	// TODO: Handler this error, we are ignoring it for now.
-	extraBytes, _ := json.Marshal(map[string]any{
+	extraBytes, err := json.Marshal(map[string]any{
 		"message": message,
 		"extra":   extra,
 	})
+	if err != nil {
+		print("Error marshalling extra data", err)
+		extraBytes = []byte("{error: 'Error marshalling extra data'}")
+	}
 	return models.AuditLogs{
 		RequestId:        headers.XRequestId,
 		RequestIp:        headers.XRealIp,

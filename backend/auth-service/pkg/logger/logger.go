@@ -37,6 +37,7 @@ func NewLogger(
 }
 
 func (logger *Logger) Error(ctx *gin.Context, action string, err error, resource resources.ResourceType, extra map[string]interface{}) {
+	return
 	if !logger.resourceManager.ValidateResource(resource) {
 		logger.zap.Error("Invalid resource", zap.String("resource", string(resource)))
 		return
@@ -54,6 +55,7 @@ func (logger *Logger) Error(ctx *gin.Context, action string, err error, resource
 }
 
 func (logger *Logger) Info(ctx *gin.Context, action string, resource resources.ResourceType, extra map[string]interface{}) {
+	return
 	if !logger.resourceManager.ValidateResource(resource) {
 		logger.zap.Error("Invalid resource", zap.String("resource", string(resource)))
 		return

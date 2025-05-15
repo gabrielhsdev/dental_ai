@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 interface User {
     id: string;
-    email: string;
+    email: string
     name: string;
 }
 
@@ -23,7 +23,7 @@ export const useSession = () => {
     const handleLogin = async (email: string, password: string) => {
         try {
             const response = await requestLogin(email, password);
-            console.log('Login response:', response); 
+            console.log('Login response:', response);
         } catch (error) {
             console.log("Test")
         }
