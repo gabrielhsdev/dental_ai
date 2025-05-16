@@ -1,0 +1,149 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f9f9f9;
+    color: #333;
+}
+
+nav {
+    background: #b2e7fe;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 30px;
+    height: 90px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+nav img {
+    height: 120px;
+    margin-right: 10px;
+    padding: 0px 8px;
+    border-radius: 5px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    margin-left: auto;
+    gap: 18px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #25a3d8;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s, color 0.3s;
+}
+
+nav ul li a:hover {
+    background: #e6f7ff;
+    color: #1e8bb5;
+}
+
+main {
+    padding: 40px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 32px;
+    color: #25a3d8;
+    margin-bottom: 40px;
+}
+
+section {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.text {
+    max-width: 500px;
+    text-align: left;
+}
+
+.text h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.text p {
+    margin-bottom: 15px;
+    color: #555;
+    line-height: 1.6;
+}
+
+.image img {
+    max-width: 100%;
+    height: auto;
+    max-height: 500px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.form {
+    max-width: 400px;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form h1 {
+    font-size: 26px;
+    margin-bottom: 15px;
+    color: #25a3d8;
+}
+
+.form p {
+    margin-bottom: 20px;
+    color: #555;
+}
+
+.input-field {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.input-field:focus {
+    border-color: #25a3d8;
+    outline: none;
+}
+
+.btn {
+    width: 100%;
+    padding: 12px;
+    background: #25a3d8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn:hover {
+    background: #1e8bb5;
+}
+
+footer {
+    background: #f0f0f0;
+    padding: 20px;
+    margin-top: 50px;
+    text-align: center;
+    color: #555;
+    font-size: 14px;
+}
