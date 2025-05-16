@@ -1,8 +1,6 @@
 package repository
 
 import (
-	"database/sql"
-
 	"github.com/gabrielhsdev/dental_ai/backend/db-service/internal/models"
 	"github.com/gabrielhsdev/dental_ai/backend/db-service/pkg/database"
 	"github.com/google/uuid"
@@ -35,9 +33,6 @@ func (repository *UserRepositoryImplementation) GetUserById(id uuid.UUID) (*mode
 		&user.UpdatedAt)
 
 	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, nil
-		}
 		return nil, err
 	}
 
@@ -58,9 +53,6 @@ func (repository *UserRepositoryImplementation) GetUserByEmail(email string) (*m
 		&user.UpdatedAt)
 
 	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, nil
-		}
 		return nil, err
 	}
 

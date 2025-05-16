@@ -59,9 +59,6 @@ func (repository *UserRepositoryImplementation) GetUserByEmail(email string) (*m
 		&user.UpdatedAt)
 
 	if err != nil {
-		if err == sql.ErrNoRows {
-			return nil, nil
-		}
 		return nil, err
 	}
 
