@@ -37,15 +37,19 @@ func NewLogger(
 }
 
 func (logger *Logger) Error(ctx *gin.Context, action string, err error, resource resources.ResourceType, extra map[string]interface{}) {
-	return
 	if !logger.resourceManager.ValidateResource(resource) {
 		logger.zap.Error("Invalid resource", zap.String("resource", string(resource)))
 		return
 	}
 
+	errorMessage := "nil error" // This means that the error is nil
+	if err != nil {
+		errorMessage = err.Error()
+	}
+
 	logger.zap.Error(action, zap.Error(err))
 	headers := logger.headersHandler.Extract(ctx)
-	auditLog := logger.auditLogsService.NewAuditLogFromRequest(headers, action, string(resource), err.Error(), extra)
+	auditLog := logger.auditLogsService.NewAuditLogFromRequest(headers, action, string(resource), errorMessage, extra)
 	res, err := logger.auditLogsService.CreateAuditLogs(&auditLog)
 	if err != nil {
 		logger.zap.Error("Failed to create audit log", zap.Error(err))
@@ -55,7 +59,6 @@ func (logger *Logger) Error(ctx *gin.Context, action string, err error, resource
 }
 
 func (logger *Logger) Info(ctx *gin.Context, action string, resource resources.ResourceType, extra map[string]interface{}) {
-	return
 	if !logger.resourceManager.ValidateResource(resource) {
 		logger.zap.Error("Invalid resource", zap.String("resource", string(resource)))
 		return
