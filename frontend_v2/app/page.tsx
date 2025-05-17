@@ -1,11 +1,11 @@
 'use client'
 import CustomButton from "@/components/CustomButton";
 import CustomInput from "@/components/CustomInput";
-import { useSession } from "@/hooks/useSession";
+import { useSessionContext } from "@/context/SessionContext";
 import { useState } from "react";
 
 export default function Home() {
-  const { handleLogin } = useSession();
+  const { handleLogin } = useSessionContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 

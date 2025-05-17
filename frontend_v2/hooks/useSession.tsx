@@ -1,3 +1,6 @@
+'use client';
+
+import { useRouter } from 'next/navigation'; // app router
 import { useEffect, useState } from 'react';
 import { isErrorResponse, UserInterface } from '@/common/commonInterfaces';
 import { requestLogin, requestMe } from '@/services/authRequests';
@@ -10,6 +13,7 @@ interface SessionState {
 }
 
 export const useSession = () => {
+    const router = useRouter(); // ✅ always called
     const [session, setSession] = useState<SessionState>({
         user: null,
         isLoading: false,
@@ -40,32 +44,39 @@ export const useSession = () => {
 
             toast.success('Login successful!');
             localStorage.setItem('token', loginRes.data.token);
+
+            // ✅ Router redirect after successful login
+            router.push('/dashboard');
         } catch (err) {
             console.error('Login error:', err);
             toast.error('An unexpected error occurred during login.');
         }
     };
 
-    const isLoggedIn = () => {
+    const isLoggedIn = async () => {
         const token = localStorage.getItem('token');
-        if (token) {
+        if (!token) return false;
+
+        try {
             setSession((prev) => ({ ...prev, isLoading: true, error: null }));
-            requestMe(token)
-                .then((res) => {
-                    if (isErrorResponse(res)) {
-                        handleError(res.message);
-                        return;
-                    }
-                    setSession({
-                        user: res.data,
-                        isLoading: false,
-                        error: null,
-                    });
-                })
-                .catch((err) => {
-                    console.error('Error fetching user data:', err);
-                    handleError('Failed to fetch user data.');
-                });
+            const res = await requestMe(token);
+
+            if (isErrorResponse(res)) {
+                handleError(res.message);
+                return false;
+            }
+
+            setSession({
+                user: res.data,
+                isLoading: false,
+                error: null,
+            });
+
+            router.push('/dashboard');
+        } catch (err) {
+            console.error('Error fetching user data:', err);
+            handleError('Failed to fetch user data.');
+            router.push('/');
         }
     };
 
@@ -77,6 +88,7 @@ export const useSession = () => {
             error: null,
         });
         toast.success('Logout successful!');
+        router.push('/');
     };
 
     const handleError = (message: string) => {
@@ -92,6 +104,6 @@ export const useSession = () => {
         handleLogin,
         handleLogout,
         isLoggedIn,
-        session
+        session,
     };
 };
