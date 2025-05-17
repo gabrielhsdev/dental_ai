@@ -1,37 +1,35 @@
-export interface BaseStatus {
+// ========== RESPONSE REQUESTS INTERFACES ==========
+// ========== RESPONSE REQUESTS INTERFACES ==========
+// ========== RESPONSE REQUESTS INTERFACES ==========
+export interface BaseResponseInterface<T = unknown> {
+    status: number;
     message: string;
-    timestamp: Date;
+    data: T;
+    timestamp: string;
 }
 
-export interface SuccessStatus extends BaseStatus {
-    success: true;
-    data?: any;
+export interface BaseErrorResponseInterface {
+    status: number;
+    message: string;
+    error: string;
+    timestamp: string;
 }
 
-export interface ErrorStatus extends BaseStatus {
-    success: false;
-    error: {
-        code: string;
-        details?: string;
-    };
+export function isErrorResponse(
+    response: BaseResponseInterface | BaseErrorResponseInterface
+): response is BaseErrorResponseInterface {
+    return 'error' in response;
 }
 
-export type Status = SuccessStatus | ErrorStatus;
-
-// Helper functions to create status objects
-export const createSuccessStatus = (message: string, data?: any): SuccessStatus => ({
-    success: true,
-    message,
-    data,
-    timestamp: new Date(),
-});
-
-export const createErrorStatus = (message: string, code: string, details?: string): ErrorStatus => ({
-    success: false,
-    message,
-    error: {
-        code,
-        details,
-    },
-    timestamp: new Date(),
-});
+// ========== USER INTERFACES ==========
+// ========== USER INTERFACES ==========
+export interface UserInterface {
+    id: string;
+    username: string;
+    email: string;
+    password: string;
+    firstName: string;
+    lastName: string;
+    createdAt: string;
+    updatedAt: string;
+}
