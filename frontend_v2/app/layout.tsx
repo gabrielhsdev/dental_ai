@@ -31,8 +31,12 @@ export default function RootLayout({
       >
         <SessionProvider>
           <Toaster position="top-center" />
-          {children}
+          <main className="min-h-screen w-full grid place-items-center px-4 bg-gray-50 dark:bg-gray-900">
+            {children}
+          </main>
         </SessionProvider>
+        {/* Used in our sidebar */}
+        <script src="https://unpkg.com/flowbite@latest/dist/flowbite.min.js"></script>
       </body>
     </html>
   );
