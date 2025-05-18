@@ -6,3 +6,7 @@ export const ENDPOINTS = {
     DB: `${API_BASE_URL}/db`,
     DIAGNOSTICS: `${API_BASE_URL}/diagnostics`,
 } as const;
+
+export const LOCAL_STORAGE_KEYS = {
+    TOKEN: 'token'
+}
