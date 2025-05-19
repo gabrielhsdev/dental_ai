@@ -33,3 +33,40 @@ export interface UserInterface {
     createdAt: string;
     updatedAt: string;
 }
+
+// ========== PATIENT INTERFACES ==========
+// ========== PATIENT INTERFACES ==========
+export interface PatientInterface {
+    id: string;
+    userId: string;
+    firstName: string;
+    lastName: string;
+    dateOfBirth: string;
+    gender: string;
+    phoneNumber: string;
+    email: string;
+    notes: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
+// ========== PATIENT IMAGE INTERFACES ==========
+// ========== PATIENT IMAGE INTERFACES ==========
+export interface PatientImageInterface {
+    id: string;
+    patientId: string;
+    imageData: string;
+    fileType: string;
+    description: string;
+    uploadedAt: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
+// ========== DIAGNOSTIC INTERFACES ==========
+// ========== DIAGNOSTIC INTERFACES ==========
+export interface DiagnosticInterfaceProcessDetection {
+    model_id: string;
+    result_image: string;
+    sucess: boolean;
+}

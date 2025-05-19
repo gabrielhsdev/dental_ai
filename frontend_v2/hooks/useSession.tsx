@@ -4,8 +4,8 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
-import { requestLogin, requestMe } from '@/services/authRequests';
-import { isErrorResponse, UserInterface } from '@/common/commonInterfaces';
+import { requestLogin, requestMe } from '@/services/authService';
+import { isErrorResponse, PatientInterface, UserInterface } from '@/common/commonInterfaces';
 import { LOCAL_STORAGE_KEYS } from '@/common/constants';
 
 interface SessionState {
@@ -49,9 +49,7 @@ export const useSession = () => {
             toast.success('Login successful!');
             router.push('/dashboard');
         } catch (error) {
-            console.error('Login error:', error);
-            toast.error('An unexpected error occurred during login.');
-            resetSession();
+            handleError('Login failed. Please try again.');
         }
     };
 
@@ -81,6 +79,16 @@ export const useSession = () => {
         }
     };
 
+    const getToken = () => {
+        const token = localStorage.getItem(LOCAL_STORAGE_KEYS.TOKEN);
+        if (!token) {
+            resetSession();
+            router.push('/');
+            return null;
+        }
+        return token;
+    }
+
     const handleLogout = () => {
         localStorage.removeItem(LOCAL_STORAGE_KEYS.TOKEN);
         resetSession();
@@ -92,6 +100,7 @@ export const useSession = () => {
         handleLogin,
         handleLogout,
         isLoggedIn,
+        getToken,
         session,
     };
 };

@@ -10,6 +10,6 @@ func PatientRoutes(router *gin.Engine, handler handlers.PatientHandlerInterface)
 	{
 		userGroup.GET("/:id", handler.GetPatientById)
 		userGroup.POST("/", handler.CreatePatient)
-		userGroup.GET("/user/:userId", handler.GetPatientsByUserId)
+		userGroup.GET("/user", handler.GetPatientsByUserId)
 	}
 }

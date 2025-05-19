@@ -47,7 +47,7 @@ CREATE TABLE patients (
 CREATE TABLE patient_images (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     patientId UUID NOT NULL REFERENCES patients(id) ON DELETE CASCADE,
-    imageData BYTEA NOT NULL,  -- stores the actual image binary data
+    imageData VARCHAR(255) NOT NULL, -- Path to the image file
     fileType VARCHAR(20) CHECK (fileType IN ('png', 'jpeg', 'jpg', 'bmp', 'tiff')),
     description TEXT,
     uploadedAt TIMESTAMPTZ DEFAULT now(),

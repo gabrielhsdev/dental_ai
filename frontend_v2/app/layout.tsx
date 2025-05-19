@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import { SessionProvider } from "@/context/SessionContext";
+import { SelectedPatientProvider } from "@/context/SelectedPatientContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,13 +31,13 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <SessionProvider>
-          <Toaster position="top-center" />
-          <main className="min-h-screen w-full grid place-items-center px-4 bg-gray-50 dark:bg-gray-900">
-            {children}
-          </main>
+          <SelectedPatientProvider>
+            <Toaster position="top-center" />
+            <main className="min-h-screen w-full px-4 bg-gray-50 dark:bg-gray-900">
+              {children}
+            </main>
+          </SelectedPatientProvider>
         </SessionProvider>
-        {/* Used in our sidebar */}
-        <script src="https://unpkg.com/flowbite@latest/dist/flowbite.min.js"></script>
       </body>
     </html>
   );

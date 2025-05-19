@@ -1,39 +1,45 @@
 'use client';
 
+import CustomCard from "@/components/CustomCard";
 import { useSessionContext } from "@/context/SessionContext";
 
 export default function Dashboard() {
     const { session } = useSessionContext();
-
-    function printSession() {
-        console.log(session);
-    }
-
     return (
-        <div className="grid w-full max-w-md gap-6 p-6 bg-white rounded-lg shadow dark:bg-gray-800 dark:border dark:border-gray-700">
-            {/* Logo / Header */}
-            <a href="#" className="flex items-center text-2xl font-semibold text-gray-900 dark:text-white">
-                <img
-                    className="w-8 h-8 mr-2"
-                    src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/logo.svg"
-                    alt="logo"
-                />
-                Dashboard
-            </a>
-
-            {/* Body */}
-            <div className="space-y-4">
+        <>
+            <CustomCard
+                title="Dashboard"
+                subtitle="Click the button to debug your session"
+            >
                 <p className="text-gray-700 dark:text-gray-300">
-                    Click the button below to print the session data:
+                    This is your dashboard. You can use the buttons above to manage your workflow.
                 </p>
-
                 <button
-                    onClick={printSession}
+                    onClick={() => { console.log(session); }}
                     className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
                 >
                     Print Session
                 </button>
-            </div>
-        </div>
+            </CustomCard>
+            <CustomCard
+                title="Bem vindo ao Dashboard"
+                subtitle="Como usar nossa solução:"
+            >
+                <ul className="list-disc list-inside space-y-2">
+                    <li>
+                        1. Cadastre seus pacientes, utilize o botão <strong>"Novo Paciente"</strong> no menu lateral.
+                    </li>
+                    <li>
+                        2. Acesse o seu paciente e clique no botão <strong>"Novo Atendimento"</strong> para criar um novo atendimento.
+                    </li>
+                    <li>
+                        3. Faça o upload dos exames do paciente, clique no botão <strong>"Novo Exame"</strong> para fazer o upload de um novo exame.
+                    </li>
+                    <li>
+                        4. Veja o resultado do exame, você também pode conferir resultados passados ao acessar um paciente.
+                    </li>
+                </ul>
+            </CustomCard>
+        </>
     );
 }

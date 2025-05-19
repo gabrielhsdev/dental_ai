@@ -79,22 +79,24 @@ func (handler *PatientHandler) GetPatientById(context *gin.Context) {
 }
 
 func (handler *PatientHandler) GetPatientsByUserId(context *gin.Context) {
-	userIdString := context.Param("userId")
 	action := "Get Patients By User Id"
+	token := context.Request.Header.Get("Authorization")
 
-	if userIdString == "" {
-		err := errors.New("invalid credentials")
+	if token == "" {
+		err := errors.New("unauthorized, token not found")
 		handler.Logger.Error(context, action, err, handler.ResourceManager.GetPatientResource(), nil)
-		handler.ResponseManager.Send(context, http.StatusBadRequest, "Invalid User Id Parameter", nil, err)
-	}
-
-	userId, err := uuid.Parse(userIdString)
-	if err != nil {
-		handler.Logger.Error(context, action, err, handler.ResourceManager.GetPatientResource(), nil)
-		handler.ResponseManager.Send(context, http.StatusBadRequest, "Invalid User Id", nil, err)
+		handler.ResponseManager.Send(context, http.StatusUnauthorized, "Unauthorized, Token Not Found", nil, nil)
 		return
 	}
 
+	claims, err := handler.JWTManager.Validate(token)
+	if err != nil {
+		handler.Logger.Error(context, action, err, handler.ResourceManager.GetPatientResource(), nil)
+		handler.ResponseManager.Send(context, http.StatusUnauthorized, "Unauthorized", nil, err)
+		return
+	}
+
+	userId := claims.Sub
 	patients, err := handler.PatientService.GetPatientsByUserId(userId)
 	if err != nil {
 		handler.Logger.Error(context, action, err, handler.ResourceManager.GetPatientResource(), nil)
