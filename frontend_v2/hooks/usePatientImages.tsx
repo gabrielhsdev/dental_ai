@@ -141,7 +141,6 @@ export const usePatientImages = () => {
             const imagePathArray = ImagePath.split('/');
             const imageId = imagePathArray[imagePathArray.length - 1];
             const res = await requestGetImageById(imageId, token);
-            console.log('Image data:', res);
             return res;
         } catch {
             handleError('Failed to fetch image.');

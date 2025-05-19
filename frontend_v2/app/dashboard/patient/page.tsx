@@ -13,25 +13,42 @@ export default function ListPatients() {
     const { getToken } = useSessionContext();
     const { selectedPatient } = useSelectedPatientContext();
     const { fetchImagesByPatientId, images, getImageByPath } = usePatientImages();
+    const [imageBlobUrls, setImageBlobUrls] = useState<Record<string, string>>({});
 
-    const [imageURLs, setImageURLs] = useState<Record<string, string>>({});
+
+    const fetchPatientImages = async () => {
+        const token = await getToken();
+        if (selectedPatient?.id && token) {
+            await fetchImagesByPatientId(selectedPatient.id, token);
+            console.log("Fetched images:", images);
+        }
+    };
+
+    const debugOnImageClick = async (imagePath: string) => {
+        const token = await getToken();
+        if (token) {
+            const image = await getImageByPath(imagePath, token);
+
+            console.log("typeof image:", typeof image);
+            console.log("instanceof Blob:", image instanceof Blob);
+            console.log("Raw image:", image);
+
+            try {
+                const objectUrl = URL.createObjectURL(image);
+                console.log("Image Blob URL:", objectUrl);
+
+                // Save the blob URL in state
+                setImageBlobUrls((prev) => ({
+                    ...prev,
+                    [imagePath]: objectUrl,
+                }));
+            } catch (err) {
+                console.error("Failed to create object URL:", err);
+            }
+        }
+    };
 
     useEffect(() => {
-        const fetchPatientImages = async () => {
-            const token = await getToken();
-            if (selectedPatient?.id && token) {
-                await fetchImagesByPatientId(selectedPatient.id, token);
-
-                // Get actual image blobs for previews
-                const urls: Record<string, string> = {};
-                for (const image of images) {
-                    const blob = await getImageByPath(image.imageData, token);
-                    const objectURL = URL.createObjectURL(blob);
-                    urls[image.id] = objectURL;
-                }
-                setImageURLs(urls);
-            }
-        };
         fetchPatientImages();
     }, []);
 
@@ -59,10 +76,12 @@ export default function ListPatients() {
                         <p>{image.description}</p>
                         <p>{image.imageData}</p>
                         <img
-                            src={imageURLs[image.id]}
+                            src={imageBlobUrls[image.imageData]} // ✅ dynamically set if available
+                            onClick={() => debugOnImageClick(image.imageData)} // clicking fetches it
                             alt={image.description}
-                            className="w-32 h-32 object-cover"
+                            className="w-32 h-32 object-cover border cursor-pointer"
                         />
+
                     </div>
                 ))}
             </CustomCard>

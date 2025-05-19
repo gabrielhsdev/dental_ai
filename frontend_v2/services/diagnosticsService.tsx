@@ -28,7 +28,7 @@ export async function requestGetImageById(
 ): Promise<any> { // Not sure what this returns since on postman is just a image
     const url = `${ENDPOINTS.DIAGNOSTICS}/results/${imageId}`;
     try {
-        return await getBlobRequest(url, token);
+        return await getRequestWithoutResponse(url, {}, token);
     } catch (error) {
         console.error("Error requesting diagnostic process by ID:", error);
         throw error;

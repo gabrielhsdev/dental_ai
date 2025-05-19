@@ -82,6 +82,7 @@ export async function getRequestWithoutResponse<T>(
         const response = await axios.get<T>(url, {
             params,
             headers: buildHeadersv2(token),
+            responseType: 'blob', // ✅ CRITICAL FIX
         });
         return response.data;
     } catch (error) {
