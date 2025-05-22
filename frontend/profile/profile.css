@@ -1,0 +1,151 @@
+body {
+    margin: 0;
+    font-family: 'Roboto', Arial, sans-serif;
+    background: #f9f9f9;
+    color: #333;
+}
+
+.navbar {
+    background: #b2e7fe;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 30px;
+    height: 90px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-left img {
+    height: 120px;
+    padding: 0px 8px;
+    border-radius: 5px;
+}
+
+.navbar-links {
+    list-style: none;
+    display: flex;
+    gap: 18px;
+    margin: 0;
+    padding: 0;
+}
+
+.navbar-links li a {
+    text-decoration: none;
+    color: #25a3d8;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 6px 10px;
+    border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s, color 0.3s;
+}
+
+.navbar-links li a:hover {
+    background: #e6f7ff;
+    color: #1e8bb5;
+}
+
+main {
+    padding: 40px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 32px;
+    color: #25a3d8;
+    margin-bottom: 40px;
+}
+
+.profile {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.info {
+    max-width: 300px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.info h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.info p {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.info .btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    background: #25a3d8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.info .btn:hover {
+    background: #1e8bb5;
+}
+
+.images {
+    max-width: 800px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.images h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.image-gallery {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.image-gallery img {
+    height: 200px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+}
+
+.percepcoes h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.percepcoes ul {
+    list-style: disc;
+    padding-left: 20px;
+    color: #555;
+}
+
+footer {
+    background: #f0f0f0;
+    padding: 20px;
+    margin-top: 50px;
+    text-align: center;
+    color: #555;
+    font-size: 14px;
+}
