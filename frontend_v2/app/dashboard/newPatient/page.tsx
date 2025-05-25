@@ -8,6 +8,7 @@ import { useSessionContext } from "@/context/SessionContext";
 import { usePatients } from "@/hooks/usePatients";
 import { toRFC3339 } from "@/utils/dateUtils";
 import { useState } from "react";
+import Image from "next/image";
 
 export default function NewPatient() {
     const { session, getToken } = useSessionContext();
@@ -23,12 +24,18 @@ export default function NewPatient() {
     });
 
     const handleCreatePatient = async () => {
+        if (isLoading) return;
+
+        const token = await getToken();
+        if (!token) return;
+
+        console.log('Valores enviados:', {
+            ...formState,
+            dateOfBirth: toRFC3339(formState.dateOfBirth),
+            token
+        });
+
         try {
-            if (isLoading) return;
-
-            const token = await getToken();
-            if (!token) return;
-
             await createPatient(
                 formState.firstName,
                 formState.lastName,
@@ -40,16 +47,28 @@ export default function NewPatient() {
                 token
             );
         } catch (error) {
-            console.error('Error creating patient:', error);
+            console.error('Erro ao criar paciente:', error);
         }
-    }
+    };
 
     return (
         <>
-            <CustomCard
-                title="Adicionar Novo Paciente"
-                className="grid-cols-12 gap-4"
-            >
+            {/* Cabeçalho com título e logo */}
+            <div className="flex justify-between items-center mb-6">
+                <div>
+                    <h2 className="text-2xl font-bold">Adicionar Novo Paciente</h2>
+                    <p className="text-gray-500">Preencha os dados do paciente abaixo</p>
+                </div>
+                <Image
+                    src="/logo.png"
+                    alt="Logo"
+                    width={100}
+                    height={110}
+                />
+            </div>
+
+            {/* Formulário */}
+            <CustomCard className="grid-cols-12 gap-4">
                 <CustomBanner
                     type="error"
                     text={error ? error : ''}
