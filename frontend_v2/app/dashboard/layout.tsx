@@ -136,8 +136,8 @@ export default function RootLayout({ children }: RootLayoutProps) {
             )}
 
             {/* Main content */}
-            <main className={`flex-1 p-1 pt-14 sm:pt-4 transition-margin duration-300 flex flex-col items-center min-h-screen ${sidebarOpen && !isSmallScreen ? 'sm:ml-64' : ''}`}>
-                <div className="grid grid-cols-12 gap-4 w-full">
+            <main className={`flex-1 px-4 py-8 transition-margin duration-300 flex flex-col items-center min-h-screen bg-gray-50 dark:bg-gray-900 ${sidebarOpen && !isSmallScreen ? 'sm:ml-64' : ''}`}>
+                <div className="w-full max-w-6xl">
                     {children}
                 </div>
             </main>

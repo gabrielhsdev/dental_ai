@@ -1,45 +1,42 @@
 'use client';
 
 import CustomCard from "@/components/CustomCard";
-import { useSessionContext } from "@/context/SessionContext";
 
 export default function Dashboard() {
-    const { session } = useSessionContext();
-    return (
-        <>
-            <CustomCard
-                title="Dashboard"
-                subtitle="Click the button to debug your session"
-            >
-                <p className="text-gray-700 dark:text-gray-300">
-                    This is your dashboard. You can use the buttons above to manage your workflow.
-                </p>
-                <button
-                    onClick={() => { console.log(session); }}
-                    className="px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
-                >
-                    Print Session
-                </button>
-            </CustomCard>
-            <CustomCard
-                title="Bem vindo ao Dashboard"
-                subtitle="Como usar nossa solução:"
-            >
-                <ul className="list-disc list-inside space-y-2">
-                    <li>
-                        1. Cadastre seus pacientes, utilize o botão <strong>"Novo Paciente"</strong> no menu lateral.
-                    </li>
-                    <li>
-                        2. Acesse o seu paciente e clique no botão <strong>"Novo Atendimento"</strong> para criar um novo atendimento.
-                    </li>
-                    <li>
-                        3. Faça o upload dos exames do paciente, clique no botão <strong>"Novo Exame"</strong> para fazer o upload de um novo exame.
-                    </li>
-                    <li>
-                        4. Veja o resultado do exame, você também pode conferir resultados passados ao acessar um paciente.
-                    </li>
-                </ul>
-            </CustomCard>
-        </>
-    );
+  return (
+    <div className="flex flex-col items-center w-full min-h-screen px-6 py-10 bg-gray-50 dark:bg-gray-900">
+      
+      {/* Card de instruções */}
+      <div className="w-full max-w-4xl">
+        <CustomCard
+          title="Bem-vindo ao IACare!"
+          subtitle="Como usar nossa solução:"
+        >
+          <ul className="list-disc list-inside space-y-2 text-gray-800 dark:text-gray-200">
+            <li>
+              1. Cadastre seus pacientes usando o botão <strong>"Novo Paciente"</strong> no menu lateral.
+            </li>
+            <li>
+              2. Acesse o paciente e clique em <strong>"Novo Atendimento"</strong> para criar um novo atendimento.
+            </li>
+            <li>
+              3. Faça upload dos exames do paciente clicando em <strong>"Novo Exame"</strong>.
+            </li>
+            <li>
+              4. Veja o resultado do exame ou acesse exames anteriores no histórico do paciente.
+            </li>
+          </ul>
+        </CustomCard>
+      </div>
+
+      {/* Imagem ilustrativa abaixo */}
+      <div className="mt-10 w-full max-w-6xl">
+        <img
+          src="/dentist4.jpg"
+          alt="Ilustração do dashboard"
+          className="w-full h-64 object-cover rounded-lg shadow-md"
+        />
+      </div>
+    </div>
+  );
 }

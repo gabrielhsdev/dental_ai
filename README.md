@@ -16,8 +16,13 @@ The platform enables dentists to upload patient X-ray images, receive real-time 
 
 1. Copy and paste the current `.env-example` file and rename it to `.env`.
 2. Grant the necessary execution permissions to the `run-docker.sh` file w/ the command `chmod +x run-docker.sh`
-3. Execute the `run-docker.sh` file.
-4. Open the Postman file located in the `backend/postman.json` directory within the Postman app and test out some routes.
+3. Execute the `run-docker.sh` file with the command `./run-docker.sh`
+4. If docker fails try running it manually with one of these commands: `docker-compose up --build` or `docker-compose up --build`
+5. Open the Postman file located in the `backend/postman.json` directory within the Postman app and test out some routes.
+6. To run the frontend go to its folder with `cd frontend_v2`
+7. Install the dependencies using `npm install`
+8. Use this command to start the server: `npm run dev`
+9. Open your browser and access `http://localhost:3000`
 
 #### *As a good role of thumb, after every pull or before every push, run the .sh file again.*
 
