@@ -11,7 +11,7 @@ import CustomInput from "@/components/CustomInput";
 export default function NewDiagnostic() {
     const { getToken } = useSessionContext();
     const { selectedPatient } = useSelectedPatientContext();
-    const { processImage, createPatientImage } = usePatientImages();
+    const { processImage, createPatientImage, predictImage } = usePatientImages();
     const [file, setFile] = useState<File | null>(null);
     const [description, setDescription] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
@@ -22,12 +22,15 @@ export default function NewDiagnostic() {
             const token = await getToken();
             if (selectedPatient?.id && token && file) {
                 const resultImage = await processImage(file, token);
+                const resultPredict = await predictImage(file, token);
+                const inferenceData = JSON.stringify(resultPredict);
                 if (resultImage) {
                     await createPatientImage(
                         selectedPatient.id,
                         resultImage.result_image,
                         'png',
                         description,
+                        inferenceData,
                         token
                     );
                 } else {

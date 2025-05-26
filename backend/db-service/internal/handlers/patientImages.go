@@ -18,6 +18,7 @@ type PatientImagesHandlerInterface interface {
 	Create(context *gin.Context)
 	GetByPatientId(context *gin.Context)
 	GetById(context *gin.Context)
+	GetByUserId(context *gin.Context)
 }
 
 type PatientImagesHandler struct {
@@ -126,4 +127,32 @@ func (handler *PatientImagesHandler) GetById(context *gin.Context) {
 
 	handler.Logger.Info(context, action, handler.ResourceManager.GetPatientImagesResource(), map[string]interface{}{"patientImage": patientImage})
 	handler.ResponseManager.Send(context, http.StatusOK, "Patient Image Retrieved", patientImage, nil)
+}
+
+func (handler *PatientImagesHandler) GetByUserId(context *gin.Context) {
+	action := "Get Patient Images By User Id"
+	userIdString := context.Param("userId")
+	if userIdString == "" {
+		err := errors.New("invalid credentials")
+		handler.Logger.Error(context, action, err, handler.ResourceManager.GetPatientImagesResource(), nil)
+		handler.ResponseManager.Send(context, http.StatusBadRequest, "Invalid User Id Parameter", nil, err)
+		return
+	}
+
+	userId, err := uuid.Parse(userIdString)
+	if err != nil {
+		handler.Logger.Error(context, action, err, handler.ResourceManager.GetPatientImagesResource(), nil)
+		handler.ResponseManager.Send(context, http.StatusBadRequest, "Invalid User Id", nil, err)
+		return
+	}
+
+	patientImages, err := handler.PatientImagesService.GetByUserId(userId)
+	if err != nil {
+		handler.Logger.Error(context, action, err, handler.ResourceManager.GetPatientImagesResource(), nil)
+		handler.ResponseManager.Send(context, http.StatusInternalServerError, "Failed to get patient images", nil, err)
+		return
+	}
+
+	handler.Logger.Info(context, action, handler.ResourceManager.GetPatientImagesResource(), map[string]interface{}{"patientImages": patientImages})
+	handler.ResponseManager.Send(context, http.StatusOK, "Patient Images Retrieved", patientImages, nil)
 }

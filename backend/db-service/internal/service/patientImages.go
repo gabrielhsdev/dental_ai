@@ -10,6 +10,7 @@ type PatientImagesServiceInterface interface {
 	Create(patientImage *models.PatientImages) (*models.PatientImages, error)
 	GetByPatientId(patientId uuid.UUID) ([]*models.PatientImages, error)
 	GetById(id uuid.UUID) (*models.PatientImages, error)
+	GetByUserId(userId uuid.UUID) ([]*models.PatientImages, error)
 }
 
 type PatientImagesService struct {
@@ -30,4 +31,8 @@ func (service *PatientImagesService) GetByPatientId(patientId uuid.UUID) ([]*mod
 
 func (service *PatientImagesService) GetById(id uuid.UUID) (*models.PatientImages, error) {
 	return service.Repository.GetById(id)
+}
+
+func (service *PatientImagesService) GetByUserId(userId uuid.UUID) ([]*models.PatientImages, error) {
+	return service.Repository.GetByUserId(userId)
 }

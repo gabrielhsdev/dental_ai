@@ -11,5 +11,6 @@ func PatientImagesRoutes(router *gin.Engine, handler handlers.PatientImagesHandl
 		userGroup.POST("/", handler.Create)
 		userGroup.GET("/:id", handler.GetById)
 		userGroup.GET("/patient/:patientId", handler.GetByPatientId)
+		userGroup.GET("/user/:userId", handler.GetByUserId)
 	}
 }

@@ -7,6 +7,7 @@ export async function requestCreatePatientImage(
     imageData: string,
     fileType: string,
     description: string,
+    inferenceData: string,
     token: string
 ): Promise<BaseResponseInterface<PatientImageInterface> | BaseErrorResponseInterface> {
     // Placehoplder for uploadedAt / createdAt and updatedAt
@@ -15,12 +16,14 @@ export async function requestCreatePatientImage(
         imageData,
         fileType,
         description,
+        inferenceData,
     });
     return await postRequest<PatientImageInterface>(`${ENDPOINTS.DB}/patientsImages/`, {
         patientId,
         imageData,
         fileType,
         description,
+        inferenceData,
         uploadedAt: new Date().toISOString(),
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
@@ -39,6 +42,13 @@ export async function requestGetPatientImagesByPatientId(
     token: string
 ): Promise<BaseResponseInterface<PatientImageInterface[]> | BaseErrorResponseInterface> {
     return await getRequest<PatientImageInterface[]>(`${ENDPOINTS.DB}/patientsImages/patient/${patientId}`, {}, token);
+}
+
+export async function requestGetPatientByUserId(
+    userId: string,
+    token: string
+): Promise<BaseResponseInterface<PatientImageInterface[]> | BaseErrorResponseInterface> {
+    return await getRequest<PatientImageInterface[]>(`${ENDPOINTS.DB}/patientsImages/user/${userId}`, {}, token);
 }
 
 

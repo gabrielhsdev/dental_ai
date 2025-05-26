@@ -34,3 +34,23 @@ export async function requestGetImageById(
         throw error;
     }
 }
+
+export async function requestDiagnosticPredict(
+    file: File,
+    token: string
+): Promise<any> {
+    try {
+        const formData = new FormData();
+        formData.append("file", file);
+
+        return await postRequestWithoutResponse<any>(
+            `${ENDPOINTS.DIAGNOSTICS}/predict/detection`,
+            formData,
+            token
+        );
+
+    } catch (error) {
+        console.error("Error requesting diagnostic predict:", error);
+        throw error;
+    }
+}

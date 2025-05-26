@@ -58,6 +58,7 @@ export interface PatientImageInterface {
     imageData: string;
     fileType: string;
     description: string;
+    inferenceData: string;
     uploadedAt: string;
     createdAt: string;
     updatedAt: string;

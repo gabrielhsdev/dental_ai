@@ -7,11 +7,13 @@ import {
     requestCreatePatientImage,
     requestGetPatientImageById,
     requestGetPatientImagesByPatientId,
+    requestGetPatientByUserId,
 } from '@/services/patientImageService';
 
 import {
     requestDiagnosticProcess,
     requestGetImageById,
+    requestDiagnosticPredict,
 } from '@/services/diagnosticsService';
 
 import {
@@ -91,6 +93,7 @@ export const usePatientImages = () => {
         imageData: string,
         fileType: string,
         description: string,
+        inferenceData: string,
         token: string,
     ) => {
         if (!token) return;
@@ -102,6 +105,7 @@ export const usePatientImages = () => {
                 imageData,
                 fileType,
                 description,
+                inferenceData,
                 token,
             );
 
@@ -119,6 +123,24 @@ export const usePatientImages = () => {
         }
     };
 
+    const fetchAllImagesByUser = async (userId: string, token: string) => {
+        try {
+            if (!token) return;
+            setLoading();
+            const res = await requestGetPatientByUserId(userId, token); // Assuming this fetches all images
+            if (isErrorResponse(res)) return handleError(res.message);
+
+            setState((prev) => ({
+                ...prev,
+                images: res.data,
+                isLoading: false,
+                error: null,
+            }));
+        } catch (error) {
+            handleError('Failed to fetch all images by user.');
+        }
+    }
+
     // The below function is used to process the image using the diagnostic service
     // We will just return the image data for now, so we save what we want later on
     const processImage = async (file: File, token: string) => {
@@ -129,6 +151,17 @@ export const usePatientImages = () => {
             return res;
         } catch (error) {
             handleError('Failed to process image.');
+        }
+    };
+
+    const predictImage = async (file: File, token: string) => {
+        setLoading();
+        try {
+            const res = await requestDiagnosticPredict(file, token);
+            if (res.sucess == false) throw new Error('Failed to predict image. Error in the model.');
+            return res;
+        } catch (error) {
+            handleError('Failed to predict image.');
         }
     };
 
@@ -153,11 +186,13 @@ export const usePatientImages = () => {
         isLoading: state.isLoading,
         error: state.error,
         fetchImagesByPatientId,
+        fetchAllImagesByUser,
         fetchImageById,
         createPatientImage,
         resetError,
         // For our diagnostic service
         processImage,
+        predictImage,
         getImageByPath,
     };
 };

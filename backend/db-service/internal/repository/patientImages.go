@@ -6,33 +6,11 @@ import (
 	"github.com/google/uuid"
 )
 
-/*
-package models
-
-import (
-
-	"github.com/google/uuid"
-
-)
-
-// inferenceData JSONB, -- Stores AI results, bounding boxes, masks, etc.
-
-	type PatientImages struct {
-		Id            uuid.UUID `json:"id"`
-		PatientId     uuid.UUID `json:"patientId"`
-		ImageData     string    `json:"imageData"` // Path to the image file in the storage
-		FileType      string    `json:"fileType"`  // 3 Possible values: "jpg", "png" or "png"
-		Description   string    `json:"description"`
-		InferenceData string    `json:"inferenceData"` // JSONB, Stores AI results, bounding boxes, masks, etc.
-		UploadedAt    string    `json:"uploadedAt"`
-		CreatedAt     string    `json:"createdAt"`
-		UpdatedAt     string    `json:"updatedAt"`
-	}
-*/
 type PatientImagesRepository interface {
 	Create(patientImage *models.PatientImages) (*models.PatientImages, error)
 	GetByPatientId(patientId uuid.UUID) ([]*models.PatientImages, error)
 	GetById(id uuid.UUID) (*models.PatientImages, error)
+	GetByUserId(userId uuid.UUID) ([]*models.PatientImages, error)
 }
 
 type PatientImagesRepositoryImplementation struct {
@@ -109,4 +87,49 @@ func (repository *PatientImagesRepositoryImplementation) GetById(id uuid.UUID) (
 		return nil, err
 	}
 	return &patientImage, nil
+}
+
+func (repository *PatientImagesRepositoryImplementation) GetByUserId(userId uuid.UUID) ([]*models.PatientImages, error) {
+	query := `
+	SELECT 
+		pi.id,
+		pi.patientId,
+		pi.imageData,
+		pi.fileType,
+		pi.description,
+		pi.uploadedAt,
+		pi.createdAt,
+		pi.updatedAt,
+		pi.inferenceData
+	FROM patient_images pi
+	INNER JOIN patients p ON pi.patientId = p.id
+	INNER JOIN users u ON p.userId = u.id
+	WHERE u.id = $1`
+	rows, err := repository.DB.Query(query, userId)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var patientImages []*models.PatientImages
+	for rows.Next() {
+		var patientImage models.PatientImages
+		err := rows.Scan(
+			&patientImage.Id,
+			&patientImage.PatientId,
+			&patientImage.ImageData,
+			&patientImage.FileType,
+			&patientImage.Description,
+			&patientImage.UploadedAt,
+			&patientImage.CreatedAt,
+			&patientImage.UpdatedAt,
+			&patientImage.InferenceData,
+			// Add fields for patient first and last name if needed
+		)
+		if err != nil {
+			return nil, err
+		}
+		patientImages = append(patientImages, &patientImage)
+	}
+	return patientImages, nil
 }
