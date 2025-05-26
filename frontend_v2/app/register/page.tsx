@@ -4,23 +4,34 @@ import CustomButton from "@/components/CustomButton";
 import CustomInput from "@/components/CustomInput";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useSessionContext } from "@/context/SessionContext";
 
 export default function RegisterPage() {
+  const { handleRegister } = useSessionContext();
   const router = useRouter();
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
     email: '',
-    password: ''
+    password: '',
+    userName: '',
   });
 
   const handleChange = (key: string, value: string) => {
     setForm(prev => ({ ...prev, [key]: value }));
   };
 
-  const handleRegister = () => {
-    // TODO : colocar a lógica de cadastro aqui:
-    console.log("Cadastrando:", form);
+  const handleRegisterAux = async () => {
+    if (!form.userName || !form.email || !form.password || !form.firstName || !form.lastName) {
+      return alert("Por favor, preencha todos os campos.");
+    }
+    await handleRegister(
+      form.userName,
+      form.email,
+      form.password,
+      form.firstName,
+      form.lastName
+    );
   };
 
   return (
@@ -47,6 +58,13 @@ export default function RegisterPage() {
           </a>
 
           <div className="flex flex-col space-y-4">
+            <CustomInput
+              label="Usuário"
+              type="text"
+              value={form.userName}
+              onChange={(val) => handleChange('userName', val)}
+              placeholder="Digite seu usuário"
+            />
             <CustomInput
               label="Nome"
               type="text"
@@ -75,11 +93,15 @@ export default function RegisterPage() {
               onChange={(val) => handleChange('password', val)}
               placeholder="Digite sua senha"
             />
-            <CustomButton text="Cadastrar" onClick={handleRegister} className="mt-4" />
+            <CustomButton
+              text="Cadastrar"
+              onClick={handleRegisterAux}
+              className="mt-4"
+            />
             <p className="text-sm font-light text-gray-500 dark:text-gray-400">
               Já tem uma conta?{" "}
               <button
-                onClick={() => router.push("/login")}
+                onClick={() => router.push("/")}
                 className="font-medium text-primary-600 hover:underline dark:text-primary-500"
               >
                 Fazer Login

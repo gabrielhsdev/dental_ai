@@ -6,6 +6,29 @@ import (
 	"github.com/google/uuid"
 )
 
+/*
+package models
+
+import (
+
+	"github.com/google/uuid"
+
+)
+
+// inferenceData JSONB, -- Stores AI results, bounding boxes, masks, etc.
+
+	type PatientImages struct {
+		Id            uuid.UUID `json:"id"`
+		PatientId     uuid.UUID `json:"patientId"`
+		ImageData     string    `json:"imageData"` // Path to the image file in the storage
+		FileType      string    `json:"fileType"`  // 3 Possible values: "jpg", "png" or "png"
+		Description   string    `json:"description"`
+		InferenceData string    `json:"inferenceData"` // JSONB, Stores AI results, bounding boxes, masks, etc.
+		UploadedAt    string    `json:"uploadedAt"`
+		CreatedAt     string    `json:"createdAt"`
+		UpdatedAt     string    `json:"updatedAt"`
+	}
+*/
 type PatientImagesRepository interface {
 	Create(patientImage *models.PatientImages) (*models.PatientImages, error)
 	GetByPatientId(patientId uuid.UUID) ([]*models.PatientImages, error)
@@ -21,8 +44,8 @@ func NewPatientImagesRepository(db database.Database) PatientImagesRepository {
 }
 
 func (repository *PatientImagesRepositoryImplementation) Create(patientImage *models.PatientImages) (*models.PatientImages, error) {
-	query := `INSERT INTO patient_images (patientId, imageData, fileType, description, uploadedAt, createdAt, updatedAt)
-	VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id`
+	query := `INSERT INTO patient_images (patientId, imageData, fileType, description, uploadedAt, createdAt, updatedAt, inferenceData)
+	VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING id`
 	err := repository.DB.QueryRow(query,
 		patientImage.PatientId,
 		patientImage.ImageData,
@@ -30,7 +53,8 @@ func (repository *PatientImagesRepositoryImplementation) Create(patientImage *mo
 		patientImage.Description,
 		patientImage.UploadedAt,
 		patientImage.CreatedAt,
-		patientImage.UpdatedAt).Scan(&patientImage.Id)
+		patientImage.UpdatedAt,
+		patientImage.InferenceData).Scan(&patientImage.Id)
 	if err != nil {
 		return nil, err
 	}
@@ -38,7 +62,7 @@ func (repository *PatientImagesRepositoryImplementation) Create(patientImage *mo
 }
 
 func (repository *PatientImagesRepositoryImplementation) GetByPatientId(patientId uuid.UUID) ([]*models.PatientImages, error) {
-	query := `SELECT id, patientId, imageData, fileType, description, uploadedAt, createdAt, updatedAt FROM patient_images WHERE patientId = $1`
+	query := `SELECT id, patientId, imageData, fileType, description, uploadedAt, createdAt, updatedAt, inferenceData FROM patient_images WHERE patientId = $1`
 	rows, err := repository.DB.Query(query, patientId)
 	if err != nil {
 		return nil, err
@@ -56,7 +80,9 @@ func (repository *PatientImagesRepositoryImplementation) GetByPatientId(patientI
 			&patientImage.Description,
 			&patientImage.UploadedAt,
 			&patientImage.CreatedAt,
-			&patientImage.UpdatedAt)
+			&patientImage.UpdatedAt,
+			&patientImage.InferenceData,
+		)
 		if err != nil {
 			return nil, err
 		}
@@ -66,7 +92,7 @@ func (repository *PatientImagesRepositoryImplementation) GetByPatientId(patientI
 }
 
 func (repository *PatientImagesRepositoryImplementation) GetById(id uuid.UUID) (*models.PatientImages, error) {
-	query := `SELECT id, patientId, imageData, fileType, description, uploadedAt, createdAt, updatedAt FROM patient_images WHERE id = $1`
+	query := `SELECT id, patientId, imageData, fileType, description, uploadedAt, createdAt, updatedAt, inferenceData FROM patient_images WHERE id = $1`
 	var patientImage models.PatientImages
 	err := repository.DB.QueryRow(query, id).Scan(
 		&patientImage.Id,
@@ -76,7 +102,9 @@ func (repository *PatientImagesRepositoryImplementation) GetById(id uuid.UUID) (
 		&patientImage.Description,
 		&patientImage.UploadedAt,
 		&patientImage.CreatedAt,
-		&patientImage.UpdatedAt)
+		&patientImage.UpdatedAt,
+		&patientImage.InferenceData,
+	)
 	if err != nil {
 		return nil, err
 	}

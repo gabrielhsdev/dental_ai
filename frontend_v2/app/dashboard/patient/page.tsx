@@ -45,24 +45,8 @@ export default function ListPatients() {
 
     return (
         <>
-            <CustomCard title="Listar Pacientes" subtitle="Lista de pacientes cadastrados" className="grid-cols-12 gap-4">
-                <CustomButton
-                    text="Debugar Paciente"
-                    onClick={() => console.log("Selected Patient:", selectedPatient)}
-                    className="col-span-12"
-                />
-            </CustomCard>
-
-            <CustomCard title="Novo Diagnóstico" subtitle="Novo diagnóstico para o paciente" className="grid-cols-12 gap-4">
-                <CustomButton
-                    text="Novo Diagnóstico"
-                    onClick={() => router.push(`patient/newDiagnostic`)}
-                    className="col-span-12"
-                />
-            </CustomCard>
-
             <CustomCard title="Histórico de Exames" subtitle="Lista de exames cadastrados" className="grid-cols-12 gap-4">
-                {images.map((image) => (
+                {images && images.length > 0 && images.map((image) => (
                     <div key={image.id} className="col-span-12 border p-4 rounded-xl mb-4 shadow-sm">
                         <p className="font-medium">{image.description}</p>
                         <p className="text-sm text-gray-500">{image.imageData}</p>

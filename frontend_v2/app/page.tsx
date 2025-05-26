@@ -51,7 +51,7 @@ export default function LoginPage() {
             <p className="text-sm font-light text-gray-500 dark:text-gray-400">
               Não tem uma conta ainda?{" "}
               <button
-                onClick={() => router.push("/registerlogin")}
+                onClick={() => router.push("/register")}
                 className="font-medium text-primary-600 hover:underline dark:text-primary-500"
               >
                 Cadastre-se

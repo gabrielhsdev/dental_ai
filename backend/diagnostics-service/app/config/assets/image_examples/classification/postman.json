@@ -1,0 +1,628 @@
+{
+	"info": {
+		"_postman_id": "6c552741-b4b4-48ef-a938-f4e1e20ccfdd",
+		"name": "Dental AI",
+		"description": "See complete documentation for routes settings",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30959634"
+	},
+	"item": [
+		{
+			"name": "Auth Microservice",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userName\": \"test\",\n  \"email\": \"test@example.com\",\n  \"password\": \"test\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						},
+						"description": "Creates new user, currently passwords are not hashed but that can be changed later on."
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"admin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						},
+						"description": "Creates new user, currently passwords are not hashed but that can be changed later on."
+					},
+					"response": []
+				},
+				{
+					"name": "Me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxYmY4ZjQ4MS00MmIyLTQ5M2QtOTlhZS1mZWEwOTFhMzdhN2UiLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ3MTc3MDA2LCJpYXQiOjE3NDcwMDQyMDZ9.xSAWyEwwF79UjgN4CRjluth5yVmZd6FMWkJZ_8F_csQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/auth/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"me"
+							]
+						},
+						"description": "Returns who is the owner of the token"
+					},
+					"response": []
+				},
+				{
+					"name": "Validate",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhNWQzNmYzYi03NjFjLTQxZmQtYmNiMy0xNDdhNDI2YmIwZjMiLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ1OTYwNDA4LCJpYXQiOjE3NDU3ODc2MDh9.znffOegP_FQUlcblEaa2eQ9D02wMkuUcovW3q69L26A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/auth/validate",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"auth",
+								"validate"
+							]
+						},
+						"description": "Mostly used on our middleware, checks if the token is valid, the nginx.conf file has usage for this route"
+					},
+					"response": []
+				}
+			],
+			"description": "Custom auth microservice, these endpoins will login & register users, validade & generate JWT. Nginx will use this as the middleware to approve protected requests too, or deny them."
+		},
+		{
+			"name": "Database Service",
+			"item": [
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "Get User By Id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjOTkxMzgwYy1lMjAwLTQxMDItYWMxZC1jMTRjN2FjNDBlOGEiLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ3MTc0ODM3LCJpYXQiOjE3NDcwMDIwMzd9.MFGx25H6oyCx2Dciqbrw4q6vbOBFFu8BiENt5zCeTxI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost/db/users/e3cac880-c73c-4410-8549-4ebf7d9df0b7",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"db",
+										"users",
+										"e3cac880-c73c-4410-8549-4ebf7d9df0b7"
+									]
+								},
+								"description": "Get user by passing its UUID on the url"
+							},
+							"response": []
+						},
+						{
+							"name": "Get User By Email",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjOTkxMzgwYy1lMjAwLTQxMDItYWMxZC1jMTRjN2FjNDBlOGEiLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ3MTc0ODM3LCJpYXQiOjE3NDcwMDIwMzd9.MFGx25H6oyCx2Dciqbrw4q6vbOBFFu8BiENt5zCeTxI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost/db/users/email?email=admin@example.com",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"db",
+										"users",
+										"email"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "admin@example.com"
+										}
+									]
+								},
+								"description": "Get user by passing its email on the parameter"
+							},
+							"response": []
+						}
+					],
+					"description": "CRUD for our users table ( Dentists )"
+				},
+				{
+					"name": "Patients",
+					"item": [
+						{
+							"name": "Create Patient",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiNmMxOTdiMy1lM2QzLTQ2ZTctOThjYy0xNjk1YTcwYWMzZDEiLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ3Nzk0NzI0LCJpYXQiOjE3NDc2MjE5MjR9.pPeBO19FGAFaLOSCfdk1n5AiYS9DBjc83BrYDP8smsU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"firstName\": \"Jane\",\n  \"lastName\": \"Doe\",\n  \"dateOfBirth\": \"1990-06-15T00:00:00Z\",\n  \"gender\": \"Female\",\n  \"phoneNumber\": \"+1-555-1234\",\n  \"email\": \"jane.doe@example.com\",\n  \"notes\": \"Allergic to penicillin\"\n}\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost/db/patients/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"db",
+										"patients",
+										""
+									]
+								},
+								"description": "Get user by passing its UUID on the url"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Patients By User Id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkNjU2ODcyYS04YzMyLTQ5YzctOGQzMS03OWE4MDAwNjdjYzkiLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ3NzgyMTUwLCJpYXQiOjE3NDc2MDkzNTB9.31uP6_twv-VGW6xyGycWISylTyFiSiABQo5XsiWHtJs",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost/db/patients/user",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"db",
+										"patients",
+										"user"
+									]
+								},
+								"description": "Get user by passing its UUID on the url"
+							},
+							"response": []
+						},
+						{
+							"name": "Get Patients By Id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjOTkxMzgwYy1lMjAwLTQxMDItYWMxZC1jMTRjN2FjNDBlOGEiLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ3MTc0ODM3LCJpYXQiOjE3NDcwMDIwMzd9.MFGx25H6oyCx2Dciqbrw4q6vbOBFFu8BiENt5zCeTxI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost/db/patients/e56bfc08-3a61-4feb-ac40-4bd9c30b028d",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"db",
+										"patients",
+										"e56bfc08-3a61-4feb-ac40-4bd9c30b028d"
+									]
+								},
+								"description": "Get user by passing its UUID on the url"
+							},
+							"response": []
+						}
+					],
+					"description": "CRUD for our patients"
+				},
+				{
+					"name": "Patient Images",
+					"item": [
+						{
+							"name": "Create Image",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlMWQ3YzAxYi0wMmM5LTQxOTEtYTBlZS1jZDk1MGFlODJmZjciLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ3Nzk0NTc4LCJpYXQiOjE3NDc2MjE3Nzh9.U-jmvmCyhQ2cItKdhdmgdABAFbSAbi3aOM_bmgtmqtI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"patientId\": \"5b9f52f8-bcf7-44f5-8e54-698f175b766d\",\n  \"imageData\": \"images/uploads/patient-xray-001.png\",\n  \"fileType\": \"png\",\n  \"description\": \"Panoramic X-ray showing upper right molars\",\n  \"uploadedAt\": \"2025-05-18T14:23:00Z\",\n  \"createdAt\": \"2025-05-18T14:23:00Z\",\n  \"updatedAt\": \"2025-05-18T14:23:00Z\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost/db/patientsImages/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"db",
+										"patientsImages",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Image By Id",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlMWQ3YzAxYi0wMmM5LTQxOTEtYTBlZS1jZDk1MGFlODJmZjciLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ3Nzk0NTc4LCJpYXQiOjE3NDc2MjE3Nzh9.U-jmvmCyhQ2cItKdhdmgdABAFbSAbi3aOM_bmgtmqtI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"patientId\": \"c56a4180-65aa-42ec-a945-5fd21dec0538\",\n  \"imageData\": \"images/uploads/patient-xray-001.png\",\n  \"fileType\": \"png\",\n  \"description\": \"Panoramic X-ray showing upper right molars\",\n  \"uploadedAt\": \"2025-05-18T14:23:00Z\",\n  \"createdAt\": \"2025-05-18T14:23:00Z\",\n  \"updatedAt\": \"2025-05-18T14:23:00Z\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost/db/patientsImages/255de52d-2d0a-48af-9b28-ab4bc4110b37",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"db",
+										"patientsImages",
+										"255de52d-2d0a-48af-9b28-ab4bc4110b37"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Image By Patient Id",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJlMWQ3YzAxYi0wMmM5LTQxOTEtYTBlZS1jZDk1MGFlODJmZjciLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ3Nzk0NTc4LCJpYXQiOjE3NDc2MjE3Nzh9.U-jmvmCyhQ2cItKdhdmgdABAFbSAbi3aOM_bmgtmqtI",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"patientId\": \"c56a4180-65aa-42ec-a945-5fd21dec0538\",\n  \"imageData\": \"images/uploads/patient-xray-001.png\",\n  \"fileType\": \"png\",\n  \"description\": \"Panoramic X-ray showing upper right molars\",\n  \"uploadedAt\": \"2025-05-18T14:23:00Z\",\n  \"createdAt\": \"2025-05-18T14:23:00Z\",\n  \"updatedAt\": \"2025-05-18T14:23:00Z\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost/db/patientsImages/patient/5b9f52f8-bcf7-44f5-8e54-698f175b766d",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"path": [
+										"db",
+										"patientsImages",
+										"patient",
+										"5b9f52f8-bcf7-44f5-8e54-698f175b766d"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"description": "CRUD for the images ( result form the inference / diagnostic service )"
+				}
+			],
+			"description": "Used for CRUD operations not related to the AUTH"
+		},
+		{
+			"name": "Diagnostics Service",
+			"item": [
+				{
+					"name": "Health",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiNmMxOTdiMy1lM2QzLTQ2ZTctOThjYy0xNjk1YTcwYWMzZDEiLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ3Nzk2OTc4LCJpYXQiOjE3NDc2MjQxNzh9.VW8yBP_TUNhjvWZsXvVhRoEusbAM6LCyt7QPrDbMoKk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost/diagnostics",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"diagnostics"
+							]
+						},
+						"description": "Get user by passing its UUID on the url"
+					},
+					"response": []
+				},
+				{
+					"name": "Models",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiNmMxOTdiMy1lM2QzLTQ2ZTctOThjYy0xNjk1YTcwYWMzZDEiLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ3Nzk2OTc4LCJpYXQiOjE3NDc2MjQxNzh9.VW8yBP_TUNhjvWZsXvVhRoEusbAM6LCyt7QPrDbMoKk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/diagnostics/api/v1/models",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"diagnostics",
+								"api",
+								"v1",
+								"models"
+							]
+						},
+						"description": "Get user by passing its UUID on the url"
+					},
+					"response": []
+				},
+				{
+					"name": "Process",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiNmMxOTdiMy1lM2QzLTQ2ZTctOThjYy0xNjk1YTcwYWMzZDEiLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ3Nzk2OTc4LCJpYXQiOjE3NDc2MjQxNzh9.VW8yBP_TUNhjvWZsXvVhRoEusbAM6LCyt7QPrDbMoKk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "postman-cloud:///1f02f493-cd3d-48c0-bb32-d899c978f49b"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/diagnostics/api/v1/process/detection",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"diagnostics",
+								"api",
+								"v1",
+								"process",
+								"detection"
+							]
+						},
+						"description": "Get user by passing its UUID on the url"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Image",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJiNmMxOTdiMy1lM2QzLTQ2ZTctOThjYy0xNjk1YTcwYWMzZDEiLCJ1c2VybmFtZSI6ImFkbWluIiwiZXhwIjoxNzQ3Nzk2OTc4LCJpYXQiOjE3NDc2MjQxNzh9.VW8yBP_TUNhjvWZsXvVhRoEusbAM6LCyt7QPrDbMoKk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/diagnostics/api/v1/results/1d93e862-e393-493b-bdad-e3560ad68887.png",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"diagnostics",
+								"api",
+								"v1",
+								"results",
+								"1d93e862-e393-493b-bdad-e3560ad68887.png"
+							]
+						},
+						"description": "Get user by passing its UUID on the url"
+					},
+					"response": []
+				}
+			],
+			"description": "No routes are set for now, this is the python inference service"
+		}
+	]
+}

@@ -50,6 +50,7 @@ CREATE TABLE patient_images (
     imageData VARCHAR(255) NOT NULL, -- Path to the image file
     fileType VARCHAR(20) CHECK (fileType IN ('png', 'jpeg', 'jpg', 'bmp', 'tiff')),
     description TEXT,
+    inferenceData JSONB DEFAULT '{}',
     uploadedAt TIMESTAMPTZ DEFAULT now(),
     createdAt TIMESTAMPTZ DEFAULT now(),
     updatedAt TIMESTAMPTZ DEFAULT now()

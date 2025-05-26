@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 
-import { requestLogin, requestMe } from '@/services/authService';
+import { requestLogin, requestMe, requestRegister } from '@/services/authService';
 import { isErrorResponse, PatientInterface, UserInterface } from '@/common/commonInterfaces';
 import { LOCAL_STORAGE_KEYS } from '@/common/constants';
 
@@ -38,6 +38,7 @@ export const useSession = () => {
     const handleLogin = async (email: string, password: string) => {
         setLoading();
         try {
+
             const loginRes = await requestLogin(email, password);
             if (isErrorResponse(loginRes)) return handleError(loginRes.message);
 
@@ -96,9 +97,30 @@ export const useSession = () => {
         router.push('/');
     };
 
+    const handleRegister = async (
+        userName: string,
+        email: string,
+        password: string,
+        firstName: string,
+        lastName: string
+    ) => {
+        setLoading();
+        try {
+            const registerRes = await requestRegister(userName, email, password, firstName, lastName);
+            if (isErrorResponse(registerRes)) return handleError(registerRes.message);
+
+            router.push('/');
+        } catch (error) {
+            handleError('Registration failed. Please try again.');
+            return;
+        }
+    };
+
+
     return {
         handleLogin,
         handleLogout,
+        handleRegister,
         isLoggedIn,
         getToken,
         session,
